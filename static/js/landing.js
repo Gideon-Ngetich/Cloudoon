@@ -4,8 +4,6 @@ document.addEventListener('DOMContentLoaded', () => {
   const heroInput = document.getElementById('hero-domain-input');
   const heroResults = document.getElementById('hero-domain-results');
   const tldPills = document.querySelectorAll('.hero-tld-pill');
-  const mobileMenuBtn = document.getElementById('mobile-menu-btn');
-  const mobileNav = document.getElementById('mobile-nav');
   const navCartCount = document.getElementById('nav-cart-count');
   const mainHeader = document.getElementById('main-header');
 
@@ -53,14 +51,6 @@ document.addEventListener('DOMContentLoaded', () => {
   }
   updateCartBadge();
   window.addEventListener('storage', updateCartBadge);
-
-  if (mobileMenuBtn && mobileNav) {
-    mobileMenuBtn.addEventListener('click', () => {
-      const isExpanded = mobileNav.classList.contains('hidden');
-      mobileNav.classList.toggle('hidden');
-      mobileMenuBtn.setAttribute('aria-expanded', String(isExpanded));
-    });
-  }
 
   if (mainHeader) {
     let isSticky = false;

@@ -192,6 +192,14 @@ textarea:focus-visible {
   padding: 0.625rem 1.5rem;
 }
 
+@media (max-width: 640px) {
+  .navbar-floating {
+    width: calc(100% - 1rem);
+    margin-top: 0.5rem;
+    padding: 0.5rem 0.75rem;
+  }
+}
+
 .navbar-sticky-full {
   position: fixed;
   top: 0;
@@ -208,6 +216,12 @@ textarea:focus-visible {
   z-index: 100;
   padding: 0.75rem 2rem;
   animation: slideDownNav 0.3s ease-out forwards;
+}
+
+@media (max-width: 640px) {
+  .navbar-sticky-full {
+    padding: 0.5rem 0.75rem;
+  }
 }
 
 @keyframes slideDownNav {
