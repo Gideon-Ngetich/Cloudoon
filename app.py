@@ -14,7 +14,8 @@ from services.order_service import OrderService
 from services.email_service import EmailService
 from services.database import db
 
-app = Flask(__name__)
+base_dir = os.path.dirname(os.path.abspath(__file__))
+app = Flask(__name__, template_folder=os.path.join(base_dir, "templates"), static_folder=os.path.join(base_dir, "static"))
 app.config["SECRET_KEY"] = os.environ.get("SECRET_KEY", "cloudoon-flask-secret-2026")
 app.config["SESSION_COOKIE_NAME"] = "cloudoon_session"
 app.config["SESSION_COOKIE_HTTPONLY"] = True

@@ -6,7 +6,11 @@ from datetime import datetime, timedelta
 class Database:
     def __init__(self):
         self.pg_url = os.environ.get("DATABASE_URL", "postgresql://postgres:postgres@localhost:5432/cloudoon")
-        self.sqlite_path = os.path.join(os.path.dirname(os.path.dirname(os.path.abspath(__file__))), "cloudoon.db")
+        base_dir = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+        default_sqlite = os.path.join(base_dir, "cloudoon.db")
+        if not os.access(base_dir, os.W_OK) or os.environ.get("VERCEL"):
+            default_sqlite = os.path.join("/tmp", "cloudoon.db")
+        self.sqlite_path = default_sqlite
         self.is_postgres = False
         self.conn = None
         self._init_connection()
@@ -20,11 +24,30 @@ class Database:
             except Exception:
                 pass
 
+        if self.pg_url and ("postgresql://" in self.pg_url or "postgres://" in self.pg_url):
+            try:
+                import psycopg2
+                self.conn = psycopg2.connect(self.pg_url)
+                self.conn.autocommit = True
+                self.is_postgres = True
+                return
+            except Exception:
+                pass
+
+            try:
+                import psycopg
+                self.conn = psycopg.connect(self.pg_url, autocommit=True)
+                self.is_postgres = True
+                return
+            except Exception:
+                pass
+
         try:
-            import psycopg
-            self.conn = psycopg.connect(self.pg_url, autocommit=True)
-            self.is_postgres = True
+            self.conn = sqlite3.connect(self.sqlite_path, check_same_thread=False)
+            self.conn.row_factory = sqlite3.Row
+            self.is_postgres = False
         except Exception:
+            self.sqlite_path = os.path.join("/tmp", "cloudoon.db")
             self.conn = sqlite3.connect(self.sqlite_path, check_same_thread=False)
             self.conn.row_factory = sqlite3.Row
             self.is_postgres = False
@@ -32,14 +55,21 @@ class Database:
     def get_cursor(self):
         try:
             if self.is_postgres:
-                if self.conn.closed:
+                if self.conn and hasattr(self.conn, "closed") and self.conn.closed:
                     self._init_connection()
             return self.conn.cursor()
         except Exception:
-            self.conn = sqlite3.connect(self.sqlite_path, check_same_thread=False)
-            self.conn.row_factory = sqlite3.Row
-            self.is_postgres = False
-            return self.conn.cursor()
+            try:
+                self.conn = sqlite3.connect(self.sqlite_path, check_same_thread=False)
+                self.conn.row_factory = sqlite3.Row
+                self.is_postgres = False
+                return self.conn.cursor()
+            except Exception:
+                self.sqlite_path = os.path.join("/tmp", "cloudoon.db")
+                self.conn = sqlite3.connect(self.sqlite_path, check_same_thread=False)
+                self.conn.row_factory = sqlite3.Row
+                self.is_postgres = False
+                return self.conn.cursor()
 
     def _create_tables(self):
         cur = self.get_cursor()
