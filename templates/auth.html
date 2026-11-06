@@ -167,46 +167,6 @@
         </button>
       </form>
     </div>
-
-    <div id="otp-view" class="hidden space-y-6 text-center">
-      <div class="w-14 h-14 rounded-2xl bg-primary-light text-primary flex items-center justify-center mx-auto text-2xl font-bold">
-        <svg class="w-7 h-7" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"/></svg>
-      </div>
-
-      <div>
-        <h2 class="text-2xl font-extrabold text-slate-900">Verify Your Email</h2>
-        <p class="text-xs text-slate-500 mt-2">
-          We sent a 6-digit OTP verification code to <strong id="otp-recipient-display" class="text-slate-800 font-semibold"></strong>.
-        </p>
-      </div>
-
-      <div id="dev-otp-notification" class="hidden bg-emerald-50 border border-emerald-200 rounded-xl p-3 text-xs text-emerald-800 text-left font-medium">
-        <span>Verification code: <strong id="dev-otp-code" class="text-emerald-950 font-mono text-sm tracking-wider"></strong></span>
-      </div>
-
-      <div>
-        <input
-          type="text"
-          id="otp-input"
-          maxlength="6"
-          placeholder="000000"
-          autocomplete="one-time-code"
-          class="w-48 text-center text-2xl tracking-[8px] font-mono font-bold py-3 px-4 border-2 border-slate-300 rounded-xl focus:outline-none focus:border-primary focus:ring-2 focus:ring-primary/20"
-        >
-      </div>
-
-      <div id="otp-error-msg" class="hidden text-xs text-rose-600 font-medium"></div>
-
-      <button type="button" id="otp-verify-btn" class="w-full bg-primary hover:bg-[#2945d8] text-white font-bold text-sm py-3.5 rounded-xl shadow-md shadow-primary/20 transition-all flex items-center justify-center gap-2 cursor-pointer touch-target">
-        <span id="otp-spinner" class="hidden w-4 h-4 border-2 border-white border-t-transparent rounded-full animate-spin"></span>
-        <span>Confirm & Continue to Dashboard</span>
-      </button>
-
-      <div class="text-xs text-slate-500 flex items-center justify-center gap-1">
-        <span>Didn't receive the email?</span>
-        <button type="button" id="otp-resend-btn" class="text-primary font-bold hover:underline">Resend code</button>
-      </div>
-    </div>
   </div>
 
   <p class="text-[11px] text-slate-400 max-w-md mx-auto text-center mt-6 leading-relaxed">
@@ -228,16 +188,6 @@
       const togglePasswordBtn = document.getElementById('toggle-password-btn');
 
       const authMainView = document.getElementById('auth-main-view');
-      const otpView = document.getElementById('otp-view');
-      const otpRecipientDisplay = document.getElementById('otp-recipient-display');
-      const otpInput = document.getElementById('otp-input');
-      const otpVerifyBtn = document.getElementById('otp-verify-btn');
-      const otpSpinner = document.getElementById('otp-spinner');
-      const otpErrorMsg = document.getElementById('otp-error-msg');
-      const otpResendBtn = document.getElementById('otp-resend-btn');
-      const devOtpNotification = document.getElementById('dev-otp-notification');
-      const devOtpCode = document.getElementById('dev-otp-code');
-
       let currentEmail = '';
 
       const passwordStrengthLabel = document.getElementById('password-strength-label');
@@ -335,22 +285,7 @@
               throw new Error(regJson.message || (regJson.data ? regJson.data.message : 'Registration failed'));
             }
 
-            const otpRes = await fetch('/api/auth/send-otp', {
-              method: 'POST',
-              headers: { 'Content-Type': 'application/json' },
-              body: JSON.stringify({ email: currentEmail })
-            });
-            const otpJson = await otpRes.json();
-
-            authMainView.classList.add('hidden');
-            otpView.classList.remove('hidden');
-            otpRecipientDisplay.textContent = currentEmail;
-
-            if (otpJson.data && otpJson.data.otp) {
-              devOtpNotification.classList.remove('hidden');
-              devOtpCode.textContent = otpJson.data.otp;
-              otpInput.value = otpJson.data.otp;
-            }
+            window.location.href = '/dashboard';
           } catch (err) {
             authErrorMsg.textContent = err.message || 'An error occurred during registration.';
             authErrorMsg.classList.remove('hidden');
@@ -381,61 +316,6 @@
           }
         }
       });
-
-      if (otpVerifyBtn) {
-        otpVerifyBtn.addEventListener('click', async () => {
-          const code = otpInput.value.trim();
-          if (code.length < 6) {
-            otpErrorMsg.textContent = 'Please enter all 6 digits of the verification code.';
-            otpErrorMsg.classList.remove('hidden');
-            return;
-          }
-
-          otpErrorMsg.classList.add('hidden');
-          otpVerifyBtn.disabled = true;
-          otpSpinner.classList.remove('hidden');
-
-          try {
-            const res = await fetch('/api/auth/verify-otp', {
-              method: 'POST',
-              headers: { 'Content-Type': 'application/json' },
-              body: JSON.stringify({ email: currentEmail, otp: code })
-            });
-            const json = await res.json();
-            if (json.status === 'success') {
-              window.location.href = '/dashboard';
-            } else {
-              otpErrorMsg.textContent = json.message || 'Invalid or expired OTP code. Please retry.';
-              otpErrorMsg.classList.remove('hidden');
-            }
-          } catch {
-            otpErrorMsg.textContent = 'Verification error.';
-            otpErrorMsg.classList.remove('hidden');
-          } finally {
-            otpVerifyBtn.disabled = false;
-            otpSpinner.classList.add('hidden');
-          }
-        });
-      }
-
-      if (otpResendBtn) {
-        otpResendBtn.addEventListener('click', async () => {
-          try {
-            const res = await fetch('/api/auth/send-otp', {
-              method: 'POST',
-              headers: { 'Content-Type': 'application/json' },
-              body: JSON.stringify({ email: currentEmail })
-            });
-            const json = await res.json();
-            if (json.data && json.data.otp) {
-              devOtpNotification.classList.remove('hidden');
-              devOtpCode.textContent = json.data.otp;
-              otpInput.value = json.data.otp;
-            }
-            alert('A new 6-digit OTP code has been sent.');
-          } catch {}
-        });
-      }
     });
   </script>
 </body>
