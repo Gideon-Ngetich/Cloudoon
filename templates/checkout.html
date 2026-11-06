@@ -1,0 +1,1117 @@
+{% extends "base.html" %}
+
+{% block title %}Checkout & Configure | Cloudoon{% endblock %}
+
+{% block content %}
+<div class="bg-slate-900 text-white border-b border-slate-800 py-6">
+  <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+    <div class="flex flex-col md:flex-row md:items-center justify-between gap-4">
+      <div>
+        <h1 class="text-2xl font-bold tracking-tight text-white flex items-center gap-2">
+          <span>Checkout & Server Configurator</span>
+        </h1>
+        <p class="text-xs text-slate-400 mt-1">Configure your cloud resources, domain names, and billing terms with zero hidden fees.</p>
+      </div>
+
+      <nav id="checkout-steps-nav" aria-label="Checkout Steps" class="flex items-center gap-2 sm:gap-4 text-xs font-semibold">
+        <button id="step-indicator-1" class="step-nav-btn flex items-center gap-2 px-3 py-2 rounded-lg bg-primary text-white border border-primary transition-all cursor-pointer" data-step="1">
+          <span class="w-5 h-5 rounded-full bg-white text-primary flex items-center justify-center text-[11px] font-bold">1</span>
+          <span>Configure</span>
+        </button>
+        <span class="text-slate-600">&rarr;</span>
+        <button id="step-indicator-2" class="step-nav-btn flex items-center gap-2 px-3 py-2 rounded-lg bg-slate-800 text-slate-400 border border-slate-700 transition-all cursor-pointer" data-step="2">
+          <span class="w-5 h-5 rounded-full bg-slate-700 text-slate-300 flex items-center justify-center text-[11px] font-bold">2</span>
+          <span>{% if current_user %}Billing Details{% else %}Account & Billing{% endif %}</span>
+        </button>
+        <span class="text-slate-600">&rarr;</span>
+        <button id="step-indicator-3" class="step-nav-btn flex items-center gap-2 px-3 py-2 rounded-lg bg-slate-800 text-slate-400 border border-slate-700 transition-all cursor-pointer" data-step="3">
+          <span class="w-5 h-5 rounded-full bg-slate-700 text-slate-300 flex items-center justify-center text-[11px] font-bold">3</span>
+          <span>Payment & Finish</span>
+        </button>
+      </nav>
+    </div>
+  </div>
+</div>
+
+<div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 lg:py-12">
+  <div id="checkout-empty-view" class="hidden bg-white rounded-3xl border border-slate-200 p-8 sm:p-14 text-center max-w-2xl mx-auto shadow-sm my-6">
+    <div class="w-20 h-20 rounded-2xl bg-amber-50 text-accent flex items-center justify-center mx-auto mb-6 shadow-xs">
+      <svg class="w-10 h-10 text-accent" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 11V7a4 4 0 00-8 0v4M5 9h14l1 12H4L5 9z"/>
+      </svg>
+    </div>
+    <h2 class="text-2xl sm:text-3xl font-black text-slate-900 mb-3 tracking-tight">Your Cart is Currently Empty</h2>
+    <p class="text-sm text-slate-500 max-w-md mx-auto mb-8 leading-relaxed">
+      You haven't added any hosting packages or domain registrations yet. Pick a plan or search for a domain to start configuring.
+    </p>
+    <div class="flex flex-col sm:flex-row items-center justify-center gap-3 mb-6">
+      <a href="/#pricing" class="w-full sm:w-auto bg-accent hover:bg-accent-hover text-accent-text font-black text-sm px-6 py-3.5 rounded-xl shadow-md shadow-amber-500/25 transition-all text-center">
+        Explore Hosting Plans
+      </a>
+      <a href="/#hero" class="w-full sm:w-auto bg-slate-900 hover:bg-slate-800 text-white font-bold text-sm px-6 py-3.5 rounded-xl transition-all text-center">
+        Search Domain Names
+      </a>
+      <button type="button" id="empty-add-recommended-btn" class="w-full sm:w-auto border border-slate-300 hover:border-slate-400 bg-white text-slate-700 font-bold text-sm px-5 py-3.5 rounded-xl transition-all text-center cursor-pointer">
+        Add Recommended Plan
+      </button>
+    </div>
+    <div>
+      <button type="button" id="empty-open-configurator-btn" class="text-xs font-bold text-primary hover:underline cursor-pointer">
+        Or open custom server configurator &rarr;
+      </button>
+    </div>
+  </div>
+
+  <div id="checkout-grid" class="grid grid-cols-1 lg:grid-cols-12 gap-8 items-start">
+    <div class="lg:col-span-8 space-y-8">
+      <section id="step-panel-1" class="step-panel space-y-8">
+        <div class="bg-white rounded-2xl border border-slate-200 p-4 sm:p-5 shadow-xs">
+          <div class="flex flex-wrap items-center justify-between gap-2 mb-3 pb-2.5 border-b border-slate-100">
+            <div>
+              <h3 class="text-xs sm:text-sm font-bold text-slate-900 uppercase tracking-wide">1. Billing Term & Cycle Discounts</h3>
+              <p class="text-[11px] text-slate-500">Lock in savings up to 40% with multi-year commitments.</p>
+            </div>
+            <div class="flex items-center gap-2">
+              <label for="billing-cycle-dropdown" class="text-xs font-semibold text-slate-600">Cycle:</label>
+              <select id="billing-cycle-dropdown" class="bg-slate-50 border border-slate-200 text-slate-800 text-xs font-bold rounded-lg px-2.5 py-1.5 focus:outline-none focus:ring-2 focus:ring-primary cursor-pointer">
+                <option value="1">1 Month (Standard)</option>
+                <option value="12">12 Months (Save 20%)</option>
+                <option value="24">24 Months (Save 30%)</option>
+                <option value="36" selected>36 Months (Save 40% Best Value)</option>
+              </select>
+            </div>
+          </div>
+
+          <div class="grid grid-cols-2 lg:grid-cols-4 gap-2.5" id="billing-cycle-grid">
+            <label class="billing-cycle-card relative p-4 rounded-xl border-2 border-slate-200 hover:border-slate-300 cursor-pointer transition-all flex flex-col justify-between" data-months="1">
+              <input type="radio" name="billing-cycle" value="1" class="sr-only">
+              <div>
+                <div class="flex items-center justify-between">
+                  <span class="text-xs font-bold text-slate-800">1 Month</span>
+                  <span class="cycle-radio-dot w-3.5 h-3.5 rounded-full border border-slate-300"></span>
+                </div>
+                <div class="text-[10px] text-slate-400 mt-0.5">Monthly Billing</div>
+              </div>
+              <div class="mt-3 pt-2.5 border-t border-slate-100">
+                <div class="text-[11px] font-bold text-slate-500">0% Discount</div>
+                <div class="text-[10px] text-slate-400 mt-0.5">Standard rate on all items</div>
+              </div>
+            </label>
+
+            <label class="billing-cycle-card relative p-4 rounded-xl border-2 border-slate-200 hover:border-slate-300 cursor-pointer transition-all flex flex-col justify-between" data-months="12">
+              <input type="radio" name="billing-cycle" value="12" class="sr-only">
+              <div class="absolute -top-2 right-2 bg-primary text-white font-extrabold text-[9px] px-1.5 py-0.5 rounded-md">Save 20%</div>
+              <div>
+                <div class="flex items-center justify-between">
+                  <span class="text-xs font-bold text-slate-800">12 Months</span>
+                  <span class="cycle-radio-dot w-3.5 h-3.5 rounded-full border border-slate-300"></span>
+                </div>
+                <div class="text-[10px] text-slate-400 mt-0.5">Annual Plan</div>
+              </div>
+              <div class="mt-3 pt-2.5 border-t border-slate-100">
+                <div class="text-[11px] font-bold text-primary">20% off selected items</div>
+                <div class="text-[10px] text-slate-400 mt-0.5">Applied at checkout</div>
+              </div>
+            </label>
+
+            <label class="billing-cycle-card relative p-4 rounded-xl border-2 border-slate-200 hover:border-slate-300 cursor-pointer transition-all flex flex-col justify-between" data-months="24">
+              <input type="radio" name="billing-cycle" value="24" class="sr-only">
+              <div class="absolute -top-2 right-2 bg-primary text-white font-extrabold text-[9px] px-1.5 py-0.5 rounded-md">Save 30%</div>
+              <div>
+                <div class="flex items-center justify-between">
+                  <span class="text-xs font-bold text-slate-800">24 Months</span>
+                  <span class="cycle-radio-dot w-3.5 h-3.5 rounded-full border border-slate-300"></span>
+                </div>
+                <div class="text-[10px] text-slate-400 mt-0.5">2-Year Term</div>
+              </div>
+              <div class="mt-3 pt-2.5 border-t border-slate-100">
+                <div class="text-[11px] font-bold text-primary">30% off selected items</div>
+                <div class="text-[10px] text-slate-400 mt-0.5">Applied at checkout</div>
+              </div>
+            </label>
+
+            <label class="billing-cycle-card relative p-4 rounded-xl border-2 border-primary bg-primary-light/30 cursor-pointer transition-all flex flex-col justify-between" data-months="36">
+              <input type="radio" name="billing-cycle" value="36" checked class="sr-only">
+              <div class="absolute -top-2 right-2 bg-accent text-slate-950 font-black text-[9px] px-1.5 py-0.5 rounded-md">Save 40%</div>
+              <div>
+                <div class="flex items-center justify-between">
+                  <span class="text-xs font-bold text-slate-800">36 Months</span>
+                  <span class="cycle-radio-dot w-3.5 h-3.5 rounded-full bg-primary flex items-center justify-center text-[9px] text-white">&check;</span>
+                </div>
+                <div class="text-[10px] text-slate-400 mt-0.5">3-Year Term &mdash; Best Value</div>
+              </div>
+              <div class="mt-3 pt-2.5 border-t border-slate-100">
+                <div class="text-[11px] font-bold text-emerald-600">40% off selected items</div>
+                <div class="text-[10px] text-slate-400 mt-0.5">Maximum savings</div>
+              </div>
+            </label>
+          </div>
+        </div>
+
+        <div class="bg-white rounded-2xl border border-slate-200 p-5 sm:p-6 shadow-sm">
+          <div class="border-b border-slate-200 pb-4 mb-5 flex flex-wrap items-center justify-between gap-3">
+            <div>
+              <h2 class="text-base sm:text-lg font-bold text-slate-900 uppercase tracking-wide">2. Choose & Customize Packages</h2>
+              <p class="text-xs text-slate-500 mt-0.5">Select a hosting environment, domain, or cloud infrastructure instance.</p>
+            </div>
+            <div class="flex items-center gap-1.5 p-1 bg-slate-100 rounded-xl overflow-x-auto max-w-full">
+              <button type="button" class="product-tab-btn px-3 py-1.5 rounded-lg text-xs font-semibold text-slate-700 hover:text-slate-900 transition-all" data-tab="shared">Shared</button>
+              <button type="button" class="product-tab-btn px-3 py-1.5 rounded-lg text-xs font-semibold text-slate-700 hover:text-slate-900 transition-all" data-tab="domains">Domains</button>
+              <button type="button" class="product-tab-btn px-3 py-1.5 rounded-lg text-xs font-semibold text-slate-700 hover:text-slate-900 transition-all" data-tab="vps">VPS Cloud</button>
+              <button type="button" class="product-tab-btn px-3 py-1.5 rounded-lg text-xs font-semibold text-slate-700 hover:text-slate-900 transition-all" data-tab="dedicated">Dedicated</button>
+              <button type="button" class="product-tab-btn px-3 py-1.5 rounded-lg text-xs font-semibold text-slate-700 hover:text-slate-900 transition-all" data-tab="cloud">Cloud Stack</button>
+            </div>
+          </div>
+
+          <div id="tab-content-shared" class="product-tab-pane space-y-6">
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+              <label class="shared-plan-card relative flex flex-col justify-between p-5 rounded-2xl border-2 border-slate-200 hover:border-slate-300 cursor-pointer transition-all">
+                <input type="radio" name="shared-plan" value="web-starter" class="sr-only">
+                <div>
+                  <div class="flex items-center justify-between">
+                    <span class="text-sm font-bold text-slate-900">Web Starter</span>
+                    <span class="plan-check w-5 h-5 rounded-full border border-slate-300 flex items-center justify-center text-[10px] text-white"></span>
+                  </div>
+                  <p class="text-xs text-slate-500 mt-1">Single site lightweight hosting</p>
+                  <div class="mt-4 flex items-baseline gap-1.5 flex-wrap">
+                    <span class="text-xs text-slate-400 line-through plan-orig-price hidden">$3.60</span>
+                    <span class="text-2xl font-extrabold text-slate-900 plan-price-display" data-base="3.60">$3.60</span>
+                    <span class="text-xs text-slate-500">/mo</span>
+                    <span class="plan-discount-badge text-[10px] font-bold text-emerald-600 bg-emerald-50 px-1.5 py-0.5 rounded hidden">40% OFF</span>
+                  </div>
+                  <div class="text-[11px] text-slate-400 mt-0.5">Renews at <span class="plan-renewal-display" data-base="5.99">$5.99</span>/mo</div>
+                  <ul class="mt-4 space-y-2 text-xs text-slate-600 border-t border-slate-100 pt-3">
+                    <li>&bull; 1 Website</li>
+                    <li>&bull; 30 GB SSD Storage</li>
+                    <li>&bull; Free SSL Certificate</li>
+                    <li>&bull; 24/7 Live Support</li>
+                  </ul>
+                </div>
+              </label>
+
+              <label class="shared-plan-card relative flex flex-col justify-between p-5 rounded-2xl border-2 border-primary bg-primary-light/30 cursor-pointer transition-all">
+                <input type="radio" name="shared-plan" value="wordpress-pro" checked class="sr-only">
+                <div class="absolute -top-3 right-4 badge-accent">POPULAR</div>
+                <div>
+                  <div class="flex items-center justify-between">
+                    <span class="text-sm font-bold text-slate-900">WordPress Pro</span>
+                    <span class="plan-check w-5 h-5 rounded-full bg-primary text-white flex items-center justify-center text-[10px]">&check;</span>
+                  </div>
+                  <p class="text-xs text-slate-500 mt-1">WordPress optimized & managed</p>
+                  <div class="mt-4 flex items-baseline gap-1.5 flex-wrap">
+                    <span class="text-xs text-slate-400 line-through plan-orig-price hidden">$5.90</span>
+                    <span class="text-2xl font-extrabold text-slate-900 plan-price-display" data-base="5.90">$5.90</span>
+                    <span class="text-xs text-slate-500">/mo</span>
+                    <span class="plan-discount-badge text-[10px] font-bold text-emerald-600 bg-emerald-50 px-1.5 py-0.5 rounded hidden">40% OFF</span>
+                  </div>
+                  <div class="text-[11px] text-slate-400 mt-0.5">Renews at <span class="plan-renewal-display" data-base="9.99">$9.99</span>/mo</div>
+                  <ul class="mt-4 space-y-2 text-xs text-slate-600 border-t border-slate-100 pt-3">
+                    <li>&bull; Unlimited Websites</li>
+                    <li>&bull; 100 GB SSD Storage</li>
+                    <li>&bull; Auto WordPress Updates</li>
+                    <li>&bull; Staging & Advanced Cache</li>
+                  </ul>
+                </div>
+              </label>
+
+              <label class="shared-plan-card relative flex flex-col justify-between p-5 rounded-2xl border-2 border-slate-200 hover:border-slate-300 cursor-pointer transition-all">
+                <input type="radio" name="shared-plan" value="woocommerce-growth" class="sr-only">
+                <div>
+                  <div class="flex items-center justify-between">
+                    <span class="text-sm font-bold text-slate-900">WooCommerce Growth</span>
+                    <span class="plan-check w-5 h-5 rounded-full border border-slate-300 flex items-center justify-center text-[10px] text-white"></span>
+                  </div>
+                  <p class="text-xs text-slate-500 mt-1">High traffic online store power</p>
+                  <div class="mt-4 flex items-baseline gap-1.5 flex-wrap">
+                    <span class="text-xs text-slate-400 line-through plan-orig-price hidden">$11.90</span>
+                    <span class="text-2xl font-extrabold text-slate-900 plan-price-display" data-base="11.90">$11.90</span>
+                    <span class="text-xs text-slate-500">/mo</span>
+                    <span class="plan-discount-badge text-[10px] font-bold text-emerald-600 bg-emerald-50 px-1.5 py-0.5 rounded hidden">40% OFF</span>
+                  </div>
+                  <div class="text-[11px] text-slate-400 mt-0.5">Renews at <span class="plan-renewal-display" data-base="18.99">$18.99</span>/mo</div>
+                  <ul class="mt-4 space-y-2 text-xs text-slate-600 border-t border-slate-100 pt-3">
+                    <li>&bull; 200 GB NVMe Storage</li>
+                    <li>&bull; Dedicated Free IP</li>
+                    <li>&bull; Daily Auto Backups</li>
+                    <li>&bull; VIP Priority Support</li>
+                  </ul>
+                </div>
+              </label>
+            </div>
+          </div>
+
+          <div id="tab-content-domains" class="product-tab-pane hidden space-y-6">
+            <div class="flex flex-wrap gap-4 border-b border-slate-200 pb-4">
+              <label class="flex items-center gap-2 text-xs font-semibold text-slate-700 cursor-pointer">
+                <input type="radio" name="domain-action" value="register" checked class="text-primary focus:ring-primary">
+                <span>Register a new domain</span>
+              </label>
+              <label class="flex items-center gap-2 text-xs font-semibold text-slate-700 cursor-pointer">
+                <input type="radio" name="domain-action" value="transfer" class="text-primary focus:ring-primary">
+                <span>Transfer domain from another registrar</span>
+              </label>
+              <label class="flex items-center gap-2 text-xs font-semibold text-slate-700 cursor-pointer">
+                <input type="radio" name="domain-action" value="existing" class="text-primary focus:ring-primary">
+                <span>Use existing domain & update DNS</span>
+              </label>
+            </div>
+
+            <div id="domain-mode-register" class="space-y-4">
+              <div class="flex gap-2">
+                <input
+                  type="text"
+                  id="domain-search-input"
+                  placeholder="Enter your ideal domain name..."
+                  value="{{ initial_domain }}"
+                  class="flex-grow px-4 py-3 bg-slate-50 border border-slate-300 rounded-xl text-sm focus:ring-2 focus:ring-primary focus:outline-none touch-target"
+                >
+                <button type="button" id="domain-search-btn" class="btn-primary text-xs px-6 py-3 whitespace-nowrap">
+                  Check Availability
+                </button>
+              </div>
+
+              <div id="domain-search-feedback" class="space-y-3"></div>
+
+              <div class="pt-4 border-t border-slate-200 grid grid-cols-1 sm:grid-cols-2 gap-4">
+                <label class="flex items-start gap-3 p-3.5 rounded-xl border border-slate-200 hover:bg-slate-50 cursor-pointer">
+                  <input type="checkbox" id="toggle-whois" class="mt-0.5 text-primary rounded focus:ring-primary" checked>
+                  <div>
+                    <div class="text-xs font-bold text-slate-900 flex items-center justify-between">
+                      <span>WHOIS Privacy Protection</span>
+                      <span id="whois-cost-display" class="text-accent font-extrabold" data-base="1.99">$1.99/yr</span>
+                    </div>
+                    <p class="text-[11px] text-slate-500 mt-0.5">Mask your private contact details from public ICANN databases.</p>
+                  </div>
+                </label>
+
+                <label class="flex items-start gap-3 p-3.5 rounded-xl border border-slate-200 hover:bg-slate-50 cursor-pointer">
+                  <input type="checkbox" id="toggle-domain-autorenew" class="mt-0.5 text-primary rounded focus:ring-primary" checked>
+                  <div>
+                    <div class="text-xs font-bold text-slate-900 flex items-center justify-between">
+                      <span>Domain Auto-Renewal</span>
+                      <span class="text-emerald-600 font-bold">Free</span>
+                    </div>
+                    <p class="text-[11px] text-slate-500 mt-0.5">Ensure you never lose domain ownership to expired auctions.</p>
+                  </div>
+                </label>
+              </div>
+            </div>
+
+            <div id="domain-mode-transfer" class="hidden space-y-4">
+              <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                <div>
+                  <label class="block text-xs font-semibold text-slate-700 mb-1">Domain to Transfer</label>
+                  <input type="text" id="transfer-domain-input" placeholder="example.com" class="w-full px-4 py-2.5 bg-slate-50 border border-slate-300 rounded-xl text-sm focus:ring-2 focus:ring-primary touch-target">
+                </div>
+                <div>
+                  <label class="block text-xs font-semibold text-slate-700 mb-1">EPP / Authorization Code</label>
+                  <input type="text" id="transfer-auth-code" placeholder="Obtain from current registrar" class="w-full px-4 py-2.5 bg-slate-50 border border-slate-300 rounded-xl text-sm focus:ring-2 focus:ring-primary touch-target">
+                </div>
+              </div>
+              <button type="button" id="transfer-verify-btn" class="btn-primary text-xs py-2.5 px-5">Verify Transfer Eligibility</button>
+              <div id="transfer-feedback" class="text-xs"></div>
+            </div>
+
+            <div id="domain-mode-existing" class="hidden space-y-4">
+              <div>
+                <label class="block text-xs font-semibold text-slate-700 mb-1">Your Registered Domain</label>
+                <input type="text" id="existing-domain-input" placeholder="myexternaldomain.org" class="w-full px-4 py-2.5 bg-slate-50 border border-slate-300 rounded-xl text-sm focus:ring-2 focus:ring-primary touch-target">
+              </div>
+              <p class="text-xs text-slate-500">You will point your domain nameservers to <code class="bg-slate-100 px-1 py-0.5 rounded text-primary font-mono">ns1.cloudoon.com</code> and <code class="bg-slate-100 px-1 py-0.5 rounded text-primary font-mono">ns2.cloudoon.com</code>. DNS hosting is free.</p>
+              <button type="button" id="existing-use-btn" class="btn-outline text-xs py-2.5 px-5">Attach External Domain</button>
+            </div>
+          </div>
+
+          <div id="tab-content-vps" class="product-tab-pane hidden space-y-6">
+            <div class="flex items-center justify-between bg-slate-50 p-4 rounded-xl border border-slate-200">
+              <div>
+                <span class="text-xs font-bold text-slate-900">Server Management Level</span>
+                <p class="text-[11px] text-slate-500">Managed includes 24/7 cPanel sysadmin monitoring, updates, and security hardening.</p>
+              </div>
+              <div class="flex items-center gap-3">
+                <span class="text-xs font-semibold text-slate-600">Unmanaged ($0)</span>
+                <label class="relative inline-flex items-center cursor-pointer">
+                  <input type="checkbox" id="vps-management-toggle" class="sr-only peer">
+                  <div class="w-11 h-6 bg-slate-300 peer-focus:outline-none rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-slate-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-primary"></div>
+                </label>
+                <span id="vps-managed-cost-display" class="text-xs font-bold text-primary" data-base="15.00">Fully Managed (+$15/mo)</span>
+              </div>
+            </div>
+
+            <div>
+              <label class="block text-xs font-bold text-slate-800 mb-2">Operating System</label>
+              <div class="grid grid-cols-1 sm:grid-cols-3 gap-3">
+                <label class="flex items-center gap-3 p-3 rounded-xl border border-primary bg-primary-light/40 cursor-pointer">
+                  <input type="radio" name="vps-os" value="ubuntu" checked class="text-primary focus:ring-primary">
+                  <span class="text-xs font-bold text-slate-900">Ubuntu 24.04 LTS</span>
+                </label>
+                <label class="flex items-center gap-3 p-3 rounded-xl border border-slate-200 hover:bg-slate-50 cursor-pointer">
+                  <input type="radio" name="vps-os" value="almalinux" class="text-primary focus:ring-primary">
+                  <span class="text-xs font-bold text-slate-900">AlmaLinux 9 (cPanel ready)</span>
+                </label>
+                <label class="flex items-center gap-3 p-3 rounded-xl border border-slate-200 hover:bg-slate-50 cursor-pointer">
+                  <input type="radio" name="vps-os" value="windows" class="text-primary focus:ring-primary">
+                  <span class="text-xs font-bold text-slate-900">Windows Server 2025</span>
+                </label>
+              </div>
+            </div>
+
+            <div class="space-y-4 bg-slate-50 p-5 rounded-2xl border border-slate-200">
+              <div>
+                <div class="flex justify-between text-xs font-bold text-slate-800 mb-1">
+                  <span>Compute: <span id="vps-cpu-display" class="text-primary">4 vCPU Cores</span></span>
+                  <span id="vps-cpu-cost">$16.00/mo</span>
+                </div>
+                <input type="range" id="vps-slider-cpu" min="1" max="16" step="1" value="4" class="custom-slider">
+              </div>
+
+              <div>
+                <div class="flex justify-between text-xs font-bold text-slate-800 mb-1">
+                  <span>Memory: <span id="vps-ram-display" class="text-primary">8 GB RAM</span></span>
+                  <span id="vps-ram-cost">$20.00/mo</span>
+                </div>
+                <input type="range" id="vps-slider-ram" min="2" max="64" step="2" value="8" class="custom-slider">
+              </div>
+
+              <div>
+                <div class="flex justify-between text-xs font-bold text-slate-800 mb-1">
+                  <span>NVMe Gen4 Storage: <span id="vps-storage-display" class="text-primary">200 GB NVMe</span></span>
+                  <span id="vps-storage-cost">$20.00/mo</span>
+                </div>
+                <input type="range" id="vps-slider-storage" min="40" max="1000" step="20" value="200" class="custom-slider">
+              </div>
+
+              <div class="pt-3 border-t border-slate-200 flex items-center justify-between">
+                <div>
+                  <span class="text-xs text-slate-500">Calculated VPS Base:</span>
+                  <div class="flex items-baseline gap-1.5 flex-wrap">
+                    <span class="text-xs text-slate-400 line-through vps-orig-price hidden">$75.90</span>
+                    <div class="text-xl font-extrabold text-slate-900" id="vps-calculated-total">$75.90/mo</div>
+                    <span class="vps-discount-badge text-[10px] font-bold text-emerald-600 bg-emerald-50 px-1.5 py-0.5 rounded hidden">40% OFF</span>
+                  </div>
+                </div>
+                <button type="button" id="vps-apply-btn" class="btn-primary text-xs py-2 px-4">
+                  Add VPS To Order
+                </button>
+              </div>
+            </div>
+          </div>
+
+          <div id="tab-content-dedicated" class="product-tab-pane hidden space-y-6">
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+              <div class="p-5 rounded-2xl border border-slate-200 bg-white flex flex-col justify-between">
+                <div>
+                  <h3 class="font-bold text-slate-900 text-sm">Intel Xeon E-2388G</h3>
+                  <div class="mt-2 flex items-baseline gap-1.5 flex-wrap">
+                    <span class="text-xs text-slate-400 line-through dedicated-orig-price hidden">$119.00</span>
+                    <span class="text-xl font-extrabold text-slate-900 dedicated-price-display" data-base="119.00">$119.00</span>
+                    <span class="text-xs font-normal text-slate-500">/mo</span>
+                    <span class="dedicated-discount-badge text-[10px] font-bold text-emerald-600 bg-emerald-50 px-1.5 py-0.5 rounded hidden">40% OFF</span>
+                  </div>
+                  <ul class="mt-4 space-y-1.5 text-xs text-slate-600">
+                    <li>&bull; 8 Cores / 16 Threads</li>
+                    <li>&bull; 64 GB DDR4 ECC RAM</li>
+                    <li>&bull; 2x 960 GB NVMe SSD RAID1</li>
+                  </ul>
+                </div>
+                <button type="button" class="btn-outline text-xs mt-6 dedicated-select-btn" data-id="intel-xeon-entry" data-name="Dedicated Intel Xeon E-2388G" data-price="119.00">Select Server</button>
+              </div>
+
+              <div class="p-5 rounded-2xl border-2 border-primary bg-primary-light/20 flex flex-col justify-between">
+                <div>
+                  <h3 class="font-bold text-slate-900 text-sm">AMD EPYC 7443P</h3>
+                  <div class="mt-2 flex items-baseline gap-1.5 flex-wrap">
+                    <span class="text-xs text-slate-400 line-through dedicated-orig-price hidden">$199.00</span>
+                    <span class="text-xl font-extrabold text-slate-900 dedicated-price-display" data-base="199.00">$199.00</span>
+                    <span class="text-xs font-normal text-slate-500">/mo</span>
+                    <span class="dedicated-discount-badge text-[10px] font-bold text-emerald-600 bg-emerald-50 px-1.5 py-0.5 rounded hidden">40% OFF</span>
+                  </div>
+                  <ul class="mt-4 space-y-1.5 text-xs text-slate-600">
+                    <li>&bull; 24 Cores / 48 Threads</li>
+                    <li>&bull; 128 GB DDR4 ECC RAM</li>
+                    <li>&bull; 2x 1.92 TB Enterprise NVMe</li>
+                  </ul>
+                </div>
+                <button type="button" class="btn-primary text-xs mt-6 dedicated-select-btn" data-id="amd-epyc-pro" data-name="Dedicated AMD EPYC 7443P" data-price="199.00">Select Server</button>
+              </div>
+
+              <div class="p-5 rounded-2xl border border-slate-200 bg-white flex flex-col justify-between">
+                <div>
+                  <h3 class="font-bold text-slate-900 text-sm">Dual Xeon Gold 6330</h3>
+                  <div class="mt-2 flex items-baseline gap-1.5 flex-wrap">
+                    <span class="text-xs text-slate-400 line-through dedicated-orig-price hidden">$349.00</span>
+                    <span class="text-xl font-extrabold text-slate-900 dedicated-price-display" data-base="349.00">$349.00</span>
+                    <span class="text-xs font-normal text-slate-500">/mo</span>
+                    <span class="dedicated-discount-badge text-[10px] font-bold text-emerald-600 bg-emerald-50 px-1.5 py-0.5 rounded hidden">40% OFF</span>
+                  </div>
+                  <ul class="mt-4 space-y-1.5 text-xs text-slate-600">
+                    <li>&bull; 56 Cores / 112 Threads</li>
+                    <li>&bull; 256 GB DDR4 ECC RAM</li>
+                    <li>&bull; 4x 3.84 TB NVMe U.2</li>
+                  </ul>
+                </div>
+                <button type="button" class="btn-outline text-xs mt-6 dedicated-select-btn" data-id="dual-xeon-enterprise" data-name="Dedicated Dual Xeon Gold" data-price="349.00">Select Server</button>
+              </div>
+            </div>
+
+            <div class="grid grid-cols-1 sm:grid-cols-2 gap-4 pt-4 border-t border-slate-200">
+              <div>
+                <label class="block text-xs font-bold text-slate-800 mb-1">Data Center Region</label>
+                <select id="dedicated-datacenter" class="w-full px-3.5 py-2.5 bg-slate-50 border border-slate-300 rounded-xl text-xs font-semibold focus:ring-2 focus:ring-primary touch-target">
+                  <option value="us-east">North America (New York / NJ)</option>
+                  <option value="eu-central">Europe (Frankfurt, Germany)</option>
+                  <option value="ap-south">Asia (Singapore)</option>
+                  <option value="af-east" selected>Africa (Nairobi, Kenya)</option>
+                </select>
+              </div>
+              <div>
+                <label class="block text-xs font-bold text-slate-800 mb-1">Bandwidth Package</label>
+                <select id="dedicated-bandwidth" class="w-full px-3.5 py-2.5 bg-slate-50 border border-slate-300 rounded-xl text-xs font-semibold focus:ring-2 focus:ring-primary touch-target">
+                  <option value="10tb" data-base="0">10 TB Traffic on 1 Gbps Uplink (Included)</option>
+                  <option value="unmetered-1g" data-base="35">Unmetered 1 Gbps Dedicated (+$35/mo)</option>
+                  <option value="unmetered-10g" data-base="120">Unmetered 10 Gbps Burst Uplink (+$120/mo)</option>
+                </select>
+              </div>
+            </div>
+          </div>
+
+          <div id="tab-content-cloud" class="product-tab-pane hidden space-y-6">
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+              <label class="p-5 rounded-2xl border border-slate-200 bg-white flex flex-col justify-between cursor-pointer hover:border-primary">
+                <div>
+                  <input type="radio" name="cloud-tier" value="micro" class="sr-only">
+                  <h3 class="font-bold text-slate-900 text-sm">General Purpose Micro</h3>
+                  <div class="mt-2 flex items-baseline gap-1.5 flex-wrap">
+                    <span class="text-xs text-slate-400 line-through cloud-orig-price hidden">$12.00</span>
+                    <span class="text-xl font-extrabold text-slate-900 cloud-price-display" data-base="12.00">$12.00</span>
+                    <span class="text-xs font-normal text-slate-500">/mo</span>
+                    <span class="cloud-discount-badge text-[10px] font-bold text-emerald-600 bg-emerald-50 px-1.5 py-0.5 rounded hidden">40% OFF</span>
+                  </div>
+                  <p class="text-xs text-slate-500 mt-2">2 vCPU, 4 GB RAM, 80 GB SSD</p>
+                </div>
+                <button type="button" class="btn-outline text-xs mt-6 cloud-add-btn" data-id="cloud-micro" data-name="Cloud Compute Micro" data-price="12.00">Add Instance</button>
+              </label>
+
+              <label class="p-5 rounded-2xl border-2 border-primary bg-primary-light/20 flex flex-col justify-between cursor-pointer">
+                <div>
+                  <input type="radio" name="cloud-tier" value="standard" checked class="sr-only">
+                  <h3 class="font-bold text-slate-900 text-sm">Standard Cluster</h3>
+                  <div class="mt-2 flex items-baseline gap-1.5 flex-wrap">
+                    <span class="text-xs text-slate-400 line-through cloud-orig-price hidden">$36.00</span>
+                    <span class="text-xl font-extrabold text-slate-900 cloud-price-display" data-base="36.00">$36.00</span>
+                    <span class="text-xs font-normal text-slate-500">/mo</span>
+                    <span class="cloud-discount-badge text-[10px] font-bold text-emerald-600 bg-emerald-50 px-1.5 py-0.5 rounded hidden">40% OFF</span>
+                  </div>
+                  <p class="text-xs text-slate-500 mt-2">4 vCPU, 16 GB RAM, 160 GB SSD</p>
+                </div>
+                <button type="button" class="btn-primary text-xs mt-6 cloud-add-btn" data-id="cloud-standard" data-name="Cloud Compute Standard" data-price="36.00">Add Instance</button>
+              </label>
+
+              <label class="p-5 rounded-2xl border border-slate-200 bg-white flex flex-col justify-between cursor-pointer hover:border-primary">
+                <div>
+                  <input type="radio" name="cloud-tier" value="compute" class="sr-only">
+                  <h3 class="font-bold text-slate-900 text-sm">High Throughput Compute</h3>
+                  <div class="mt-2 flex items-baseline gap-1.5 flex-wrap">
+                    <span class="text-xs text-slate-400 line-through cloud-orig-price hidden">$78.00</span>
+                    <span class="text-xl font-extrabold text-slate-900 cloud-price-display" data-base="78.00">$78.00</span>
+                    <span class="text-xs font-normal text-slate-500">/mo</span>
+                    <span class="cloud-discount-badge text-[10px] font-bold text-emerald-600 bg-emerald-50 px-1.5 py-0.5 rounded hidden">40% OFF</span>
+                  </div>
+                  <p class="text-xs text-slate-500 mt-2">8 vCPU, 32 GB RAM, 320 GB NVMe</p>
+                </div>
+                <button type="button" class="btn-outline text-xs mt-6 cloud-add-btn" data-id="cloud-compute-optimized" data-name="Cloud Compute High Throughput" data-price="78.00">Add Instance</button>
+              </label>
+            </div>
+
+            <div class="p-4 rounded-xl bg-slate-50 border border-slate-200 flex items-center justify-between">
+              <div>
+                <span class="text-xs font-bold text-slate-900">Managed Kubernetes Control Plane</span>
+                <p class="text-[11px] text-slate-500">Automated control plane HA updates, cluster autoscaler, and metrics API.</p>
+              </div>
+              <label class="relative inline-flex items-center cursor-pointer">
+                <input type="checkbox" id="cloud-k8s-toggle" class="sr-only peer">
+                <div class="w-11 h-6 bg-slate-300 peer-focus:outline-none rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-slate-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-primary"></div>
+                <span id="cloud-k8s-cost" class="ml-3 text-xs font-bold text-primary" data-base="45.00">+$45.00/mo</span>
+              </label>
+            </div>
+          </div>
+
+        </div>
+
+        <div class="bg-white rounded-2xl border border-slate-200 p-5 sm:p-6 shadow-sm">
+          <div class="flex flex-wrap items-center justify-between gap-2 border-b border-slate-200 pb-3 mb-4">
+            <div>
+              <h3 class="text-base font-bold text-slate-900 uppercase tracking-wide">3. Recommended Add-ons & Protection</h3>
+              <p class="text-xs text-slate-500">Enhance your infrastructure with daily automated backups, commercial SSL, and DDoS mitigation.</p>
+            </div>
+            <span class="text-[11px] font-bold text-emerald-600 bg-emerald-50 px-2.5 py-1 rounded-full border border-emerald-200/60">Optional Add-ons</span>
+          </div>
+
+          <div class="grid grid-cols-1 md:grid-cols-2 gap-3.5">
+            <label class="flex items-start gap-3 p-3.5 rounded-xl border border-slate-200 hover:bg-slate-50 cursor-pointer transition-all">
+              <input type="checkbox" class="addon-checkbox mt-1 text-primary rounded focus:ring-primary" data-id="backups" data-name="Daily Automated Backups" data-price="2.99">
+              <div class="flex-grow">
+                <div class="flex items-center justify-between text-xs font-bold text-slate-900">
+                  <span>Daily Backups & 1-Click Restore</span>
+                  <div class="text-primary font-mono font-bold flex items-center gap-1">
+                    <span class="text-slate-400 line-through font-normal text-[10px] addon-orig-price hidden">$2.99</span>
+                    <span class="addon-price-display" data-base="2.99">$2.99</span>
+                    <span class="text-[10px] font-normal text-slate-500">/mo</span>
+                    <span class="addon-discount-badge text-[9px] font-bold text-emerald-600 bg-emerald-50 px-1 py-0.2 rounded hidden">40% OFF</span>
+                  </div>
+                </div>
+                <p class="text-[11px] text-slate-500 mt-0.5">Automated offsite backup snapshots with instant rollback protection.</p>
+              </div>
+            </label>
+
+            <label class="flex items-start gap-3 p-3.5 rounded-xl border border-slate-200 hover:bg-slate-50 cursor-pointer transition-all">
+              <input type="checkbox" class="addon-checkbox mt-1 text-primary rounded focus:ring-primary" data-id="ssl" data-name="Wildcard SSL Certificate" data-price="3.49">
+              <div class="flex-grow">
+                <div class="flex items-center justify-between text-xs font-bold text-slate-900">
+                  <span>Wildcard SSL Certificate</span>
+                  <div class="text-primary font-mono font-bold flex items-center gap-1">
+                    <span class="text-slate-400 line-through font-normal text-[10px] addon-orig-price hidden">$3.49</span>
+                    <span class="addon-price-display" data-base="3.49">$3.49</span>
+                    <span class="text-[10px] font-normal text-slate-500">/mo</span>
+                    <span class="addon-discount-badge text-[9px] font-bold text-emerald-600 bg-emerald-50 px-1 py-0.2 rounded hidden">40% OFF</span>
+                  </div>
+                </div>
+                <p class="text-[11px] text-slate-500 mt-0.5">Commercial 256-bit encryption for root domain and unlimited subdomains.</p>
+              </div>
+            </label>
+
+            <label class="flex items-start gap-3 p-3.5 rounded-xl border border-slate-200 hover:bg-slate-50 cursor-pointer transition-all">
+              <input type="checkbox" class="addon-checkbox mt-1 text-primary rounded focus:ring-primary" data-id="email" data-name="Professional Business Email (5 Inboxes)" data-price="1.99">
+              <div class="flex-grow">
+                <div class="flex items-center justify-between text-xs font-bold text-slate-900">
+                  <span>Professional Business Email</span>
+                  <div class="text-primary font-mono font-bold flex items-center gap-1">
+                    <span class="text-slate-400 line-through font-normal text-[10px] addon-orig-price hidden">$1.99</span>
+                    <span class="addon-price-display" data-base="1.99">$1.99</span>
+                    <span class="text-[10px] font-normal text-slate-500">/mo</span>
+                    <span class="addon-discount-badge text-[9px] font-bold text-emerald-600 bg-emerald-50 px-1 py-0.2 rounded hidden">40% OFF</span>
+                  </div>
+                </div>
+                <p class="text-[11px] text-slate-500 mt-0.5">Custom inboxes (you@yourdomain) with advanced spam and virus shield.</p>
+              </div>
+            </label>
+
+            <label class="flex items-start gap-3 p-3.5 rounded-xl border border-slate-200 hover:bg-slate-50 cursor-pointer transition-all">
+              <input type="checkbox" class="addon-checkbox mt-1 text-primary rounded focus:ring-primary" data-id="ddos" data-name="Enterprise DDoS Protection" data-price="4.99">
+              <div class="flex-grow">
+                <div class="flex items-center justify-between text-xs font-bold text-slate-900">
+                  <span>Enterprise DDoS Shield & WAF</span>
+                  <div class="text-primary font-mono font-bold flex items-center gap-1">
+                    <span class="text-slate-400 line-through font-normal text-[10px] addon-orig-price hidden">$4.99</span>
+                    <span class="addon-price-display" data-base="4.99">$4.99</span>
+                    <span class="text-[10px] font-normal text-slate-500">/mo</span>
+                    <span class="addon-discount-badge text-[9px] font-bold text-emerald-600 bg-emerald-50 px-1 py-0.2 rounded hidden">40% OFF</span>
+                  </div>
+                </div>
+                <p class="text-[11px] text-slate-500 mt-0.5">Real-time edge scrubbing capacity to absorb massive volumetric attacks.</p>
+              </div>
+            </label>
+
+            <label class="flex items-start gap-3 p-3.5 rounded-xl border border-slate-200 hover:bg-slate-50 cursor-pointer transition-all md:col-span-2">
+              <input type="checkbox" class="addon-checkbox mt-1 text-primary rounded focus:ring-primary" data-id="cdn" data-name="Global Edge CDN & WebP Optimizer" data-price="2.49">
+              <div class="flex-grow">
+                <div class="flex items-center justify-between text-xs font-bold text-slate-900">
+                  <span>Global Edge CDN Optimizer</span>
+                  <div class="text-primary font-mono font-bold flex items-center gap-1">
+                    <span class="text-slate-400 line-through font-normal text-[10px] addon-orig-price hidden">$2.49</span>
+                    <span class="addon-price-display" data-base="2.49">$2.49</span>
+                    <span class="text-[10px] font-normal text-slate-500">/mo</span>
+                    <span class="addon-discount-badge text-[9px] font-bold text-emerald-600 bg-emerald-50 px-1 py-0.2 rounded hidden">40% OFF</span>
+                  </div>
+                </div>
+                <p class="text-[11px] text-slate-500 mt-0.5">Distribute static assets across 300+ edge locations for sub-50ms latency.</p>
+              </div>
+            </label>
+          </div>
+        </div>
+
+        <div class="flex items-center justify-between pt-4">
+          <a href="/" class="btn-outline text-xs">&larr; Return to Homepage</a>
+          <button type="button" id="proceed-to-step-2-btn" class="btn-primary text-xs py-3 px-6 shadow-md shadow-primary/20">
+            <span>Proceed to Account & Billing</span>
+            <span>&rarr;</span>
+          </button>
+        </div>
+      </section>
+
+      <section id="step-panel-2" class="step-panel hidden space-y-8">
+        <div class="bg-white rounded-2xl border border-slate-200 p-6 shadow-sm">
+          {% if current_user %}
+          <div class="border-b border-slate-200 pb-4 mb-6">
+            <h2 class="text-lg font-bold text-slate-900">Step 2: Billing Information</h2>
+            <p class="text-xs text-slate-500">Confirm your contact and billing address details for service provisioning.</p>
+          </div>
+
+          <div id="logged-in-user-banner" class="bg-blue-50/80 border border-blue-200/80 rounded-2xl p-4 sm:p-5 flex items-center justify-between gap-4 mb-6" data-logged-in="true" data-email="{{ current_user.email }}" data-name="{{ current_user.full_name or current_user.email }}">
+            <div class="flex items-center gap-3.5">
+              <div class="w-10 h-10 rounded-full bg-primary text-white font-black text-sm flex items-center justify-center shadow-xs">
+                {{ (current_user.full_name[0] if current_user.full_name else current_user.email[0])|upper }}
+              </div>
+              <div>
+                <div class="flex items-center gap-2">
+                  <span class="text-sm font-bold text-slate-900">{{ current_user.full_name or current_user.email }}</span>
+                  <span class="px-2 py-0.5 rounded-full text-[10px] font-extrabold uppercase bg-emerald-100 text-emerald-800">Signed In</span>
+                </div>
+                <div class="text-xs text-slate-500 mt-0.5">{{ current_user.email }}</div>
+              </div>
+            </div>
+            <a href="/logout" class="text-xs font-bold text-slate-500 hover:text-rose-600 transition-colors">Switch Account</a>
+          </div>
+
+          <form id="billing-form" class="space-y-4">
+            <input type="hidden" id="billing-fullname" value="{{ current_user.full_name or current_user.email }}">
+            <input type="hidden" id="billing-email" value="{{ current_user.email }}">
+
+            <div class="space-y-4">
+              <h3 class="text-xs font-bold uppercase tracking-wider text-slate-400">Billing Address</h3>
+              <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                <div>
+                  <label for="billing-country" class="block text-xs font-bold text-slate-700 mb-1">Country / Region <span class="text-rose-500">*</span></label>
+                  <select id="billing-country" class="w-full px-3.5 py-2.5 bg-slate-50 border border-slate-300 rounded-xl text-xs font-semibold focus:ring-2 focus:ring-primary touch-target">
+                    <option value="Kenya" {% if not current_user.country or current_user.country == 'Kenya' %}selected{% endif %}>Kenya (KES &bull; 16% VAT)</option>
+                    <option value="United States" {% if current_user.country == 'United States' %}selected{% endif %}>United States</option>
+                    <option value="United Kingdom" {% if current_user.country == 'United Kingdom' %}selected{% endif %}>United Kingdom</option>
+                    <option value="Germany" {% if current_user.country == 'Germany' %}selected{% endif %}>Germany</option>
+                    <option value="South Africa" {% if current_user.country == 'South Africa' %}selected{% endif %}>South Africa</option>
+                    <option value="Nigeria" {% if current_user.country == 'Nigeria' %}selected{% endif %}>Nigeria</option>
+                  </select>
+                </div>
+                <div>
+                  <label for="billing-phone" class="block text-xs font-bold text-slate-700 mb-1">Phone Number <span class="text-rose-500">*</span></label>
+                  <input type="tel" id="billing-phone" value="{{ current_user.phone or '' }}" placeholder="+254 7XX XXXXXX" required class="w-full px-4 py-2.5 bg-slate-50 border border-slate-300 rounded-xl text-sm focus:ring-2 focus:ring-primary touch-target">
+                </div>
+              </div>
+
+              <div class="relative">
+                <label for="billing-address" class="block text-xs font-bold text-slate-700 mb-1">Street Address <span class="text-rose-500">*</span></label>
+                <input type="text" id="billing-address" value="{{ current_user.address or '' }}" placeholder="Street and building name" required autocomplete="off" class="w-full px-4 py-2.5 bg-slate-50 border border-slate-300 rounded-xl text-sm focus:ring-2 focus:ring-primary touch-target">
+                <div id="address-autocomplete-dropdown" class="hidden absolute left-0 right-0 top-full mt-1 bg-white border border-slate-200 rounded-xl shadow-xl z-50 max-h-48 overflow-y-auto"></div>
+              </div>
+
+              <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                <div>
+                  <label for="billing-city" class="block text-xs font-bold text-slate-700 mb-1">City <span class="text-rose-500">*</span></label>
+                  <input type="text" id="billing-city" value="{{ current_user.city or '' }}" placeholder="City" required class="w-full px-4 py-2.5 bg-slate-50 border border-slate-300 rounded-xl text-sm focus:ring-2 focus:ring-primary touch-target">
+                </div>
+                <div>
+                  <label for="billing-postal" class="block text-xs font-bold text-slate-700 mb-1">Postal Code <span class="text-rose-500">*</span></label>
+                  <input type="text" id="billing-postal" value="{{ current_user.postal or '' }}" placeholder="Postal / Zip code" required class="w-full px-4 py-2.5 bg-slate-50 border border-slate-300 rounded-xl text-sm focus:ring-2 focus:ring-primary touch-target">
+                </div>
+              </div>
+            </div>
+          </form>
+          {% else %}
+          <div class="flex items-center justify-between border-b border-slate-200 pb-4 mb-6">
+            <div>
+              <h2 class="text-lg font-bold text-slate-900">Step 2: Account & Billing Information</h2>
+              <p class="text-xs text-slate-500">Sign up or log in to link your services to your database account.</p>
+            </div>
+            <div class="flex items-center p-1 bg-slate-100 rounded-xl">
+              <button type="button" id="auth-tab-signup" class="px-3 py-1.5 rounded-lg text-xs font-bold bg-white text-slate-900 shadow-sm transition-all">Instant Sign-Up</button>
+              <button type="button" id="auth-tab-login" class="px-3 py-1.5 rounded-lg text-xs font-medium text-slate-600 hover:text-slate-900 transition-all">Existing Customer</button>
+            </div>
+          </div>
+
+          <div class="grid grid-cols-1 sm:grid-cols-3 gap-3 mb-6">
+            <button type="button" class="oauth-btn flex items-center justify-center gap-2 p-2.5 rounded-xl border border-slate-300 hover:bg-slate-50 text-xs font-semibold text-slate-700 transition-all touch-target" data-provider="google">
+              <svg class="w-4 h-4" viewBox="0 0 24 24"><path fill="#4285F4" d="M23.745 12.27c0-.7-.06-1.4-.19-2.07H12v4.51h6.6c-.29 1.52-1.14 2.82-2.4 3.68v3.05h3.88c2.27-2.09 3.665-5.17 3.665-9.17z"/><path fill="#34A853" d="M12 24c3.24 0 5.95-1.08 7.93-2.91l-3.88-3.05c-1.08.72-2.45 1.16-4.05 1.16-3.12 0-5.77-2.1-6.72-4.93H1.25v3.15C3.26 21.36 7.34 24 12 24z"/><path fill="#FBBC05" d="M5.28 14.27c-.25-.72-.38-1.49-.38-2.27s.13-1.55.38-2.27V6.58H1.25C.45 8.18 0 9.99 0 12s.45 3.82 1.25 5.42l4.03-3.15z"/><path fill="#EA4335" d="M12 4.75c1.77 0 3.35.61 4.6 1.8l3.42-3.42C17.95 1.19 15.24 0 12 0 7.34 0 3.26 2.64 1.25 6.58l4.03 3.15c.95-2.83 3.6-4.98 6.72-4.98z"/></svg>
+              <span>Google</span>
+            </button>
+            <button type="button" class="oauth-btn flex items-center justify-center gap-2 p-2.5 rounded-xl border border-slate-300 hover:bg-slate-50 text-xs font-semibold text-slate-700 transition-all touch-target" data-provider="github">
+              <svg class="w-4 h-4 fill-current" viewBox="0 0 24 24"><path d="M12 0C5.37 0 0 5.37 0 12c0 5.31 3.435 9.795 8.205 11.385.6.105.825-.255.825-.57 0-.285-.015-1.23-.015-2.235-3.015.555-3.795-.735-4.035-1.41-.135-.345-.72-1.41-1.23-1.695-.42-.225-1.02-.78-.015-.795.945-.015 1.62.87 1.845 1.23 1.08 1.815 2.805 1.305 3.495.99.105-.78.42-1.305.765-1.605-2.67-.3-5.46-1.335-5.46-5.925 0-1.305.465-2.385 1.23-3.225-.12-.3-.54-1.53.12-3.18 0 0 1.005-.315 3.3 1.23.96-.27 1.98-.405 3-.405s2.04.135 3 .405c2.295-1.56 3.3-1.23 3.3-1.23.66 1.65.24 2.88.12 3.18.765.84 1.23 1.905 1.23 3.225 0 4.605-2.805 5.625-5.475 5.925.435.375.81 1.095.81 2.22 0 1.605-.015 2.895-.015 3.3 0 .315.225.69.825.57A12.02 12.02 0 0024 12c0-6.63-5.37-12-12-12z"/></svg>
+              <span>GitHub</span>
+            </button>
+            <button type="button" class="oauth-btn flex items-center justify-center gap-2 p-2.5 rounded-xl border border-slate-300 hover:bg-slate-50 text-xs font-semibold text-slate-700 transition-all touch-target" data-provider="sso">
+              <svg class="w-4 h-4 text-primary" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 7a2 2 0 012 2m4 0a6 6 0 01-7.743 5.743L11 17H9v2H7v2H4a1 1 0 01-1-1v-2.586a1 1 0 01.293-.707l5.964-5.964A6 6 0 1121 9z"/></svg>
+              <span>Corporate SSO</span>
+            </button>
+          </div>
+
+          <div class="relative flex py-2 items-center mb-6">
+            <div class="flex-grow border-t border-slate-200"></div>
+            <span class="flex-shrink mx-4 text-slate-400 text-[11px] uppercase tracking-wider font-semibold">Or continue with email</span>
+            <div class="flex-grow border-t border-slate-200"></div>
+          </div>
+
+          <form id="billing-form" class="space-y-4">
+            <div id="signup-fields" class="space-y-4">
+              <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                <div>
+                  <label for="billing-fullname" class="block text-xs font-bold text-slate-700 mb-1">Full Name <span class="text-rose-500">*</span></label>
+                  <input type="text" id="billing-fullname" placeholder="Enter your full name" required class="w-full px-4 py-2.5 bg-slate-50 border border-slate-300 rounded-xl text-sm focus:ring-2 focus:ring-primary focus:bg-white touch-target">
+                  <span class="field-error hidden text-[11px] text-rose-600 mt-1">Full name is required.</span>
+                </div>
+                <div>
+                  <label for="billing-email" class="block text-xs font-bold text-slate-700 mb-1">Email Address <span class="text-rose-500">*</span></label>
+                  <input type="email" id="billing-email" placeholder="name@example.com" required class="w-full px-4 py-2.5 bg-slate-50 border border-slate-300 rounded-xl text-sm focus:ring-2 focus:ring-primary focus:bg-white touch-target">
+                  <span class="field-error hidden text-[11px] text-rose-600 mt-1">Valid email is required.</span>
+                </div>
+              </div>
+
+              <div id="password-group">
+                <label for="billing-password" class="block text-xs font-bold text-slate-700 mb-1">Create Password <span class="text-rose-500">*</span></label>
+                <input type="password" id="billing-password" placeholder="Create a secure password" required class="w-full px-4 py-2.5 bg-slate-50 border border-slate-300 rounded-xl text-sm focus:ring-2 focus:ring-primary focus:bg-white touch-target">
+                <div class="mt-2 space-y-1">
+                  <div class="flex items-center justify-between text-[11px]">
+                    <span class="text-slate-500">Strength: <strong id="password-strength-label" class="text-slate-400">None</strong></span>
+                    <span id="password-strength-score" class="text-slate-400">0 / 5</span>
+                  </div>
+                  <div class="h-1.5 w-full bg-slate-200 rounded-full overflow-hidden">
+                    <div id="password-strength-bar" class="h-full bg-slate-300 w-0 transition-all"></div>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <div id="login-fields" class="hidden space-y-4">
+              <div>
+                <label for="login-email" class="block text-xs font-bold text-slate-700 mb-1">Account Email</label>
+                <input type="email" id="login-email" placeholder="customer@cloudoon.com" class="w-full px-4 py-2.5 bg-slate-50 border border-slate-300 rounded-xl text-sm focus:ring-2 focus:ring-primary touch-target">
+              </div>
+              <div>
+                <label for="login-password" class="block text-xs font-bold text-slate-700 mb-1">Password</label>
+                <input type="password" id="login-password" placeholder="••••••••" class="w-full px-4 py-2.5 bg-slate-50 border border-slate-300 rounded-xl text-sm focus:ring-2 focus:ring-primary touch-target">
+              </div>
+            </div>
+
+            <div class="pt-4 border-t border-slate-200 space-y-4">
+              <h3 class="text-xs font-bold uppercase tracking-wider text-slate-400">Billing Address</h3>
+              <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                <div>
+                  <label for="billing-country" class="block text-xs font-bold text-slate-700 mb-1">Country / Region <span class="text-rose-500">*</span></label>
+                  <select id="billing-country" class="w-full px-3.5 py-2.5 bg-slate-50 border border-slate-300 rounded-xl text-xs font-semibold focus:ring-2 focus:ring-primary touch-target">
+                    <option value="Kenya" selected>Kenya (KES &bull; 16% VAT)</option>
+                    <option value="United States">United States</option>
+                    <option value="United Kingdom">United Kingdom</option>
+                    <option value="Germany">Germany</option>
+                    <option value="South Africa">South Africa</option>
+                    <option value="Nigeria">Nigeria</option>
+                  </select>
+                </div>
+                <div>
+                  <label for="billing-phone" class="block text-xs font-bold text-slate-700 mb-1">Phone Number <span class="text-rose-500">*</span></label>
+                  <input type="tel" id="billing-phone" placeholder="+254 7XX XXXXXX" required class="w-full px-4 py-2.5 bg-slate-50 border border-slate-300 rounded-xl text-sm focus:ring-2 focus:ring-primary touch-target">
+                </div>
+              </div>
+
+              <div class="relative">
+                <label for="billing-address" class="block text-xs font-bold text-slate-700 mb-1">Street Address <span class="text-rose-500">*</span></label>
+                <input type="text" id="billing-address" placeholder="Street and building name" required autocomplete="off" class="w-full px-4 py-2.5 bg-slate-50 border border-slate-300 rounded-xl text-sm focus:ring-2 focus:ring-primary touch-target">
+                <div id="address-autocomplete-dropdown" class="hidden absolute left-0 right-0 top-full mt-1 bg-white border border-slate-200 rounded-xl shadow-xl z-50 max-h-48 overflow-y-auto"></div>
+              </div>
+
+              <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                <div>
+                  <label for="billing-city" class="block text-xs font-bold text-slate-700 mb-1">City <span class="text-rose-500">*</span></label>
+                  <input type="text" id="billing-city" placeholder="City" required class="w-full px-4 py-2.5 bg-slate-50 border border-slate-300 rounded-xl text-sm focus:ring-2 focus:ring-primary touch-target">
+                </div>
+                <div>
+                  <label for="billing-postal" class="block text-xs font-bold text-slate-700 mb-1">Postal Code <span class="text-rose-500">*</span></label>
+                  <input type="text" id="billing-postal" placeholder="Postal / Zip code" required class="w-full px-4 py-2.5 bg-slate-50 border border-slate-300 rounded-xl text-sm focus:ring-2 focus:ring-primary touch-target">
+                </div>
+              </div>
+            </div>
+          </form>
+          {% endif %}
+        </div>
+
+        <div class="flex items-center justify-between pt-4">
+          <button type="button" class="back-to-step-btn btn-outline text-xs" data-target="1">&larr; Back to Configuration</button>
+          <button type="button" id="proceed-to-step-3-btn" class="btn-primary text-xs py-3 px-6 shadow-md shadow-primary/20">
+            <span>Continue to Payment</span>
+            <span>&rarr;</span>
+          </button>
+        </div>
+      </section>
+
+      <section id="step-panel-3" class="step-panel hidden space-y-8">
+        <div class="bg-white rounded-2xl border border-slate-200 p-6 shadow-sm">
+          <div class="border-b border-slate-200 pb-4 mb-6">
+            <h2 class="text-lg font-bold text-slate-900">Step 3: Payment & Order Confirmation</h2>
+            <p class="text-xs text-slate-500">Select a payment provider and confirm the transparent subscription terms.</p>
+          </div>
+
+          <div class="grid grid-cols-1 sm:grid-cols-3 gap-3 mb-6">
+            <label class="payment-method-card flex items-center justify-between p-3.5 rounded-xl border-2 border-primary bg-primary-light/30 cursor-pointer transition-all" data-method="card">
+              <input type="radio" name="payment-method" value="card" checked class="sr-only">
+              <div class="flex items-center gap-2.5">
+                <div class="w-6 h-6 rounded bg-primary text-white flex items-center justify-center text-xs font-bold">💳</div>
+                <div>
+                  <div class="text-xs font-bold text-slate-900">Credit / Debit Card</div>
+                  <div class="text-[10px] text-slate-500">Visa, Mastercard, Amex</div>
+                </div>
+              </div>
+              <span class="pay-method-check w-4 h-4 rounded-full bg-primary text-white flex items-center justify-center text-[10px]">&check;</span>
+            </label>
+
+            <label class="payment-method-card flex items-center justify-between p-3.5 rounded-xl border-2 border-slate-200 hover:border-slate-300 cursor-pointer transition-all" data-method="mpesa">
+              <input type="radio" name="payment-method" value="mpesa" class="sr-only">
+              <div class="flex items-center gap-2.5">
+                <div class="w-6 h-6 rounded bg-emerald-600 text-white flex items-center justify-center text-xs font-bold">M</div>
+                <div>
+                  <div class="text-xs font-bold text-slate-900">M-Pesa STK Push</div>
+                  <div class="text-[10px] text-slate-500">Instant mobile prompt</div>
+                </div>
+              </div>
+              <span class="pay-method-check w-4 h-4 rounded-full border border-slate-300"></span>
+            </label>
+
+            <label class="payment-method-card flex items-center justify-between p-3.5 rounded-xl border-2 border-slate-200 hover:border-slate-300 cursor-pointer transition-all" data-method="paypal">
+              <input type="radio" name="payment-method" value="paypal" class="sr-only">
+              <div class="flex items-center gap-2.5">
+                <div class="w-6 h-6 rounded bg-blue-600 text-white flex items-center justify-center text-xs font-bold">P</div>
+                <div>
+                  <div class="text-xs font-bold text-slate-900">PayPal Express</div>
+                  <div class="text-[10px] text-slate-500">Global digital wallet</div>
+                </div>
+              </div>
+              <span class="pay-method-check w-4 h-4 rounded-full border border-slate-300"></span>
+            </label>
+          </div>
+
+          <div id="payment-card-form" class="space-y-4">
+            <div>
+              <label for="card-number" class="block text-xs font-bold text-slate-700 mb-1">Card Number</label>
+              <div class="relative">
+                <input type="text" id="card-number" placeholder="4242 •••• •••• 4242" maxlength="19" class="w-full px-4 py-2.5 bg-slate-50 border border-slate-300 rounded-xl text-sm font-mono tracking-wider focus:ring-2 focus:ring-primary touch-target">
+                <div class="absolute right-3 top-1/2 -translate-y-1/2 text-xs font-bold text-slate-400" id="card-brand-badge">CARD</div>
+              </div>
+            </div>
+
+            <div class="grid grid-cols-2 gap-4">
+              <div>
+                <label for="card-expiry" class="block text-xs font-bold text-slate-700 mb-1">Expiry Date</label>
+                <input type="text" id="card-expiry" placeholder="MM/YY" maxlength="5" class="w-full px-4 py-2.5 bg-slate-50 border border-slate-300 rounded-xl text-sm font-mono focus:ring-2 focus:ring-primary touch-target">
+              </div>
+              <div>
+                <label for="card-cvc" class="block text-xs font-bold text-slate-700 mb-1">CVC / CVV</label>
+                <input type="text" id="card-cvc" placeholder="CVC" maxlength="4" class="w-full px-4 py-2.5 bg-slate-50 border border-slate-300 rounded-xl text-sm font-mono focus:ring-2 focus:ring-primary touch-target">
+              </div>
+            </div>
+
+            <div>
+              <label for="card-name" class="block text-xs font-bold text-slate-700 mb-1">Cardholder Name</label>
+              <input type="text" id="card-name" placeholder="Full name as printed on card" class="w-full px-4 py-2.5 bg-slate-50 border border-slate-300 rounded-xl text-sm focus:ring-2 focus:ring-primary touch-target">
+            </div>
+          </div>
+
+          <div id="payment-mpesa-form" class="hidden space-y-4">
+            <div class="p-4 rounded-xl bg-emerald-50 border border-emerald-200 text-xs text-emerald-800">
+              An instant STK Push prompt will be dispatched to your phone. Enter your 4-digit M-Pesa PIN to complete checkout.
+            </div>
+            <div>
+              <label for="mpesa-phone-input" class="block text-xs font-bold text-slate-700 mb-1">M-Pesa Mobile Number</label>
+              <input type="tel" id="mpesa-phone-input" placeholder="e.g. 0718080850 or 254718080850" class="w-full px-4 py-2.5 bg-slate-50 border border-slate-300 rounded-xl text-sm focus:ring-2 focus:ring-primary touch-target">
+            </div>
+          </div>
+
+          <div id="payment-paypal-form" class="hidden space-y-4">
+            <div class="p-6 rounded-xl bg-blue-50 border border-blue-200 text-center space-y-3">
+              <p class="text-xs text-blue-900 font-medium">You will be redirected securely to PayPal to confirm transaction authorization.</p>
+              <div class="inline-block bg-[#ffc439] text-blue-950 font-bold px-8 py-2.5 rounded-lg text-sm shadow-sm">
+                PayPal Checkout
+              </div>
+            </div>
+          </div>
+
+          <div class="mt-8 pt-6 border-t border-slate-200 space-y-4">
+            <div class="bg-amber-50 rounded-xl p-4 border border-amber-200">
+              <label class="flex items-start gap-3 cursor-pointer">
+                <input type="checkbox" id="renewal-acknowledgement-check" class="mt-1 text-primary rounded focus:ring-primary touch-target" required>
+                <div class="text-xs text-amber-950 leading-relaxed">
+                  <strong>Transparent Renewal Terms:</strong> I acknowledge and agree that my hosting and domain subscription will automatically renew at the standard renewal rate of <span id="ack-renewal-rate" class="font-extrabold text-slate-900">$127.44</span> on <span id="ack-renewal-date" class="font-bold underline decoration-slate-400">November 06, 2029</span>. I understand I can turn off auto-renewal anytime in my dashboard with one click.
+                </div>
+              </label>
+            </div>
+
+            <button type="button" id="pay-button" class="w-full btn-accent text-base font-extrabold py-4 shadow-xl shadow-accent/20 flex items-center justify-center gap-2">
+              <span id="pay-button-spinner" class="hidden w-5 h-5 border-2 border-slate-900 border-t-transparent rounded-full animate-spin"></span>
+              <span id="pay-button-text">Pay $127.44 Now</span>
+            </button>
+            <div id="pay-error-msg" class="hidden text-xs text-rose-600 text-center font-medium"></div>
+          </div>
+        </div>
+
+        <div class="flex items-center justify-between pt-2">
+          <button type="button" class="back-to-step-btn btn-outline text-xs" data-target="2">&larr; Back to Account Details</button>
+        </div>
+      </section>
+
+      <section id="confirmation-success-panel" class="hidden bg-white rounded-3xl border border-slate-200 p-8 shadow-xl space-y-8">
+        <div class="flex flex-col sm:flex-row justify-between items-start gap-6 pb-6 border-b border-slate-200">
+          <div>
+            <h2 class="text-3xl font-extrabold text-[#1e293b]">Cloudoon</h2>
+            <div class="mt-2 inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-bold bg-emerald-100 text-emerald-800">
+              <span>&check;</span>
+              <span>Payment Confirmed</span>
+            </div>
+          </div>
+          <div class="text-left sm:text-right space-y-0.5 text-xs text-slate-600">
+            <h3 class="text-xl font-bold text-slate-900">Cloudoon</h3>
+            <p>Nairobi, Kenya</p>
+            <p class="font-medium text-slate-800">support@cloudoon.com</p>
+            <p class="font-mono text-slate-800">0712345678</p>
+          </div>
+        </div>
+
+        <div>
+          <div class="overflow-x-auto border border-slate-200 rounded-xl">
+            <table class="w-full text-left text-xs border-collapse">
+              <thead>
+                <tr class="bg-slate-50 border-b border-slate-200 text-[11px] font-bold text-slate-700">
+                  <th class="py-2.5 px-3">ORDER #</th>
+                  <th class="py-2.5 px-3">DATE</th>
+                  <th class="py-2.5 px-3">CUSTOMER</th>
+                  <th class="py-2.5 px-3">SALE TYPE</th>
+                  <th class="py-2.5 px-3">STATUS</th>
+                  <th class="py-2.5 px-3">PAYMENT</th>
+                  <th class="py-2.5 px-3">PAYMENT STATUS</th>
+                  <th class="py-2.5 px-3 text-right">TOTAL</th>
+                  <th class="py-2.5 px-3 text-right">PAID</th>
+                  <th class="py-2.5 px-3 text-right">BALANCE</th>
+                </tr>
+              </thead>
+              <tbody class="divide-y divide-slate-100 text-slate-700 font-medium">
+                <tr class="bg-white">
+                  <td id="success-cell-order" class="py-3 px-3 font-bold text-[#395AF4] font-mono">SA-02336</td>
+                  <td id="success-cell-date" class="py-3 px-3 whitespace-nowrap">06 Nov 2026</td>
+                  <td id="success-cell-customer" class="py-3 px-3 font-semibold text-slate-900">Customer</td>
+                  <td class="py-3 px-3 lowercase">cash</td>
+                  <td class="py-3 px-3"><span class="px-2 py-0.5 rounded-full text-[10px] font-bold bg-emerald-100 text-emerald-800">confirmed</span></td>
+                  <td id="success-cell-payment" class="py-3 px-3">M-Pesa</td>
+                  <td class="py-3 px-3 lowercase text-emerald-700 font-semibold">paid</td>
+                  <td id="success-cell-total" class="py-3 px-3 text-right font-bold text-slate-900">0.00</td>
+                  <td id="success-cell-paid" class="py-3 px-3 text-right">0.00</td>
+                  <td class="py-3 px-3 text-right font-mono text-emerald-700 font-bold">0.00</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+
+        <div class="space-y-3">
+          <h4 class="text-xs font-bold uppercase tracking-wider text-slate-400">Next Steps to Launch Your Website</h4>
+          <div class="grid grid-cols-1 md:grid-cols-3 gap-4 text-xs">
+            <div class="p-4 rounded-xl border border-slate-200 bg-white">
+              <div class="w-7 h-7 rounded-lg bg-primary text-white flex items-center justify-center font-bold text-xs mb-2">1</div>
+              <div class="font-bold text-slate-900">Access cPanel / Console</div>
+              <p class="text-slate-500 text-[11px] mt-1">Single sign-on access credentials saved in database and dispatched.</p>
+            </div>
+            <div class="p-4 rounded-xl border border-slate-200 bg-white">
+              <div class="w-7 h-7 rounded-lg bg-primary text-white flex items-center justify-center font-bold text-xs mb-2">2</div>
+              <div class="font-bold text-slate-900">Nameserver Propagation</div>
+              <p class="text-slate-500 text-[11px] mt-1">ns1.cloudoon.com is syncing DNS records worldwide.</p>
+            </div>
+            <div class="p-4 rounded-xl border border-slate-200 bg-white">
+              <div class="w-7 h-7 rounded-lg bg-primary text-white flex items-center justify-center font-bold text-xs mb-2">3</div>
+              <div class="font-bold text-slate-900">SSL Auto-Provisioning</div>
+              <p class="text-slate-500 text-[11px] mt-1">256-bit encryption active on your domain within 15 minutes.</p>
+            </div>
+          </div>
+        </div>
+
+        <div class="flex flex-col sm:flex-row items-center justify-center gap-4 pt-4 border-t border-slate-200">
+          <a id="success-full-invoice-btn" href="/sales-report" class="btn-accent text-xs font-bold w-full sm:w-auto px-6 py-3">
+            Open Full Official Tax Invoice &rarr;
+          </a>
+          <button type="button" onclick="window.print()" class="btn-outline text-xs w-full sm:w-auto px-6 py-3">
+            Print Cash Sales Report
+          </button>
+          <a href="/" class="btn-primary text-xs w-full sm:w-auto px-6 py-3">
+            Return to Homepage
+          </a>
+        </div>
+      </section>
+    </div>
+
+    <aside class="lg:col-span-4 sticky-summary">
+      <div class="bg-white rounded-2xl border border-slate-200 p-6 shadow-sm space-y-6">
+        <div class="flex items-center justify-between border-b border-slate-200 pb-4">
+          <h2 class="text-base font-bold text-slate-900">Order Summary</h2>
+          <span id="summary-currency-badge" class="badge-primary">KES (KSh)</span>
+        </div>
+
+        <div id="cart-skeleton" class="hidden space-y-3">
+          <div class="h-4 skeleton w-full"></div>
+          <div class="h-4 skeleton w-3/4"></div>
+          <div class="h-4 skeleton w-1/2"></div>
+        </div>
+
+        <div id="cart-empty-state" class="hidden py-8 text-center space-y-3">
+          <div class="w-12 h-12 rounded-full bg-slate-100 text-slate-400 flex items-center justify-center mx-auto text-xl">🛒</div>
+          <div class="text-xs font-bold text-slate-700">Your configuration is currently empty</div>
+          <p class="text-[11px] text-slate-400">Add a hosting plan or domain name to begin.</p>
+          <button type="button" id="cart-recover-btn" class="btn-primary text-xs py-2 px-4">Add Recommended Plan</button>
+        </div>
+
+        <div id="cart-content-state" class="space-y-4">
+          <div id="cart-items-list" class="space-y-3 divide-y divide-slate-100 max-h-72 overflow-y-auto pr-1"></div>
+
+          <div class="pt-4 border-t border-slate-200">
+            <label for="promo-input" class="block text-[11px] font-bold text-slate-600 uppercase tracking-wider mb-1.5">Promotional Code</label>
+            <div class="flex gap-2">
+              <input type="text" id="promo-input" placeholder="e.g. SAVE10 or CLOUD30" class="flex-grow px-3 py-2 bg-slate-50 border border-slate-300 rounded-lg text-xs uppercase font-mono focus:ring-2 focus:ring-primary touch-target">
+              <button type="button" id="promo-apply-btn" class="btn-outline text-xs py-2 px-3 whitespace-nowrap">Apply</button>
+            </div>
+            <div id="promo-feedback" class="text-[11px] mt-1.5"></div>
+          </div>
+
+          <div class="pt-4 border-t border-slate-200 space-y-2 text-xs">
+            <div class="flex justify-between text-slate-600">
+              <span>Subtotal:</span>
+              <span id="summary-subtotal" class="font-semibold text-slate-900">$212.40</span>
+            </div>
+            <div class="flex justify-between text-emerald-600 font-medium">
+              <span id="summary-discount-label">36-Month Term Discount (40%):</span>
+              <span id="summary-discount-amt">-$84.96</span>
+            </div>
+            <div id="summary-promo-row" class="hidden flex justify-between text-emerald-600 font-medium">
+              <span id="summary-promo-label">Promo Discount:</span>
+              <span id="summary-promo-amt">-$0.00</span>
+            </div>
+            <div class="flex justify-between text-slate-600">
+              <span id="summary-tax-label">Tax Estimate (16%):</span>
+              <span id="summary-tax-amt">$0.00</span>
+            </div>
+          </div>
+
+          <div class="pt-4 border-t-2 border-slate-200 space-y-2">
+            <div class="flex justify-between items-baseline">
+              <div>
+                <span class="text-sm font-extrabold text-slate-900">Total Due Today:</span>
+                <div class="text-[10px] text-slate-500">Includes all setup & provision charges</div>
+              </div>
+              <span id="summary-total-due" class="text-2xl font-black text-slate-900">$127.44</span>
+            </div>
+            <div class="flex justify-between items-baseline pt-2 border-t border-dashed border-slate-200 text-xs text-slate-500">
+              <span>Subsequent Renewal:</span>
+              <span id="summary-total-renewal" class="font-bold text-slate-700">$359.64</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </aside>
+  </div>
+</div>
+
+<div class="lg:hidden mobile-drawer p-4">
+  <div class="flex items-center justify-between">
+    <div>
+      <div class="text-[10px] text-slate-400 uppercase tracking-wider font-bold">Total Due Today</div>
+      <div id="mobile-drawer-total" class="text-xl font-black text-slate-900">$127.44</div>
+    </div>
+    <button type="button" id="mobile-drawer-action-btn" class="btn-accent text-xs font-bold py-2.5 px-6">
+      Proceed
+    </button>
+  </div>
+</div>
+{% endblock %}
+
+{% block extra_scripts %}
+<script src="{{ url_for('static', filename='js/app.js') }}"></script>
+{% endblock %}

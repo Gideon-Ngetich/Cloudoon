@@ -1,0 +1,1016 @@
+{% extends "base.html" %}
+
+{% block title %}Cloudoon | Web Hosting That Powers Your Online Success{% endblock %}
+
+{% block content %}
+<section id="hero" class="hero-bg-wrapper text-white pt-16 pb-24 relative overflow-hidden">
+  <div class="hero-mesh-overlay absolute inset-0 pointer-events-none opacity-20"></div>
+  <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10 text-center">
+    <h1 class="text-4xl sm:text-5xl lg:text-6xl font-extrabold tracking-tight max-w-4xl mx-auto leading-tight sm:leading-none">
+      Hosting <span class="text-accent underline decoration-accent/40 decoration-wavy underline-offset-8">that powers</span> your online success
+    </h1>
+    <p class="mt-6 text-base sm:text-lg text-slate-300 max-w-2xl mx-auto">
+      Lightning-fast servers, 99.9% uptime guarantee, and 24/7 expert support starting at just <span class="font-bold text-white" data-usd="3.60" data-suffix="/month">$3.60/month</span>.
+    </p>
+
+    <div class="mt-12 max-w-3xl mx-auto">
+      <h2 class="text-2xl sm:text-3xl font-extrabold text-white text-center mb-6">
+        Looking for a Perfect Domain Name?
+      </h2>
+
+      <form id="hero-domain-form" class="bg-white rounded-2xl p-2 sm:p-2.5 shadow-2xl border border-slate-200/50 flex flex-col sm:flex-row items-center gap-2">
+        <div class="relative flex-grow w-full flex items-center">
+          <input
+            type="text"
+            id="hero-domain-input"
+            placeholder="Search Domain Name"
+            class="w-full px-5 py-3.5 bg-transparent text-slate-900 text-sm sm:text-base font-medium placeholder-slate-400 focus:outline-none"
+            aria-label="Domain search query"
+            required
+          >
+        </div>
+        <div class="flex items-center gap-2 w-full sm:w-auto justify-end flex-shrink-0">
+          <div class="relative">
+            <select
+              id="hero-tld-select"
+              class="appearance-none bg-slate-50 hover:bg-slate-100 text-slate-700 font-bold text-sm py-3.5 pl-4 pr-8 rounded-xl border border-slate-200 focus:outline-none focus:ring-2 focus:ring-primary cursor-pointer"
+              aria-label="Select Top Level Domain"
+            >
+              <option value=".com">.com</option>
+              <option value=".info">.info</option>
+              <option value=".org">.org</option>
+              <option value=".biz">.biz</option>
+              <option value=".xyz">.xyz</option>
+              <option value=".net">.net</option>
+              <option value=".co.ke">.co.ke</option>
+              <option value=".io">.io</option>
+            </select>
+            <div class="pointer-events-none absolute inset-y-0 right-0 flex items-center px-2.5 text-slate-500">
+              <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M19 9l-7 7-7-7"></path></svg>
+            </div>
+          </div>
+          <button type="submit" class="bg-accent hover:bg-accent-hover text-accent-text font-black px-7 sm:px-9 py-3.5 rounded-xl shadow-lg shadow-amber-500/25 transition-all flex items-center justify-center gap-2 whitespace-nowrap min-h-[44px]">
+            <span>Search Now</span>
+          </button>
+        </div>
+      </form>
+
+      <div class="mt-6 grid grid-cols-2 sm:grid-cols-5 gap-3">
+        <button type="button" class="hero-tld-pill bg-white rounded-xl py-3 px-3 shadow-md border border-slate-100 hover:shadow-lg hover:-translate-y-0.5 transition-all text-center group cursor-pointer" data-tld=".com">
+          <div class="text-[#00B2FE] font-black text-base sm:text-lg tracking-tight group-hover:scale-105 transition-transform">.com</div>
+          <div class="text-slate-800 text-xs font-semibold mt-0.5" data-usd="2.44" data-suffix="/Year">$2.44/Year</div>
+        </button>
+        <button type="button" class="hero-tld-pill bg-white rounded-xl py-3 px-3 shadow-md border border-slate-100 hover:shadow-lg hover:-translate-y-0.5 transition-all text-center group cursor-pointer" data-tld=".info">
+          <div class="text-[#FF4B55] font-black text-base sm:text-lg tracking-tight group-hover:scale-105 transition-transform">.info</div>
+          <div class="text-slate-800 text-xs font-semibold mt-0.5" data-usd="3.44" data-suffix="/Year">$3.44/Year</div>
+        </button>
+        <button type="button" class="hero-tld-pill bg-white rounded-xl py-3 px-3 shadow-md border border-slate-100 hover:shadow-lg hover:-translate-y-0.5 transition-all text-center group cursor-pointer" data-tld=".org">
+          <div class="text-[#00C49F] font-black text-base sm:text-lg tracking-tight group-hover:scale-105 transition-transform">.org</div>
+          <div class="text-slate-800 text-xs font-semibold mt-0.5" data-usd="2.55" data-suffix="/Year">$2.55/Year</div>
+        </button>
+        <button type="button" class="hero-tld-pill bg-white rounded-xl py-3 px-3 shadow-md border border-slate-100 hover:shadow-lg hover:-translate-y-0.5 transition-all text-center group cursor-pointer" data-tld=".biz">
+          <div class="text-[#8B3DFF] font-black text-base sm:text-lg tracking-tight group-hover:scale-105 transition-transform">.biz</div>
+          <div class="text-slate-800 text-xs font-semibold mt-0.5" data-usd="1.90" data-suffix="/Year">$1.90/Year</div>
+        </button>
+        <button type="button" class="hero-tld-pill bg-white rounded-xl py-3 px-3 shadow-md border border-slate-100 hover:shadow-lg hover:-translate-y-0.5 transition-all text-center group cursor-pointer col-span-2 sm:col-span-1" data-tld=".xyz">
+          <div class="text-[#FFA800] font-black text-base sm:text-lg tracking-tight group-hover:scale-105 transition-transform">.xyz</div>
+          <div class="text-slate-800 text-xs font-semibold mt-0.5" data-usd="0.99" data-suffix="/Year">$0.99/Year</div>
+        </button>
+      </div>
+
+      <div id="hero-domain-results" class="hidden mt-6 text-left bg-white text-slate-900 rounded-2xl p-5 shadow-2xl border border-slate-200">
+      </div>
+    </div>
+  </div>
+</section>
+
+<section id="pricing" class="py-24 bg-[#fafbfd] relative overflow-hidden">
+  <div class="absolute top-10 left-10 w-24 h-24 dot-matrix opacity-70 pointer-events-none hidden sm:block"></div>
+  <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center relative z-10">
+    <h2 class="text-3xl sm:text-4xl lg:text-5xl font-black text-[#0B1B3D] tracking-tight max-w-3xl mx-auto leading-tight">
+      We Have Perfect Web Hosting Package for You
+    </h2>
+
+    <div class="mt-8 flex items-center justify-center gap-3.5">
+      <span class="text-sm font-bold text-slate-700">Monthly Plan</span>
+      <button
+        id="billing-toggle"
+        type="button"
+        role="switch"
+        aria-checked="false"
+        class="w-12 h-6 bg-slate-300 rounded-full p-0.5 transition-colors duration-200 ease-in-out relative flex items-center cursor-pointer focus:outline-none focus:ring-2 focus:ring-primary"
+      >
+        <span id="billing-toggle-knob" class="w-5 h-5 bg-primary rounded-full shadow-md transform transition-transform duration-200 ease-in-out translate-x-0"></span>
+      </button>
+      <span class="text-sm font-bold text-slate-700">Yearly Plan</span>
+      <span class="text-[11px] font-extrabold text-amber-900 bg-amber-100 px-2.5 py-0.5 rounded-full border border-amber-300 uppercase tracking-wide">Save 20%</span>
+    </div>
+
+    <div class="mt-7 flex flex-wrap items-center justify-center gap-2.5">
+      <button type="button" class="pricing-tab-btn active px-6 py-2 rounded-full text-xs sm:text-sm font-bold transition-all bg-primary text-white shadow-md shadow-primary/20 cursor-pointer" data-category="shared">
+        Shared Hosting
+      </button>
+      <button type="button" class="pricing-tab-btn px-6 py-2 rounded-full text-xs sm:text-sm font-bold transition-all bg-white text-slate-700 hover:bg-slate-100 border border-slate-200 cursor-pointer" data-category="vps">
+        VPS Hosting
+      </button>
+      <button type="button" class="pricing-tab-btn px-6 py-2 rounded-full text-xs sm:text-sm font-bold transition-all bg-white text-slate-700 hover:bg-slate-100 border border-slate-200 cursor-pointer" data-category="dedicated">
+        Dedicated Servers
+      </button>
+    </div>
+
+    <div id="pricing-cards-container" class="mt-14 grid grid-cols-1 md:grid-cols-3 gap-8 text-left max-w-6xl mx-auto items-stretch">
+      <div class="pricing-card bg-white rounded-3xl border border-slate-200 p-8 shadow-sm flex flex-col justify-between card-hover relative overflow-hidden" data-plan="starter">
+        <div>
+          <div class="flex items-center justify-between gap-2 mb-2">
+            <h3 class="card-plan-title text-xl font-black text-slate-900 leading-tight">Premium<br>Web Hosting</h3>
+            <span class="card-plan-badge bg-amber-50 text-amber-900 border border-amber-200 text-xs font-bold px-3 py-1 rounded-md whitespace-nowrap">Save 40%</span>
+          </div>
+          <div class="text-xs text-slate-400 font-medium mt-3">From only</div>
+          <div class="mt-1 flex items-baseline gap-1">
+            <span class="card-plan-price text-4xl sm:text-5xl font-black text-slate-900">$4.25</span>
+            <span class="card-plan-period text-xs font-semibold text-slate-500">/mo</span>
+          </div>
+          <p class="card-plan-desc text-xs text-slate-500 mt-4 leading-relaxed">
+            Packed with great features, such as oneclick software installs,24/7 support
+          </p>
+
+          <ul class="mt-6 space-y-3.5 text-xs font-medium text-slate-700">
+            <li class="flex items-center gap-3">
+              <span class="w-5 h-5 rounded-full bg-blue-50 text-primary flex items-center justify-center flex-shrink-0">
+                <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M5 13l4 4L19 7"/></svg>
+              </span>
+              <span class="feature-item-1">10 GB SSD Storage</span>
+            </li>
+            <li class="flex items-center gap-3">
+              <span class="w-5 h-5 rounded-full bg-blue-50 text-primary flex items-center justify-center flex-shrink-0">
+                <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M4 7v10c0 2 1.5 3 3.5 3h9c2 0 3.5-1 3.5-3V7c0-2-1.5-3-3.5-3h-9C5.5 4 4 5 4 7z"/></svg>
+              </span>
+              <span class="feature-item-2">10 MySQL Database</span>
+            </li>
+            <li class="flex items-center gap-3">
+              <span class="w-5 h-5 rounded-full bg-blue-50 text-primary flex items-center justify-center flex-shrink-0">
+                <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
+              </span>
+              <span class="feature-item-3">Unlimited Website</span>
+            </li>
+            <li class="flex items-center gap-3">
+              <span class="w-5 h-5 rounded-full bg-blue-50 text-primary flex items-center justify-center flex-shrink-0">
+                <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z"/></svg>
+              </span>
+              <span class="feature-item-4">cPanel Control Panel</span>
+            </li>
+            <li class="flex items-center gap-3">
+              <span class="w-5 h-5 rounded-full bg-blue-50 text-primary flex items-center justify-center flex-shrink-0">
+                <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M7 16a4 4 0 01-.88-7.903A5 5 0 1115.9 6L16 6a5 5 0 011 9.9M15 13l-3-3m0 0l-3 3m3-3v12"/></svg>
+              </span>
+              <span class="feature-item-5">Auto Backup & Cloud Storage</span>
+            </li>
+          </ul>
+
+          <div class="mt-5">
+            <button type="button" class="expand-feature-btn flex items-center gap-1.5 text-xs font-bold text-slate-700 hover:text-primary transition-colors focus:outline-none cursor-pointer">
+              <span class="expand-label">▾ Expand Feature</span>
+            </button>
+            <div class="expand-feature-drawer hidden mt-3 pt-3 border-t border-slate-100 space-y-2 text-xs text-slate-600">
+              <div class="flex items-center gap-2">
+                <span class="text-primary font-bold">&check;</span>
+                <span>Free Wildcard SSL Certificate</span>
+              </div>
+              <div class="flex items-center gap-2">
+                <span class="text-primary font-bold">&check;</span>
+                <span>Unmetered High-Speed Bandwidth</span>
+              </div>
+              <div class="flex items-center gap-2">
+                <span class="text-primary font-bold">&check;</span>
+                <span>1-Click WordPress & App Installer</span>
+              </div>
+              <div class="flex items-center gap-2">
+                <span class="text-primary font-bold">&check;</span>
+                <span>24/7 Expert Help & Migration</span>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="mt-8 pt-4">
+          <a href="/checkout?tab=shared&plan=web-starter" class="card-cta-btn w-full bg-[#0B1B3D] hover:bg-[#152a5c] text-white font-extrabold py-3.5 px-6 rounded-xl text-center block transition-all shadow-md">
+            Purchase Plan
+          </a>
+        </div>
+      </div>
+
+      <div class="pricing-card bg-white rounded-3xl border-2 border-primary/20 p-8 shadow-xl flex flex-col justify-between card-hover relative overflow-hidden transform md:-translate-y-2" data-plan="popular">
+        <div class="ribbon-wrapper">
+          <div class="ribbon-red">Most Popular</div>
+        </div>
+        <div>
+          <div class="flex items-center justify-between gap-2 mb-2 pr-12">
+            <h3 class="card-plan-title text-xl font-black text-slate-900 leading-tight">VPS<br>Web Hosting</h3>
+          </div>
+          <div class="text-xs text-slate-400 font-medium mt-3">From only</div>
+          <div class="mt-1 flex items-baseline gap-1">
+            <span class="card-plan-price text-4xl sm:text-5xl font-black text-slate-900">$5.25</span>
+            <span class="card-plan-period text-xs font-semibold text-slate-500">/mo</span>
+          </div>
+          <p class="card-plan-desc text-xs text-slate-500 mt-4 leading-relaxed">
+            Packed with great features, such as oneclick software installs,24/7 support
+          </p>
+
+          <ul class="mt-6 space-y-3.5 text-xs font-medium text-slate-700">
+            <li class="flex items-center gap-3">
+              <span class="w-5 h-5 rounded-full bg-blue-50 text-primary flex items-center justify-center flex-shrink-0">
+                <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M5 13l4 4L19 7"/></svg>
+              </span>
+              <span class="feature-item-1">10 GB SSD Storage</span>
+            </li>
+            <li class="flex items-center gap-3">
+              <span class="w-5 h-5 rounded-full bg-blue-50 text-primary flex items-center justify-center flex-shrink-0">
+                <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M4 7v10c0 2 1.5 3 3.5 3h9c2 0 3.5-1 3.5-3V7c0-2-1.5-3-3.5-3h-9C5.5 4 4 5 4 7z"/></svg>
+              </span>
+              <span class="feature-item-2">10 MySQL Database</span>
+            </li>
+            <li class="flex items-center gap-3">
+              <span class="w-5 h-5 rounded-full bg-blue-50 text-primary flex items-center justify-center flex-shrink-0">
+                <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
+              </span>
+              <span class="feature-item-3">Unlimited Website</span>
+            </li>
+            <li class="flex items-center gap-3">
+              <span class="w-5 h-5 rounded-full bg-blue-50 text-primary flex items-center justify-center flex-shrink-0">
+                <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z"/></svg>
+              </span>
+              <span class="feature-item-4">cPanel Control Panel</span>
+            </li>
+            <li class="flex items-center gap-3">
+              <span class="w-5 h-5 rounded-full bg-blue-50 text-primary flex items-center justify-center flex-shrink-0">
+                <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M7 16a4 4 0 01-.88-7.903A5 5 0 1115.9 6L16 6a5 5 0 011 9.9M15 13l-3-3m0 0l-3 3m3-3v12"/></svg>
+              </span>
+              <span class="feature-item-5">Auto Backup & Cloud Storage</span>
+            </li>
+          </ul>
+
+          <div class="mt-5">
+            <button type="button" class="expand-feature-btn flex items-center gap-1.5 text-xs font-bold text-slate-700 hover:text-primary transition-colors focus:outline-none cursor-pointer">
+              <span class="expand-label">▾ Expand Feature</span>
+            </button>
+            <div class="expand-feature-drawer hidden mt-3 pt-3 border-t border-slate-100 space-y-2 text-xs text-slate-600">
+              <div class="flex items-center gap-2">
+                <span class="text-primary font-bold">&check;</span>
+                <span>Dedicated vCPU and 4GB RAM</span>
+              </div>
+              <div class="flex items-center gap-2">
+                <span class="text-primary font-bold">&check;</span>
+                <span>Full Root Access & SSH Keys</span>
+              </div>
+              <div class="flex items-center gap-2">
+                <span class="text-primary font-bold">&check;</span>
+                <span>NVMe Gen-4 Enterprise Arrays</span>
+              </div>
+              <div class="flex items-center gap-2">
+                <span class="text-primary font-bold">&check;</span>
+                <span>Dedicated IPv4 Address</span>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="mt-8 pt-4">
+          <a href="/checkout?tab=shared&plan=wordpress-pro" class="card-cta-btn w-full bg-accent hover:bg-accent-hover text-accent-text font-black py-3.5 px-6 rounded-xl text-center block transition-all shadow-lg shadow-amber-500/25">
+            Purchase Plan
+          </a>
+        </div>
+      </div>
+
+      <div class="pricing-card bg-white rounded-3xl border border-slate-200 p-8 shadow-sm flex flex-col justify-between card-hover relative overflow-hidden" data-plan="enterprise">
+        <div>
+          <div class="flex items-center justify-between gap-2 mb-2">
+            <h3 class="card-plan-title text-xl font-black text-slate-900 leading-tight">Manage<br>Dedicated Server</h3>
+            <span class="card-plan-badge bg-amber-50 text-amber-900 border border-amber-200 text-xs font-bold px-3 py-1 rounded-md whitespace-nowrap">Save 60%</span>
+          </div>
+          <div class="text-xs text-slate-400 font-medium mt-3">From only</div>
+          <div class="mt-1 flex items-baseline gap-1">
+            <span class="card-plan-price text-4xl sm:text-5xl font-black text-slate-900">$7.25</span>
+            <span class="card-plan-period text-xs font-semibold text-slate-500">/mo</span>
+          </div>
+          <p class="card-plan-desc text-xs text-slate-500 mt-4 leading-relaxed">
+            Packed with great features, such as oneclick software installs,24/7 support
+          </p>
+
+          <ul class="mt-6 space-y-3.5 text-xs font-medium text-slate-700">
+            <li class="flex items-center gap-3">
+              <span class="w-5 h-5 rounded-full bg-blue-50 text-primary flex items-center justify-center flex-shrink-0">
+                <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M5 13l4 4L19 7"/></svg>
+              </span>
+              <span class="feature-item-1">10 GB SSD Storage</span>
+            </li>
+            <li class="flex items-center gap-3">
+              <span class="w-5 h-5 rounded-full bg-blue-50 text-primary flex items-center justify-center flex-shrink-0">
+                <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M4 7v10c0 2 1.5 3 3.5 3h9c2 0 3.5-1 3.5-3V7c0-2-1.5-3-3.5-3h-9C5.5 4 4 5 4 7z"/></svg>
+              </span>
+              <span class="feature-item-2">10 MySQL Database</span>
+            </li>
+            <li class="flex items-center gap-3">
+              <span class="w-5 h-5 rounded-full bg-blue-50 text-primary flex items-center justify-center flex-shrink-0">
+                <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
+              </span>
+              <span class="feature-item-3">Unlimited Website</span>
+            </li>
+            <li class="flex items-center gap-3">
+              <span class="w-5 h-5 rounded-full bg-blue-50 text-primary flex items-center justify-center flex-shrink-0">
+                <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z"/></svg>
+              </span>
+              <span class="feature-item-4">cPanel Control Panel</span>
+            </li>
+            <li class="flex items-center gap-3">
+              <span class="w-5 h-5 rounded-full bg-blue-50 text-primary flex items-center justify-center flex-shrink-0">
+                <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M7 16a4 4 0 01-.88-7.903A5 5 0 1115.9 6L16 6a5 5 0 011 9.9M15 13l-3-3m0 0l-3 3m3-3v12"/></svg>
+              </span>
+              <span class="feature-item-5">Auto Backup & Cloud Storage</span>
+            </li>
+          </ul>
+
+          <div class="mt-5">
+            <button type="button" class="expand-feature-btn flex items-center gap-1.5 text-xs font-bold text-slate-700 hover:text-primary transition-colors focus:outline-none cursor-pointer">
+              <span class="expand-label">▾ Expand Feature</span>
+            </button>
+            <div class="expand-feature-drawer hidden mt-3 pt-3 border-t border-slate-100 space-y-2 text-xs text-slate-600">
+              <div class="flex items-center gap-2">
+                <span class="text-primary font-bold">&check;</span>
+                <span>Isolated Bare Metal Hardware</span>
+              </div>
+              <div class="flex items-center gap-2">
+                <span class="text-primary font-bold">&check;</span>
+                <span>1 Gbps Dedicated Unmetered Port</span>
+              </div>
+              <div class="flex items-center gap-2">
+                <span class="text-primary font-bold">&check;</span>
+                <span>Hardware RAID-10 Redundancy</span>
+              </div>
+              <div class="flex items-center gap-2">
+                <span class="text-primary font-bold">&check;</span>
+                <span>IPMI / KVM Remote Management</span>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="mt-8 pt-4">
+          <a href="/checkout?tab=dedicated&plan=enterprise-dedicated" class="card-cta-btn w-full bg-[#0B1B3D] hover:bg-[#152a5c] text-white font-extrabold py-3.5 px-6 rounded-xl text-center block transition-all shadow-md">
+            Purchase Plan
+          </a>
+        </div>
+      </div>
+    </div>
+
+    <div class="mt-12 text-xs text-slate-500 flex flex-col sm:flex-row items-center justify-center gap-4">
+      <span>Contact us for custom pricing for organizations with specific needs.</span>
+      <a href="/checkout" class="font-bold text-primary hover:underline">Compare plans & configure &rarr;</a>
+    </div>
+  </div>
+</section>
+
+<section id="why-us" class="py-24 bg-[#090e1c] text-white border-t border-slate-800 relative overflow-hidden">
+  <div class="absolute -top-32 -right-32 w-96 h-96 rounded-full bg-blue-600/10 blur-3xl pointer-events-none"></div>
+  <div class="absolute -bottom-32 -left-32 w-96 h-96 rounded-full bg-amber-500/10 blur-3xl pointer-events-none"></div>
+
+  <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
+    <div class="text-center max-w-2xl mx-auto mb-16">
+      <div class="inline-block bg-amber-500/15 border border-amber-500/30 text-accent font-black tracking-widest text-xs px-4 py-1.5 rounded-full mb-3 uppercase">
+        Why Choose Cloudoon
+      </div>
+      <h2 class="text-3xl sm:text-4xl lg:text-5xl font-black text-white tracking-tight mb-4">
+        Reason For Choosing Cloudoon
+      </h2>
+      <p class="text-sm sm:text-base text-slate-300 max-w-xl mx-auto">
+        Experience next-generation cloud infrastructure built for ultra-fast load times, ironclad data security, and enterprise 99.9% uptime.
+      </p>
+    </div>
+
+    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+      <div class="bg-white rounded-2xl p-8 shadow-xl text-slate-800 transition-all hover:-translate-y-1 hover:shadow-2xl flex flex-col justify-between">
+        <div>
+          <div class="w-14 h-14 rounded-xl bg-amber-50 text-amber-600 flex items-center justify-center mb-6">
+            <svg class="w-7 h-7" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z"/></svg>
+          </div>
+          <h3 class="text-xl font-black text-[#0B1B3D] mb-3">Super Fast SSD</h3>
+          <p class="text-sm text-slate-500 leading-relaxed mb-6">
+            High-frequency NVMe drives deliver up to 20x faster data read/write speeds for web queries and databases.
+          </p>
+        </div>
+        <a href="/checkout?tab=shared" class="font-bold text-accent hover:text-accent-hover text-sm inline-flex items-center gap-1">
+          <span>Learn More</span>
+          <span>&rarr;</span>
+        </a>
+      </div>
+
+      <div class="bg-white rounded-2xl p-8 shadow-xl text-slate-800 transition-all hover:-translate-y-1 hover:shadow-2xl flex flex-col justify-between">
+        <div>
+          <div class="w-14 h-14 rounded-xl bg-amber-50 text-amber-600 flex items-center justify-center mb-6">
+            <svg class="w-7 h-7" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z"/></svg>
+          </div>
+          <h3 class="text-xl font-black text-[#0B1B3D] mb-3">Free SSL Certificate</h3>
+          <p class="text-sm text-slate-500 leading-relaxed mb-6">
+            Every plan includes automated Let's Encrypt certificates renewed with zero downtime and guaranteed trust.
+          </p>
+        </div>
+        <a href="/checkout?tab=shared" class="font-bold text-accent hover:text-accent-hover text-sm inline-flex items-center gap-1">
+          <span>Learn More</span>
+          <span>&rarr;</span>
+        </a>
+      </div>
+
+      <div class="bg-white rounded-2xl p-8 shadow-xl text-slate-800 transition-all hover:-translate-y-1 hover:shadow-2xl flex flex-col justify-between">
+        <div>
+          <div class="w-14 h-14 rounded-xl bg-amber-50 text-amber-600 flex items-center justify-center mb-6">
+            <svg class="w-7 h-7" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z"/></svg>
+          </div>
+          <h3 class="text-xl font-black text-[#0B1B3D] mb-3">99.9% Uptime Guarantee</h3>
+          <p class="text-sm text-slate-500 leading-relaxed mb-6">
+            Tier-3 redundant power and edge network routing guarantees your site stays live around the clock.
+          </p>
+        </div>
+        <a href="/checkout?tab=vps" class="font-bold text-accent hover:text-accent-hover text-sm inline-flex items-center gap-1">
+          <span>Learn More</span>
+          <span>&rarr;</span>
+        </a>
+      </div>
+
+      <div class="bg-white rounded-2xl p-8 shadow-xl text-slate-800 transition-all hover:-translate-y-1 hover:shadow-2xl flex flex-col justify-between">
+        <div>
+          <div class="w-14 h-14 rounded-xl bg-amber-50 text-amber-600 flex items-center justify-center mb-6">
+            <svg class="w-7 h-7" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M18.364 5.636l-3.536 3.536m0 5.656l3.536 3.536M9.172 9.172L5.636 5.636m3.536 9.192l-3.536 3.536M21 12a9 9 0 11-18 0 9 9 0 0118 0zm-5 0a4 4 0 11-8 0 4 4 0 018 0z"/></svg>
+          </div>
+          <h3 class="text-xl font-black text-[#0B1B3D] mb-3">24/7 Expert Support</h3>
+          <p class="text-sm text-slate-500 leading-relaxed mb-6">
+            Direct access to Linux system engineers and hosting specialists through live chat and tickets.
+          </p>
+        </div>
+        <a href="/checkout?tab=shared" class="font-bold text-accent hover:text-accent-hover text-sm inline-flex items-center gap-1">
+          <span>Learn More</span>
+          <span>&rarr;</span>
+        </a>
+      </div>
+
+      <div class="bg-white rounded-2xl p-8 shadow-xl text-slate-800 transition-all hover:-translate-y-1 hover:shadow-2xl flex flex-col justify-between">
+        <div>
+          <div class="w-14 h-14 rounded-xl bg-amber-50 text-amber-600 flex items-center justify-center mb-6">
+            <svg class="w-7 h-7" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-8l-4-4m0 0L8 8m4-4v12"/></svg>
+          </div>
+          <h3 class="text-xl font-black text-[#0B1B3D] mb-3">Easy 1-Click Installs</h3>
+          <p class="text-sm text-slate-500 leading-relaxed mb-6">
+            Deploy WordPress, Joomla, Drupal, Magento, and over 100+ applications in seconds.
+          </p>
+        </div>
+        <a href="/checkout?tab=shared" class="font-bold text-accent hover:text-accent-hover text-sm inline-flex items-center gap-1">
+          <span>Learn More</span>
+          <span>&rarr;</span>
+        </a>
+      </div>
+
+      <div class="bg-white rounded-2xl p-8 shadow-xl text-slate-800 transition-all hover:-translate-y-1 hover:shadow-2xl flex flex-col justify-between">
+        <div>
+          <div class="w-14 h-14 rounded-xl bg-amber-50 text-amber-600 flex items-center justify-center mb-6">
+            <svg class="w-7 h-7" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15"/></svg>
+          </div>
+          <h3 class="text-xl font-black text-[#0B1B3D] mb-3">Daily Automated Backups</h3>
+          <p class="text-sm text-slate-500 leading-relaxed mb-6">
+            Automated snapshots stored across separate geographical availability zones for peace of mind.
+          </p>
+        </div>
+        <a href="/checkout?tab=vps" class="font-bold text-accent hover:text-accent-hover text-sm inline-flex items-center gap-1">
+          <span>Learn More</span>
+          <span>&rarr;</span>
+        </a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section id="features" class="py-24 bg-white relative overflow-hidden">
+  <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
+    <div class="grid grid-cols-1 lg:grid-cols-12 gap-12 items-center">
+      <div class="lg:col-span-5 flex justify-center">
+        <div class="relative w-full max-w-md">
+          <div class="absolute -inset-4 bg-gradient-to-tr from-blue-100 to-indigo-50 rounded-3xl -z-10 transform -rotate-2"></div>
+          <img src="/static/images/consult-man.png" alt="Server Illustration" class="w-full rounded-2xl shadow-xl border border-slate-100 object-cover">
+          
+        </div>
+      </div>
+
+      <div class="lg:col-span-7">
+        <div class="inline-block bg-primary/10 text-primary font-black tracking-widest text-xs px-4 py-1.5 rounded-full mb-3 uppercase">
+          Superior Infrastructure
+        </div>
+        <h2 class="text-3xl sm:text-4xl lg:text-5xl font-black text-[#0B1B3D] tracking-tight leading-tight mb-6">
+          World Class Best<br>Hosting Feature.
+        </h2>
+        <p class="text-sm sm:text-base text-slate-500 mb-8 max-w-xl">
+          We engineer high-performance hosting environments with automated scaling, custom caching layers, and isolated container execution.
+        </p>
+
+        <div class="space-y-4">
+          <div class="flex items-start gap-4 p-4 rounded-xl border border-slate-100 hover:border-primary/30 hover:bg-blue-50/30 transition-all">
+            <div class="w-12 h-12 rounded-xl bg-primary/10 text-primary flex items-center justify-center flex-shrink-0">
+              <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 12a9 9 0 01-9 9m9-9a9 9 0 00-9-9m9 9H3m9 9a9 9 0 01-9-9m9 9c1.657 0 3-4.03 3-9s-1.343-9-3-9m0 18c-1.657 0-3-4.03-3-9s1.343-9 3-9m-9 9a9 9 0 019-9"/></svg>
+            </div>
+            <div>
+              <h3 class="text-base font-black text-[#0B1B3D]">Free Domain Name</h3>
+              <p class="text-xs sm:text-sm text-slate-500 mt-1">Get a complimentary custom domain for the first year with any annual hosting package.</p>
+            </div>
+          </div>
+
+          <div class="flex items-start gap-4 p-4 rounded-xl border border-slate-100 hover:border-primary/30 hover:bg-blue-50/30 transition-all">
+            <div class="w-12 h-12 rounded-xl bg-primary/10 text-primary flex items-center justify-center flex-shrink-0">
+              <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z"/></svg>
+            </div>
+            <div>
+              <h3 class="text-base font-black text-[#0B1B3D]">Free SSL Certificate</h3>
+              <p class="text-xs sm:text-sm text-slate-500 mt-1">Automated Let's Encrypt certificates installed in one click with automated renew.</p>
+            </div>
+          </div>
+
+          <div class="flex items-start gap-4 p-4 rounded-xl border border-slate-100 hover:border-primary/30 hover:bg-blue-50/30 transition-all">
+            <div class="w-12 h-12 rounded-xl bg-primary/10 text-primary flex items-center justify-center flex-shrink-0">
+              <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M18.364 5.636l-3.536 3.536m0 5.656l3.536 3.536M9.172 9.172L5.636 5.636m3.536 9.192l-3.536 3.536M21 12a9 9 0 11-18 0 9 9 0 0118 0zm-5 0a4 4 0 11-8 0 4 4 0 018 0z"/></svg>
+            </div>
+            <div>
+              <h3 class="text-base font-black text-[#0B1B3D]">24/7/365 Live Support</h3>
+              <p class="text-xs sm:text-sm text-slate-500 mt-1">Our expert cloud engineers are available round the clock to resolve issues in minutes.</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="py-20 bg-[#0b1329] border-y border-slate-800 text-white relative overflow-hidden">
+  <div class="absolute inset-0 opacity-10 pointer-events-none">
+    <svg class="w-full h-full" xmlns="http://www.w3.org/2000/svg">
+      <defs>
+        <pattern id="dot-pattern" x="0" y="0" width="24" height="24" patternUnits="userSpaceOnUse">
+          <circle cx="2" cy="2" r="1.5" fill="#ffffff" />
+        </pattern>
+      </defs>
+      <rect width="100%" height="100%" fill="url(#dot-pattern)" />
+    </svg>
+  </div>
+
+  <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
+    <div class="grid grid-cols-1 lg:grid-cols-12 gap-8 items-center">
+      <div class="lg:col-span-7 text-left">
+        <h2 class="text-3xl sm:text-4xl lg:text-5xl font-black text-white leading-tight mb-6">
+          Migrating from another<br>web hosting?
+        </h2>
+        <p class="text-sm sm:text-base text-slate-300 max-w-xl leading-relaxed mb-8">
+          Compare our plans and find the right solution for your company. Or get in touch for a custom solution. Whatever you need, we can tailor your infrastructure and service based on your needs.
+        </p>
+        <div class="flex flex-wrap items-center gap-4">
+          <a href="/checkout" class="bg-accent hover:bg-accent-hover text-accent-text font-black text-sm px-8 py-3.5 rounded-xl shadow-lg shadow-amber-500/25 transition-all hover:scale-105">
+            Book a Demo
+          </a>
+          <a href="#faq" class="border-2 border-slate-600 hover:border-white hover:bg-white hover:text-slate-900 text-white font-bold text-sm px-8 py-3.5 rounded-xl transition-all">
+            Contact Us
+          </a>
+        </div>
+      </div>
+
+      <div class="lg:col-span-5 flex justify-center lg:justify-end relative">
+        <div class="relative w-full max-w-sm">
+          <div class="w-72 h-72 sm:w-80 sm:h-80 absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 blur-xl -z-10"></div>
+          <img src="/static/images/migrate.png" alt="Migrating Web Hosting" class="w-full rounded-2xl object-contain">
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section id="services" class="py-24 bg-slate-50 border-t border-slate-100">
+  <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+    <div class="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 mb-12">
+      <h2 class="text-3xl sm:text-4xl font-black text-[#0B1B3D] max-w-md leading-tight">
+        We Provide you World<br>Hosting Services.
+      </h2>
+      <a href="/checkout" class="inline-flex items-center gap-2 bg-primary hover:bg-primary-hover text-white font-bold text-sm px-6 py-3 rounded-xl shadow-md shadow-primary/20 transition-all flex-shrink-0">
+        <span>All Service</span>
+        <span>&rarr;</span>
+      </a>
+    </div>
+
+    <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-24">
+      <div class="bg-white rounded-2xl border border-slate-200/80 p-8 shadow-sm hover:shadow-md transition-all flex flex-col justify-between">
+        <div>
+          <div class="w-14 h-14 rounded-xl bg-blue-50 text-primary flex items-center justify-center mb-6">
+            <svg class="w-8 h-8" viewBox="0 0 24 24" fill="currentColor">
+              <path d="M12.158 2.457c-5.027 0-9.158 4.027-9.158 9.025 0 3.978 2.579 7.407 6.19 8.618v-6.09h-1.863v-2.528h1.863v-1.618c0-1.838 1.096-2.853 2.769-2.853.802 0 1.641.143 1.641.143v1.804h-.924c-.91 0-1.194.565-1.194 1.145v1.379h2.033l-.325 2.528h-1.708v6.09c3.611-1.211 6.19-4.64 6.19-8.618 0-4.998-4.131-9.025-9.154-9.025h-.36z"/>
+            </svg>
+          </div>
+          <h3 class="text-xl font-black text-[#0B1B3D] mb-3">WordPress Hosting</h3>
+          <p class="text-xs sm:text-sm text-slate-500 leading-relaxed mb-6">
+            Seamlessly transform dynamic testing my procedures rather than distributed process Compellingly myocardinate cost.
+          </p>
+        </div>
+        <a href="/checkout?tab=shared&plan=wordpress-pro" class="inline-flex items-center gap-1.5 text-xs sm:text-sm font-black text-slate-900 hover:text-primary transition-colors">
+          <span data-usd="1.99" data-prefix="Starting at:" data-suffix="/mo">Starting at:$1.99/mo</span>
+          <span>&rarr;</span>
+        </a>
+      </div>
+
+      <div class="bg-white rounded-2xl border border-slate-200/80 p-8 shadow-sm hover:shadow-md transition-all flex flex-col justify-between">
+        <div>
+          <div class="w-14 h-14 rounded-xl bg-blue-50 text-primary flex items-center justify-center mb-6">
+            <svg class="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 12h14M5 12a2 2 0 01-2-2V6a2 2 0 012-2h14a2 2 0 012 2v4a2 2 0 01-2 2M5 12a2 2 0 00-2 2v4a2 2 0 002 2h14a2 2 0 002-2v-4a2 2 0 00-2-2m-2-4h.01M17 16h.01"/>
+            </svg>
+          </div>
+          <h3 class="text-xl font-black text-[#0B1B3D] mb-3">Shared Hosting</h3>
+          <p class="text-xs sm:text-sm text-slate-500 leading-relaxed mb-6">
+            Collaboratively harness timely collaboration and idea-sharing after collaborative services. maximizing Best service.
+          </p>
+        </div>
+        <a href="/checkout?tab=shared&plan=standard-shared" class="inline-flex items-center gap-1.5 text-xs sm:text-sm font-black text-slate-900 hover:text-primary transition-colors">
+          <span data-usd="1.99" data-prefix="Starting at:" data-suffix="/mo">Starting at:$1.99/mo</span>
+          <span>&rarr;</span>
+        </a>
+      </div>
+
+      <div class="bg-white rounded-2xl border border-slate-200/80 p-8 shadow-sm hover:shadow-md transition-all flex flex-col justify-between">
+        <div>
+          <div class="w-14 h-14 rounded-xl bg-blue-50 text-primary flex items-center justify-center mb-6">
+            <svg class="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 11H5m14 0a2 2 0 012 2v6a2 2 0 01-2 2H5a2 2 0 01-2-2v-6a2 2 0 012-2m14 0V9a2 2 0 00-2-2M5 11V9a2 2 0 012-2m0 0V5a2 2 0 012-2h6a2 2 0 012 2v2M7 7h10"/>
+            </svg>
+          </div>
+          <h3 class="text-xl font-black text-[#0B1B3D] mb-3">VPS Hosting</h3>
+          <p class="text-xs sm:text-sm text-slate-500 leading-relaxed mb-6">
+            Seamlessly transform dynamic testing my procedures rather than distributed process Compellingly myocardinate cost.
+          </p>
+        </div>
+        <a href="/checkout?tab=vps&plan=developer-vps" class="inline-flex items-center gap-1.5 text-xs sm:text-sm font-black text-slate-900 hover:text-primary transition-colors">
+          <span data-usd="1.99" data-prefix="Starting at:" data-suffix="/mo">Starting at:$1.99/mo</span>
+          <span>&rarr;</span>
+        </a>
+      </div>
+    </div>
+
+    <div class="text-center max-w-3xl mx-auto mb-10">
+      <h3 class="text-2xl sm:text-3xl lg:text-4xl font-black text-[#0B1B3D] tracking-tight mb-3">
+        Integrated with more than 100+<br class="hidden sm:inline"> applications you love.
+      </h3>
+      <p class="text-xs sm:text-sm text-slate-500 max-w-xl mx-auto">
+        Deploy top CMS engines, ecommerce stores, and learning systems in one single click with full database automation.
+      </p>
+    </div>
+
+    <div class="flex flex-wrap items-center justify-center gap-3 sm:gap-5 mb-4">
+      <div class="bg-white rounded-xl sm:rounded-2xl px-5 py-3.5 shadow-sm border border-slate-200/80 hover:shadow-md hover:-translate-y-0.5 transition-all flex items-center gap-3">
+        <span class="w-8 h-8 rounded-lg bg-orange-50 text-orange-600 flex items-center justify-center font-black text-xs">J!</span>
+        <span class="text-xs sm:text-sm font-bold text-slate-800">Joomla Hosting</span>
+      </div>
+
+      <div class="bg-white rounded-xl sm:rounded-2xl px-5 py-3.5 shadow-sm border border-slate-200/80 hover:shadow-md hover:-translate-y-0.5 transition-all flex items-center gap-3">
+        <span class="w-8 h-8 rounded-lg bg-blue-50 text-blue-500 flex items-center justify-center font-black text-xs">D</span>
+        <span class="text-xs sm:text-sm font-bold text-slate-800">Drupal Hosting</span>
+      </div>
+
+      <div class="bg-white rounded-xl sm:rounded-2xl px-5 py-3.5 shadow-sm border border-slate-200/80 hover:shadow-md hover:-translate-y-0.5 transition-all flex items-center gap-3">
+        <span class="w-8 h-8 rounded-lg bg-amber-50 text-amber-600 flex items-center justify-center font-black text-xs">os</span>
+        <span class="text-xs sm:text-sm font-bold text-slate-800">Osticket Hosting</span>
+      </div>
+
+      <div class="bg-white rounded-xl sm:rounded-2xl px-5 py-3.5 shadow-sm border border-slate-200/80 hover:shadow-md hover:-translate-y-0.5 transition-all flex items-center gap-3">
+        <span class="w-8 h-8 rounded-lg bg-orange-50 text-orange-500 flex items-center justify-center font-black text-xs">Zc</span>
+        <span class="text-xs sm:text-sm font-bold text-slate-800">Zencart Hosting</span>
+      </div>
+    </div>
+
+    <div class="flex flex-wrap items-center justify-center gap-3 sm:gap-5">
+      <div class="bg-white rounded-xl sm:rounded-2xl px-5 py-3.5 shadow-sm border border-slate-200/80 hover:shadow-md hover:-translate-y-0.5 transition-all flex items-center gap-3">
+        <span class="w-8 h-8 rounded-lg bg-amber-50 text-amber-700 flex items-center justify-center font-black text-xs">m</span>
+        <span class="text-xs sm:text-sm font-bold text-slate-800">Moodle Hosting</span>
+      </div>
+
+      <div class="bg-white rounded-xl sm:rounded-2xl px-5 py-3.5 shadow-sm border border-slate-200/80 hover:shadow-md hover:-translate-y-0.5 transition-all flex items-center gap-3">
+        <span class="w-8 h-8 rounded-lg bg-blue-50 text-blue-600 flex items-center justify-center font-black text-xs">W</span>
+        <span class="text-xs sm:text-sm font-bold text-slate-800">WordPress Hosting</span>
+      </div>
+
+      <div class="bg-white rounded-xl sm:rounded-2xl px-5 py-3.5 shadow-sm border border-slate-200/80 hover:shadow-md hover:-translate-y-0.5 transition-all flex items-center gap-3">
+        <span class="w-8 h-8 rounded-lg bg-red-50 text-red-600 flex items-center justify-center font-black text-xs">M</span>
+        <span class="text-xs sm:text-sm font-bold text-slate-800">Magento Hosting</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="py-24 bg-[#070b18] border-t border-slate-800 text-white relative overflow-hidden">
+  <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
+    <div class="text-center max-w-3xl mx-auto mb-16">
+      <h2 class="text-3xl sm:text-4xl lg:text-5xl font-black text-white tracking-tight mb-4">
+        Hundreds of five-star Ratings. Every day!
+      </h2>
+      <p class="text-sm sm:text-base text-slate-400 max-w-2xl mx-auto">
+        We truly cannot say enough about the level of customer service that Cloudoon provides - it's always a great experience, with very personable and helpful support.
+      </p>
+    </div>
+
+    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mb-12">
+      <div class="space-y-6">
+        <div class="bg-white rounded-2xl p-7 text-slate-800 shadow-xl relative">
+          <div class="flex items-center gap-3 mb-4">
+            <div class="w-12 h-12 rounded-full bg-slate-200 flex items-center justify-center font-bold text-slate-700 text-sm">
+              FM
+            </div>
+            <div>
+              <div class="font-extrabold text-[#0B1B3D] text-sm">Floyd Miles</div>
+              <div class="flex text-amber-400 text-xs mt-0.5">
+                <span>&#9733;&#9733;&#9733;&#9733;&#9733;</span>
+              </div>
+            </div>
+          </div>
+          <p class="text-xs sm:text-sm text-slate-600 leading-relaxed mb-6">
+            "Appropriately target maintainable quality vectors via ethical benefits. Globally empowered meta-services. Authoritatively web-enabled functionalities and emerging results. Intrinsically incentivize models before stand-alone technologies top-line data with empowered meservices."
+          </p>
+        </div>
+
+        <div class="bg-white rounded-2xl p-7 text-slate-800 shadow-xl relative">
+          <div class="flex items-center gap-3 mb-4">
+            <div class="w-12 h-12 rounded-full bg-slate-200 flex items-center justify-center font-bold text-slate-700 text-sm">
+              LA
+            </div>
+            <div>
+              <div class="font-extrabold text-[#0B1B3D] text-sm">Leslie Alexander</div>
+              <div class="flex text-amber-400 text-xs mt-0.5">
+                <span>&#9733;&#9733;&#9733;&#9733;&#9733;</span>
+              </div>
+            </div>
+          </div>
+          <p class="text-xs sm:text-sm text-slate-600 leading-relaxed mb-6">
+            "Appropriately target maintainable quality vectors via ethical benefits. Globally empowered meta-services. Authoritatively web-enabled functionalities and emerging results. Intrinsically incentivize models before stand-alone technologies top-line data with empowered meservices."
+          </p>
+        </div>
+      </div>
+
+      <div class="space-y-6">
+        <div class="bg-white rounded-2xl p-7 text-slate-800 shadow-xl relative">
+          <div class="flex items-center gap-3 mb-4">
+            <div class="w-12 h-12 rounded-full bg-slate-200 flex items-center justify-center font-bold text-slate-700 text-sm">
+              HP
+            </div>
+            <div>
+              <div class="font-extrabold text-[#0B1B3D] text-sm">Herman Parks</div>
+              <div class="flex text-amber-400 text-xs mt-0.5">
+                <span>&#9733;&#9733;&#9733;&#9733;&#9733;</span>
+              </div>
+            </div>
+          </div>
+          <p class="text-xs sm:text-sm text-slate-600 leading-relaxed mb-6">
+            "We unexpectedly lost login access problem ourselves, and efficiency despite made it difficult to communicate details such as IP addresses."
+          </p>
+        </div>
+
+        <div class="bg-white rounded-2xl p-7 text-slate-800 shadow-xl relative">
+          <div class="flex items-center gap-3 mb-4">
+            <div class="w-12 h-12 rounded-full bg-slate-200 flex items-center justify-center font-bold text-slate-700 text-sm">
+              AF
+            </div>
+            <div>
+              <div class="font-extrabold text-[#0B1B3D] text-sm">Albert Flores</div>
+              <div class="flex text-amber-400 text-xs mt-0.5">
+                <span>&#9733;&#9733;&#9733;&#9733;&#9733;</span>
+              </div>
+            </div>
+          </div>
+          <p class="text-xs sm:text-sm text-slate-600 leading-relaxed mb-6">
+            "Appropriately target maintainable quality vectors via ethical benefits. Globally empowered meta-services. Authoritatively web-enabled functionalities and emerging results. Intrinsically incentivize models before stand-alone technologies top-line data with empowered meservices."
+          </p>
+        </div>
+      </div>
+
+      <div class="space-y-6">
+        <div class="bg-white rounded-2xl p-7 text-slate-800 shadow-xl relative">
+          <div class="flex items-center gap-3 mb-4">
+            <div class="w-12 h-12 rounded-full bg-slate-200 flex items-center justify-center font-bold text-slate-700 text-sm">
+              DS
+            </div>
+            <div>
+              <div class="font-extrabold text-[#0B1B3D] text-sm">Darrel Steward</div>
+              <div class="flex text-green-500 text-xs mt-0.5">
+                <span>&#9733;&#9733;&#9733;&#9733;&#9733;</span>
+              </div>
+            </div>
+          </div>
+          <p class="text-xs sm:text-sm text-slate-600 leading-relaxed mb-6">
+            "Appropriately target maintainable quality vectors via ethical benefits. Globally empowered meta-services. Authoritatively web-enabled functionalities and emerging results. Intrinsically incentivize models before stand-alone technologies top-line data with empo meservices."
+          </p>
+        </div>
+
+        <div class="bg-white rounded-2xl p-7 text-slate-800 shadow-xl relative">
+          <div class="flex items-center gap-3 mb-4">
+            <div class="w-12 h-12 rounded-full bg-slate-200 flex items-center justify-center font-bold text-slate-700 text-sm">
+              HP
+            </div>
+            <div>
+              <div class="font-extrabold text-[#0B1B3D] text-sm">Herman Parks</div>
+              <div class="flex text-amber-400 text-xs mt-0.5">
+                <span>&#9733;&#9733;&#9733;&#9733;&#9733;</span>
+              </div>
+            </div>
+          </div>
+          <p class="text-xs sm:text-sm text-slate-600 leading-relaxed mb-6">
+            "Appropriately target maintainable quality vectors via ethical benefits. Globally empowered meta-services. Authoritatively web-enabled functionalities and emerging results. Intrinsically incentivize models before stand-alone technologies top-line data with empowered meservices."
+          </p>
+        </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="text-center">
+      <a href="#resources" class="inline-flex items-center justify-center bg-accent hover:bg-accent-hover text-accent-text font-black text-sm px-8 py-3.5 rounded-xl shadow-xl shadow-amber-500/25 transition-all hover:scale-105">
+        More Feedback
+      </a>
+    </div>
+  </div>
+</section>
+
+<section id="resources" class="py-24 bg-white border-t border-slate-100">
+  <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+    <div class="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 mb-12">
+      <div>
+        <h2 class="text-3xl sm:text-4xl font-black text-[#0B1B3D] tracking-tight mb-2">
+          Our Latest News &amp; Blogs
+        </h2>
+        <p class="text-sm text-slate-500 max-w-xl">
+          We are committed to offering customers the most professional and reliable web on UK-based servers, at prices.
+        </p>
+      </div>
+      <a href="#" class="inline-flex items-center gap-2 bg-[#0B1B3D] hover:bg-[#152a5c] text-white font-bold text-sm px-6 py-3 rounded-xl shadow-md transition-all flex-shrink-0">
+        See All Stories
+      </a>
+    </div>
+
+    <div class="grid grid-cols-1 lg:grid-cols-12 gap-8 mb-24">
+      <div class="lg:col-span-6 bg-white rounded-2xl border border-slate-200/80 overflow-hidden shadow-sm hover:shadow-md transition-all flex flex-col justify-between">
+        <div>
+          <div class="relative overflow-hidden h-64 bg-slate-900">
+            <img src="/static/images/blog-featured.jpg" alt="Featured News" class="w-full h-full object-cover">
+            <span class="absolute bottom-4 left-4 bg-primary text-white font-bold text-xs px-3.5 py-1.5 rounded-lg shadow-md">
+              Shared Hosting
+            </span>
+          </div>
+          <div class="p-6 sm:p-8">
+            <h3 class="text-xl sm:text-2xl font-black text-[#0B1B3D] mb-3 leading-snug hover:text-primary transition-colors cursor-pointer">
+              WordPress security in 2020 - what we do to protect our users
+            </h3>
+            <p class="text-xs sm:text-sm text-slate-500 leading-relaxed mb-6">
+              Enthusiastically negotiate sticky intellectual capital through integrated Professionally tactical alignments.
+            </p>
+          </div>
+        </div>
+        <div class="px-6 sm:px-8 pb-6 pt-0 flex items-center justify-between text-xs text-slate-500 border-t border-slate-100 pt-4">
+          <div class="flex items-center gap-2.5">
+            <div class="w-8 h-8 rounded-full bg-slate-200 flex items-center justify-center font-bold text-slate-700 text-[11px]">
+              RH
+            </div>
+            <div>
+              <div class="font-bold text-slate-900">Raymond Harris</div>
+              <div class="text-[11px] text-slate-400">03 May 2022</div>
+            </div>
+          </div>
+          <div class="flex items-center gap-4 text-[11px] font-semibold text-slate-400">
+            <span>&hearts; 4.6k likes</span>
+            <span>&#128172; 19 comments</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="lg:col-span-6 flex flex-col justify-between gap-4">
+        <div class="bg-white rounded-2xl border border-slate-200/80 p-4 sm:p-5 shadow-sm hover:shadow-md transition-all flex flex-col sm:flex-row items-center gap-4">
+          <div class="relative w-full sm:w-36 h-28 flex-shrink-0 rounded-xl overflow-hidden bg-slate-900">
+            <img src="/static/images/blog-thumb1.jpg" alt="Blog 1" class="w-full h-full object-cover">
+            <span class="absolute bottom-2 left-2 bg-primary text-white font-bold text-[10px] px-2 py-0.5 rounded">
+              technology
+            </span>
+          </div>
+          <div class="flex-grow w-full">
+            <h4 class="text-sm sm:text-base font-extrabold text-[#0B1B3D] leading-snug mb-3 hover:text-primary transition-colors cursor-pointer">
+              WordPress 6.0 release candidate why you should test it
+            </h4>
+            <div class="flex items-center justify-between text-xs text-slate-500">
+              <div class="flex items-center gap-2">
+                <div class="w-6 h-6 rounded-full bg-slate-200 flex items-center justify-center font-bold text-slate-700 text-[10px]">
+                  MV
+                </div>
+                <span class="font-bold text-slate-800 text-xs">Mark Vasquez</span>
+                <span class="text-slate-400 text-[11px]">03 May 2022</span>
+              </div>
+              <span class="text-[11px] text-slate-400 font-semibold">&hearts; 4.6k likes</span>
+            </div>
+          </div>
+        </div>
+
+        <div class="bg-white rounded-2xl border border-slate-200/80 p-4 sm:p-5 shadow-sm hover:shadow-md transition-all flex flex-col sm:flex-row items-center gap-4">
+          <div class="relative w-full sm:w-36 h-28 flex-shrink-0 rounded-xl overflow-hidden bg-slate-900">
+            <img src="/static/images/blog-thumb2.jpg" alt="Blog 2" class="w-full h-full object-cover">
+            <span class="absolute bottom-2 left-2 bg-primary text-white font-bold text-[10px] px-2 py-0.5 rounded">
+              technology
+            </span>
+          </div>
+          <div class="flex-grow w-full">
+            <h4 class="text-sm sm:text-base font-extrabold text-[#0B1B3D] leading-snug mb-3 hover:text-primary transition-colors cursor-pointer">
+              WordPress 6.0 release candidate why you should test it
+            </h4>
+            <div class="flex items-center justify-between text-xs text-slate-500">
+              <div class="flex items-center gap-2">
+                <div class="w-6 h-6 rounded-full bg-slate-200 flex items-center justify-center font-bold text-slate-700 text-[10px]">
+                  FM
+                </div>
+                <span class="font-bold text-slate-800 text-xs">Francisco Murphy</span>
+                <span class="text-slate-400 text-[11px]">03 May 2022</span>
+              </div>
+              <span class="text-[11px] text-slate-400 font-semibold">&hearts; 4.6k likes</span>
+            </div>
+          </div>
+        </div>
+
+        <div class="bg-white rounded-2xl border border-slate-200/80 p-4 sm:p-5 shadow-sm hover:shadow-md transition-all flex flex-col sm:flex-row items-center gap-4">
+          <div class="relative w-full sm:w-36 h-28 flex-shrink-0 rounded-xl overflow-hidden bg-slate-900">
+            <img src="/static/images/blog-thumb3.jpg" alt="Blog 3" class="w-full h-full object-cover">
+            <span class="absolute bottom-2 left-2 bg-primary text-white font-bold text-[10px] px-2 py-0.5 rounded">
+              Technology
+            </span>
+          </div>
+          <div class="flex-grow w-full">
+            <h4 class="text-sm sm:text-base font-extrabold text-[#0B1B3D] leading-snug mb-3 hover:text-primary transition-colors cursor-pointer">
+              WordPress 6.0 release candidate why you should test it
+            </h4>
+            <div class="flex items-center justify-between text-xs text-slate-500">
+              <div class="flex items-center gap-2">
+                <div class="w-6 h-6 rounded-full bg-slate-200 flex items-center justify-center font-bold text-slate-700 text-[10px]">
+                  VS
+                </div>
+                <span class="font-bold text-slate-800 text-xs">Victor Sheridan</span>
+                <span class="text-slate-400 text-[11px]">03 May 2022</span>
+              </div>
+              <span class="text-[11px] text-slate-400 font-semibold">&hearts; 4.6k likes</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div id="faq" class="pt-16 border-t border-slate-200">
+      <div class="text-center max-w-2xl mx-auto mb-12">
+        <h3 class="text-3xl font-black text-[#0B1B3D] tracking-tight mb-3">
+          Frequently Asked Questions
+        </h3>
+        <p class="text-sm text-slate-500">
+          Everything you need to know about our hosting plans, migrations, and billing.
+        </p>
+      </div>
+
+      <div class="max-w-3xl mx-auto space-y-4">
+        <div class="faq-item border border-slate-200 rounded-xl bg-slate-50/50 overflow-hidden transition-all">
+          <button type="button" class="faq-trigger w-full px-6 py-4 text-left font-bold text-slate-900 flex justify-between items-center text-sm sm:text-base focus:outline-none">
+            <span>How do I migrate my existing website to Cloudoon?</span>
+            <span class="text-primary transform transition-transform duration-200 text-xl leading-none">&plus;</span>
+          </button>
+          <div class="faq-content px-6 pb-4 text-xs sm:text-sm text-slate-500 leading-relaxed hidden">
+            Our migration specialists handle your full cPanel, WordPress, or database migration completely free of charge with zero downtime. Simply request a migration from your client portal after signup.
+          </div>
+        </div>
+
+        <div class="faq-item border border-slate-200 rounded-xl bg-slate-50/50 overflow-hidden transition-all">
+          <button type="button" class="faq-trigger w-full px-6 py-4 text-left font-bold text-slate-900 flex justify-between items-center text-sm sm:text-base focus:outline-none">
+            <span>What is included in the free domain registration?</span>
+            <span class="text-primary transform transition-transform duration-200 text-xl leading-none">&plus;</span>
+          </button>
+          <div class="faq-content px-6 pb-4 text-xs sm:text-sm text-slate-500 leading-relaxed hidden">
+            Annual and multi-year shared or cloud hosting packages qualify for a free .com, .org, or .net domain registration for the first year with DNS management and privacy protection included.
+          </div>
+        </div>
+
+        <div class="faq-item border border-slate-200 rounded-xl bg-slate-50/50 overflow-hidden transition-all">
+          <button type="button" class="faq-trigger w-full px-6 py-4 text-left font-bold text-slate-900 flex justify-between items-center text-sm sm:text-base focus:outline-none">
+            <span>How do daily backups and automated SSL work?</span>
+            <span class="text-primary transform transition-transform duration-200 text-xl leading-none">&plus;</span>
+          </button>
+          <div class="faq-content px-6 pb-4 text-xs sm:text-sm text-slate-500 leading-relaxed hidden">
+            We run automated incremental nightly backups stored in redundant off-site datacenters. Free Let's Encrypt SSL certificates are provisioned automatically when your domain points to our nameservers.
+          </div>
+        </div>
+
+        <div class="faq-item border border-slate-200 rounded-xl bg-slate-50/50 overflow-hidden transition-all">
+          <button type="button" class="faq-trigger w-full px-6 py-4 text-left font-bold text-slate-900 flex justify-between items-center text-sm sm:text-base focus:outline-none">
+            <span>Can I upgrade my hosting plan at any time?</span>
+            <span class="text-primary transform transition-transform duration-200 text-xl leading-none">&plus;</span>
+          </button>
+          <div class="faq-content px-6 pb-4 text-xs sm:text-sm text-slate-500 leading-relaxed hidden">
+            Yes, upgrades between shared, VPS, and dedicated tiers are seamless and prorated. You can scale CPU, RAM, and storage instantly without changing IP addresses or losing data.
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+{% endblock %}

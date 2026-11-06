@@ -1,0 +1,338 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>{% if order %}Invoice #INV-{{ order.order_number }} | Cloudoon{% else %}Sales Report | Cloudoon{% endif %}</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=JetBrains+Mono:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <script src="https://cdn.tailwindcss.com"></script>
+  <style>
+    @page {
+      size: A4 portrait;
+      margin: 0;
+    }
+    body {
+      font-family: 'Inter', sans-serif;
+      color: #0f172a;
+      background-color: #f1f5f9;
+      -webkit-font-smoothing: antialiased;
+    }
+    .font-mono {
+      font-family: 'JetBrains Mono', monospace;
+    }
+    @media print {
+      html, body {
+        background-color: #ffffff !important;
+        padding: 0 !important;
+        margin: 0 !important;
+        -webkit-print-color-adjust: exact !important;
+        print-color-adjust: exact !important;
+      }
+      .no-print {
+        display: none !important;
+      }
+      .invoice-canvas {
+        box-shadow: none !important;
+        border: none !important;
+        border-radius: 0 !important;
+        max-width: 100% !important;
+        width: 100% !important;
+        margin: 0 !important;
+        padding: 18mm 18mm !important;
+      }
+    }
+  </style>
+</head>
+<body class="py-8 px-4 sm:px-6 lg:px-8 min-h-screen">
+
+  <div class="max-w-4xl mx-auto mb-6 no-print flex flex-wrap items-center justify-between gap-4">
+    <a href="/" class="inline-flex items-center gap-2 text-xs font-bold text-slate-700 hover:text-slate-900 bg-white border border-slate-200 rounded-xl px-4 py-2.5 shadow-sm transition-all hover:bg-slate-50">
+      &larr; Return to Cloudoon
+    </a>
+    <div class="flex items-center gap-3">
+      {% if is_sales_report %}
+      <a href="/checkout" class="text-xs font-bold text-slate-700 bg-white border border-slate-200 rounded-xl px-4 py-2.5 shadow-sm hover:bg-slate-50 transition-all">
+        New Order
+      </a>
+      {% else %}
+      <a href="/sales-report" class="text-xs font-bold text-slate-700 bg-white border border-slate-200 rounded-xl px-4 py-2.5 shadow-sm hover:bg-slate-50 transition-all">
+        All Records
+      </a>
+      {% endif %}
+      <button onclick="window.print()" class="inline-flex items-center gap-2 text-xs font-bold text-white bg-[#395AF4] hover:bg-[#2945d8] rounded-xl px-5 py-2.5 shadow-sm shadow-blue-500/20 cursor-pointer transition-all">
+        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 17h2a2 2 0 002-2v-4a2 2 0 00-2-2H5a2 2 0 00-2 2v4a2 2 0 002 2h2m2 4h6a2 2 0 002-2v-4a2 2 0 00-2-2H9a2 2 0 00-2 2v4a2 2 0 002 2zm8-12V5a2 2 0 00-2-2H9a2 2 0 00-2 2v4h10z"/></svg>
+        Print / Save as PDF
+      </button>
+    </div>
+  </div>
+
+  {% if is_sales_report %}
+  <div class="max-w-5xl mx-auto bg-white rounded-2xl border border-slate-200 p-6 sm:p-10 shadow-sm invoice-canvas">
+    <div class="flex flex-col sm:flex-row justify-between items-start gap-4 pb-6 border-b border-slate-200">
+      <div class="flex items-center gap-3">
+        <div class="w-10 h-10 rounded-xl bg-[#395AF4] flex items-center justify-center text-white font-black text-lg">C</div>
+        <div>
+          <h1 class="text-xl sm:text-2xl font-black text-slate-900 tracking-tight">Cloudoon Sales Register</h1>
+          <p class="text-xs text-slate-500">Consolidated Transaction Summary</p>
+        </div>
+      </div>
+      <div class="text-left sm:text-right text-xs text-slate-500">
+        <p class="font-bold text-slate-900">Total Orders: {{ orders|length }}</p>
+        <p>Verified Records</p>
+      </div>
+    </div>
+
+    <div class="mt-6 overflow-x-auto">
+      <table class="w-full text-left text-xs border-collapse">
+        <thead>
+          <tr class="bg-slate-50 border-y border-slate-200 text-[11px] font-bold text-slate-600 uppercase tracking-wider">
+            <th class="py-3 px-3.5">Order #</th>
+            <th class="py-3 px-3.5">Date</th>
+            <th class="py-3 px-3.5">Customer</th>
+            <th class="py-3 px-3.5">Payment Method</th>
+            <th class="py-3 px-3.5">Status</th>
+            <th class="py-3 px-3.5 text-right">Total Paid</th>
+            <th class="py-3 px-3.5 text-center">Action</th>
+          </tr>
+        </thead>
+        <tbody class="divide-y divide-slate-100 text-slate-700 font-medium">
+          {% for o in orders %}
+          <tr class="hover:bg-slate-50/60 transition-colors">
+            <td class="py-3.5 px-3.5 font-bold text-[#395AF4] font-mono">
+              <a href="/invoice/{{ o.order_number }}" class="hover:underline">#INV-{{ o.order_number }}</a>
+            </td>
+            <td class="py-3.5 px-3.5 whitespace-nowrap text-slate-600">{{ o.display_date or o.created_at }}</td>
+            <td class="py-3.5 px-3.5 font-semibold text-slate-900">{{ o.customer_name }}</td>
+            <td class="py-3.5 px-3.5">{{ o.payment_method }}</td>
+            <td class="py-3.5 px-3.5">
+              <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-[10px] font-bold bg-emerald-50 text-emerald-700 border border-emerald-200">
+                Completed
+              </span>
+            </td>
+            <td class="py-3.5 px-3.5 text-right font-bold text-slate-900 font-mono">
+              {{ o.currency_symbol }}{{ "%.2f"|format(o.total_due_today) }}
+            </td>
+            <td class="py-3.5 px-3.5 text-center">
+              <a href="/invoice/{{ o.order_number }}" class="text-xs font-bold text-[#395AF4] hover:text-[#2945d8] hover:underline">View Document</a>
+            </td>
+          </tr>
+          {% endfor %}
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  {% elif order %}
+  <div class="max-w-4xl mx-auto bg-white rounded-2xl border border-slate-200 p-8 sm:p-14 shadow-sm invoice-canvas">
+
+    <div class="flex flex-col sm:flex-row justify-between items-start gap-8 pb-8 border-b border-slate-200">
+      <div>
+        <div class="flex items-center gap-3">
+          <div class="w-10 h-10 rounded-xl bg-[#395AF4] flex items-center justify-center text-white font-black text-lg shadow-sm shadow-blue-500/20">C</div>
+          <div>
+            <span class="text-xl font-black text-slate-900 tracking-tight block">CLOUDOON</span>
+            <span class="text-[11px] font-semibold text-slate-400 block -mt-0.5">Cloud Hosting & Infrastructure</span>
+          </div>
+        </div>
+        <div class="mt-4 space-y-0.5 text-xs text-slate-500 leading-relaxed">
+          <p class="font-medium text-slate-700">Cloudoon Technologies Limited</p>
+          <p>Nairobi, Kenya</p>
+          <p>support@cloudoon.com &bull; +254 718 080 850</p>
+          <p class="text-[11px] text-slate-400">PIN: P051982341M &bull; VAT Registered</p>
+        </div>
+      </div>
+
+      <div class="text-left sm:text-right space-y-1.5">
+        <div class="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-bold bg-emerald-50 text-emerald-700 border border-emerald-200">
+          <span class="w-1.5 h-1.5 rounded-full bg-emerald-500"></span>
+          <span>&check; PAID IN FULL</span>
+        </div>
+        <h1 class="text-2xl sm:text-3xl font-black text-slate-900 tracking-tight font-mono">#INV-{{ order.order_number }}</h1>
+        <div class="text-xs text-slate-500 space-y-0.5 pt-1">
+          <p><span class="font-semibold text-slate-700">Invoice Date:</span> {{ invoice_date }}</p>
+          <p><span class="font-semibold text-slate-700">Payment Date:</span> {{ invoice_date }}</p>
+        </div>
+      </div>
+    </div>
+
+    <div class="mt-8 grid grid-cols-1 sm:grid-cols-2 gap-6">
+      <div class="p-5 rounded-xl border border-slate-100 bg-slate-50/70">
+        <div class="text-[11px] font-bold uppercase tracking-wider text-slate-400 mb-2">Billed To</div>
+        <div class="text-sm font-bold text-slate-900 mb-1">
+          {{ order.customer_name or (order.customer.name if order.customer else 'Valued Client') }}
+        </div>
+        <div class="text-xs text-slate-600 space-y-0.5">
+          <p class="text-slate-700">{{ order.customer_email or (order.customer.email if order.customer else '') }}</p>
+          {% if order.customer_phone or (order.customer and order.customer.phone) %}
+          <p class="font-mono">{{ order.customer_phone or order.customer.phone }}</p>
+          {% endif %}
+          <p>{{ order.customer_address or 'Nairobi' }}{% if order.customer_country %}, {{ order.customer_country }}{% endif %}</p>
+        </div>
+      </div>
+
+      <div class="p-5 rounded-xl border border-slate-100 bg-slate-50/70">
+        <div class="text-[11px] font-bold uppercase tracking-wider text-slate-400 mb-2">Payment & Service Plan</div>
+        <div class="text-xs text-slate-600 space-y-1.5">
+          <div class="flex justify-between items-center">
+            <span class="text-slate-500">Payment Method:</span>
+            <span class="font-bold text-slate-800">{{ order.payment_method or (order.payment.method if order.payment else 'M-Pesa') }}</span>
+          </div>
+          <div class="flex justify-between items-center">
+            <span class="text-slate-500">Billing Term:</span>
+            <span class="font-bold text-slate-800">{{ order.billing_cycle_months }} Months</span>
+          </div>
+          <div class="flex justify-between items-center">
+            <span class="text-slate-500">Service Status:</span>
+            <span class="font-bold text-emerald-700">Active & Provisioned</span>
+          </div>
+          {% if order.renewal_date %}
+          <div class="flex justify-between items-center pt-1 border-t border-slate-200/60">
+            <span class="text-slate-500">Next Renewal:</span>
+            <span class="font-semibold text-slate-700">{{ order.renewal_date }}</span>
+          </div>
+          {% endif %}
+        </div>
+      </div>
+    </div>
+
+    <div class="mt-8">
+      <div class="text-xs font-bold uppercase tracking-wider text-slate-400 mb-3">Itemized Services & Infrastructure Breakdown</div>
+      <div class="overflow-x-auto border border-slate-200 rounded-xl">
+        <table class="w-full text-left text-xs border-collapse">
+          <thead>
+            <tr class="bg-slate-50 border-b border-slate-200 text-[11px] font-bold text-slate-700">
+              <th class="py-3 px-4">#</th>
+              <th class="py-3 px-4">Description / Provisioned Service</th>
+              <th class="py-3 px-4">Term</th>
+              <th class="py-3 px-4 text-right">Renewal Rate</th>
+              <th class="py-3 px-4 text-right">Total Amount</th>
+            </tr>
+          </thead>
+          <tbody class="divide-y divide-slate-100 text-slate-700">
+            {% if items %}
+              {% for item in items %}
+              <tr class="hover:bg-slate-50/40">
+                <td class="py-3.5 px-4 font-mono text-slate-400">{{ loop.index }}</td>
+                <td class="py-3.5 px-4">
+                  <div class="font-bold text-slate-900">{{ item.name }}</div>
+                  <div class="text-[11px] text-slate-400 uppercase tracking-wide">{{ item.category or 'Hosting Service' }}</div>
+                </td>
+                <td class="py-3.5 px-4 whitespace-nowrap">
+                  {% if item.is_yearly %}
+                  1 Year
+                  {% else %}
+                  {{ order.billing_cycle_months }} Months
+                  {% endif %}
+                </td>
+                <td class="py-3.5 px-4 text-right font-mono text-slate-500">
+                  {{ order.currency_symbol }}{{ "%.2f"|format(item.monthly_renewal if item.monthly_renewal is defined else item.monthly_base) }}{% if not item.is_yearly %}/mo{% else %}/yr{% endif %}
+                </td>
+                <td class="py-3.5 px-4 text-right font-bold text-slate-900 font-mono">
+                  {{ order.currency_symbol }}{{ "%.2f"|format(item.item_total if item.item_total is defined else item.monthly_base * order.billing_cycle_months) }}
+                </td>
+              </tr>
+              {% endfor %}
+            {% elif order['items'] %}
+              {% for item in order['items'] %}
+              <tr class="hover:bg-slate-50/40">
+                <td class="py-3.5 px-4 font-mono text-slate-400">{{ loop.index }}</td>
+                <td class="py-3.5 px-4">
+                  <div class="font-bold text-slate-900">{{ item.name }}</div>
+                  <div class="text-[11px] text-slate-400 uppercase tracking-wide">{{ item.category or 'Hosting Service' }}</div>
+                </td>
+                <td class="py-3.5 px-4 whitespace-nowrap">
+                  {% if item.is_yearly %}
+                  1 Year
+                  {% else %}
+                  {{ order.billing_cycle_months }} Months
+                  {% endif %}
+                </td>
+                <td class="py-3.5 px-4 text-right font-mono text-slate-500">
+                  {{ order.currency_symbol }}{{ "%.2f"|format(item.monthly_renewal if item.monthly_renewal is defined else item.monthly_base) }}{% if not item.is_yearly %}/mo{% else %}/yr{% endif %}
+                </td>
+                <td class="py-3.5 px-4 text-right font-bold text-slate-900 font-mono">
+                  {{ order.currency_symbol }}{{ "%.2f"|format(item.item_total if item.item_total is defined else item.monthly_base * order.billing_cycle_months) }}
+                </td>
+              </tr>
+              {% endfor %}
+            {% else %}
+              <tr>
+                <td class="py-3.5 px-4 font-mono text-slate-400">1</td>
+                <td class="py-3.5 px-4">
+                  <div class="font-bold text-slate-900">{{ order.customer_name }} Cloud Hosting Subscription</div>
+                  <div class="text-[11px] text-slate-400 uppercase tracking-wide">{{ order.sale_type or 'Managed Infrastructure' }}</div>
+                </td>
+                <td class="py-3.5 px-4">{{ order.billing_cycle_months }} Months</td>
+                <td class="py-3.5 px-4 text-right font-mono text-slate-500">{{ order.currency_symbol }}{{ "%.2f"|format(order.renews_at_total / (order.billing_cycle_months or 1)) }}/mo</td>
+                <td class="py-3.5 px-4 text-right font-bold text-slate-900 font-mono">{{ order.currency_symbol }}{{ "%.2f"|format(order.subtotal) }}</td>
+              </tr>
+            {% endif %}
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+    <div class="mt-6 flex flex-col sm:flex-row justify-between items-start sm:items-start gap-6">
+      <div class="w-full sm:max-w-xs space-y-3">
+        {% if order.renewal_date %}
+        <div class="p-4 rounded-xl border border-slate-200 bg-slate-50/60 text-xs text-slate-600">
+          <div class="font-bold text-slate-800 mb-1 flex items-center gap-1.5">
+            <svg class="w-3.5 h-3.5 text-[#395AF4]" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
+            <span>Renewal Entitlement</span>
+          </div>
+          <p class="text-[11px] leading-relaxed">
+            Subscription auto-renews on <strong class="text-slate-900">{{ order.renewal_date }}</strong> at <strong class="text-slate-900">{{ order.currency_symbol }}{{ "%.2f"|format(order.renews_at_total) }}</strong>. Manage renewal preferences anytime from your dashboard.
+          </p>
+        </div>
+        {% endif %}
+      </div>
+
+      <div class="w-full sm:w-80 bg-slate-50/80 rounded-xl p-5 border border-slate-200 text-xs space-y-2.5">
+        <div class="flex justify-between text-slate-600">
+          <span>Subtotal:</span>
+          <span class="font-mono font-semibold text-slate-900">{{ order.currency_symbol }}{{ "%.2f"|format(order.subtotal) }}</span>
+        </div>
+        {% if order.discount and order.discount > 0 %}
+        <div class="flex justify-between text-emerald-700 font-medium">
+          <span>Term & Promo Savings:</span>
+          <span class="font-mono">-{{ order.currency_symbol }}{{ "%.2f"|format(order.discount) }}</span>
+        </div>
+        {% endif %}
+        <div class="flex justify-between text-slate-600">
+          <span>Estimated VAT (16%):</span>
+          <span class="font-mono font-semibold text-slate-900">{{ order.currency_symbol }}{{ "%.2f"|format(order.tax) }}</span>
+        </div>
+        <div class="pt-2.5 border-t border-slate-200 flex justify-between items-baseline text-sm font-extrabold text-slate-900">
+          <span>Total Paid Today:</span>
+          <span class="font-mono text-lg text-[#395AF4]">{{ order.currency_symbol }}{{ "%.2f"|format(order.total_due_today) }}</span>
+        </div>
+        <div class="flex justify-between text-slate-500 text-[11px] pt-0.5">
+          <span>Balance Due:</span>
+          <span class="font-mono font-bold text-emerald-700">{{ order.currency_symbol }}0.00</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="mt-12 pt-6 border-t border-slate-200 flex flex-col sm:flex-row items-center justify-between text-xs text-slate-500 gap-4">
+      <div>
+        Thank you for choosing <strong class="text-slate-800">Cloudoon</strong>. For questions, email <span class="text-slate-700 font-medium">support@cloudoon.com</span>.
+      </div>
+    </div>
+
+  </div>
+
+  {% else %}
+  <div class="max-w-xl mx-auto bg-white rounded-2xl border border-slate-200 p-8 text-center shadow-sm invoice-canvas">
+    <div class="w-12 h-12 rounded-full bg-rose-50 text-rose-600 flex items-center justify-center mx-auto mb-3 font-bold text-lg">&times;</div>
+    <h1 class="text-lg font-bold text-slate-900 mb-1">Invoice Not Found</h1>
+    <p class="text-xs text-slate-500 mb-5">The requested invoice reference could not be located in our records.</p>
+    <a href="/checkout" class="inline-flex items-center gap-1.5 text-xs font-bold text-white bg-[#395AF4] hover:bg-[#2945d8] rounded-xl px-5 py-2.5 shadow-sm">
+      Return to Checkout
+    </a>
+  </div>
+  {% endif %}
+
+</body>
+</html>

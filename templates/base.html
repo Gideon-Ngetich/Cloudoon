@@ -1,0 +1,551 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>{% block title %}Cloudoon | Next-Gen Cloud & Web Hosting Platform{% endblock %}</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          colors: {
+            primary: {
+              DEFAULT: '#395AF4',
+              hover: '#2945d8',
+              light: '#eff3ff',
+              dark: '#1e38b8'
+            },
+            accent: {
+              DEFAULT: '#E7A403',
+              hover: '#c98e02',
+              text: '#1A1A1A'
+            },
+            dark: {
+              900: '#0b0f19',
+              800: '#111827',
+              700: '#1f2937'
+            }
+          },
+          fontFamily: {
+            sans: ['Inter', 'sans-serif']
+          }
+        }
+      }
+    }
+  </script>
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/styles.css') }}">
+  {% block extra_head %}{% endblock %}
+</head>
+<body class="bg-[#fafbfd] text-slate-900 flex flex-col min-h-screen">
+  <div id="navbar-outer" class="w-full bg-[#070a14] pt-2 pb-1 relative z-50">
+    <header id="main-header" class="navbar-wrapper navbar-floating grid grid-cols-2 lg:grid-cols-[1fr_auto_1fr] items-center gap-4">
+      <div class="flex items-center gap-3 justify-self-start">
+        <a href="/" class="flex items-center gap-2.5 focus:outline-none" aria-label="Cloudoon Home">
+          <div class="w-10 h-10 flex-shrink-0 flex items-center justify-center text-white">
+            <svg class="w-10 h-10 text-primary drop-shadow-md" viewBox="0 0 100 100" fill="currentColor">
+              <path d="M50 2 L93 26 L93 74 L50 98 L7 74 L7 26 Z" />
+              <path d="M38 35 C38 35 62 35 62 35 C62 42 50 42 50 42 C44 42 44 58 50 58 C62 58 62 65 62 65 C62 65 38 65 38 65" fill="none" stroke="#ffffff" stroke-width="8" stroke-linecap="round" stroke-linejoin="round"/>
+            </svg>
+          </div>
+          <span class="text-2xl font-black tracking-tight text-slate-950 uppercase font-sans">
+            Cloudoon
+          </span>
+        </a>
+      </div>
+
+      <nav class="hidden lg:flex items-center justify-center gap-7 text-sm font-semibold text-slate-700 justify-self-center" aria-label="Main Navigation">
+        <div class="relative group">
+          <a href="/" class="flex items-center gap-1 hover:text-primary transition-colors py-2">
+            <span>Home</span>
+            <svg class="w-3.5 h-3.5 text-slate-400 group-hover:text-primary transition-transform group-hover:rotate-180" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M19 9l-7 7-7-7"/></svg>
+          </a>
+          <div class="absolute top-full left-0 hidden group-hover:block w-48 bg-white border border-slate-200 rounded-xl shadow-xl py-2 z-50">
+            <a href="/#hero" class="block px-4 py-2 text-xs font-medium text-slate-700 hover:text-primary hover:bg-slate-50">Domain Search</a>
+            <a href="/#pricing" class="block px-4 py-2 text-xs font-medium text-slate-700 hover:text-primary hover:bg-slate-50">Hosting Packages</a>
+            <a href="/#features" class="block px-4 py-2 text-xs font-medium text-slate-700 hover:text-primary hover:bg-slate-50">Key Features</a>
+          </div>
+        </div>
+
+        <a href="/#features" class="hover:text-primary transition-colors py-2">About</a>
+
+        <div class="relative group">
+          <button class="flex items-center gap-1 hover:text-primary transition-colors py-2 focus:outline-none">
+            <span>Hosting</span>
+            <svg class="w-3.5 h-3.5 text-slate-400 group-hover:text-primary transition-transform group-hover:rotate-180" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M19 9l-7 7-7-7"/></svg>
+          </button>
+          <div class="absolute top-full left-0 hidden group-hover:block w-52 bg-white border border-slate-200 rounded-xl shadow-xl py-2 z-50">
+            <a href="/checkout?tab=shared" class="block px-4 py-2.5 text-xs font-semibold text-slate-700 hover:text-primary hover:bg-slate-50">Shared Hosting</a>
+            <a href="/checkout?tab=vps" class="block px-4 py-2.5 text-xs font-semibold text-slate-700 hover:text-primary hover:bg-slate-50">VPS Cloud Servers</a>
+            <a href="/checkout?tab=dedicated" class="block px-4 py-2.5 text-xs font-semibold text-slate-700 hover:text-primary hover:bg-slate-50">Dedicated Servers</a>
+            <a href="/checkout?tab=cloud" class="block px-4 py-2.5 text-xs font-semibold text-slate-700 hover:text-primary hover:bg-slate-50">Managed Cloud Stack</a>
+          </div>
+        </div>
+
+        <a href="/checkout?tab=domains" class="hover:text-primary transition-colors py-2">Domain</a>
+
+        <div class="relative group">
+          <button class="flex items-center gap-1 hover:text-primary transition-colors py-2 focus:outline-none">
+            <span>Pages</span>
+            <svg class="w-3.5 h-3.5 text-slate-400 group-hover:text-primary transition-transform group-hover:rotate-180" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M19 9l-7 7-7-7"/></svg>
+          </button>
+          <div class="absolute top-full left-0 hidden group-hover:block w-52 bg-white border border-slate-200 rounded-xl shadow-xl py-2 z-50">
+            <a href="/dashboard" class="block px-4 py-2 text-xs font-semibold text-slate-700 hover:text-primary hover:bg-slate-50">Client Dashboard</a>
+            <a href="/sales-report" class="block px-4 py-2 text-xs font-semibold text-slate-700 hover:text-primary hover:bg-slate-50">Cash Sales Report</a>
+            <a href="/checkout" class="block px-4 py-2 text-xs font-semibold text-slate-700 hover:text-primary hover:bg-slate-50">Checkout Configurator</a>
+            <a href="/login" class="block px-4 py-2 text-xs font-semibold text-slate-700 hover:text-primary hover:bg-slate-50">Account Login</a>
+            <a href="/register" class="block px-4 py-2 text-xs font-semibold text-slate-700 hover:text-primary hover:bg-slate-50">User Registration</a>
+          </div>
+        </div>
+      </nav>
+
+      <div class="flex items-center gap-3 justify-self-end">
+        <button type="button" id="theme-toggle-btn" class="text-slate-600 hover:text-slate-900 p-2 rounded-lg focus:outline-none cursor-pointer" aria-label="Toggle Night Mode">
+          <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20.354 15.354A9 9 0 018.646 3.646 9.003 9.003 0 0012 21a9.003 9.003 0 008.354-5.646z"/></svg>
+        </button>
+
+        <button type="button" id="nav-search-trigger" class="text-slate-600 hover:text-slate-900 p-2 rounded-lg focus:outline-none cursor-pointer" aria-label="Search Domains">
+          <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"/></svg>
+        </button>
+
+        <div class="h-5 w-px bg-slate-200"></div>
+
+        <button type="button" id="nav-cart-pill" class="flex items-center gap-1.5 text-xs font-bold text-slate-700 hover:text-primary cursor-pointer p-1.5 rounded-lg hover:bg-slate-100 transition-colors" aria-label="Shopping Cart">
+          <svg class="w-4 h-4 text-primary" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 11V7a4 4 0 00-8 0v4M5 9h14l1 12H4L5 9z" />
+          </svg>
+          <span id="nav-cart-count" class="bg-primary text-white text-[11px] font-bold px-1.5 py-0.2 rounded-full">1</span>
+        </button>
+
+        <div class="relative">
+          <label for="currency-selector" class="sr-only">Choose Currency</label>
+          <select id="currency-selector" class="bg-slate-100 text-slate-800 text-xs font-bold rounded-lg px-2 py-1.5 border border-slate-200 focus:outline-none cursor-pointer appearance-none pr-6" aria-label="Select Currency">
+            <option value="KES">KES</option>
+            <option value="USD">USD</option>
+            <option value="EUR">EUR</option>
+            <option value="GBP">GBP</option>
+          </select>
+          <div class="pointer-events-none absolute inset-y-0 right-0 flex items-center px-1.5 text-slate-500">
+            <svg class="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/></svg>
+          </div>
+        </div>
+
+        <button id="mobile-menu-btn" class="lg:hidden text-slate-700 hover:text-slate-900 p-1 rounded-lg focus:outline-none" aria-label="Open Mobile Menu" aria-expanded="false">
+          <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M4 6h16M4 12h16M4 18h16"/></svg>
+        </button>
+
+        {% if current_user %}
+        <div class="relative group">
+          <a href="/dashboard" class="flex items-center gap-2 py-1 px-2.5 rounded-full bg-blue-50/80 hover:bg-blue-100 border border-blue-200/60 transition-all cursor-pointer">
+            <div class="w-8 h-8 rounded-full bg-gradient-to-tr from-primary to-blue-400 text-white font-black text-xs flex items-center justify-center shadow-xs">
+              {{ (current_user.full_name[0] if current_user.full_name else current_user.email[0])|upper }}
+            </div>
+            <span class="hidden sm:inline text-xs font-bold text-slate-900 max-w-[110px] truncate">
+              {{ current_user.full_name.split()[0] if current_user.full_name else 'Account' }}
+            </span>
+            <svg class="w-3.5 h-3.5 text-slate-400 group-hover:text-primary transition-transform group-hover:rotate-180" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M19 9l-7 7-7-7"/></svg>
+          </a>
+          <div class="absolute right-0 top-full mt-2 hidden group-hover:block w-48 bg-white border border-slate-200 rounded-xl shadow-xl py-2 z-50">
+            <div class="px-4 py-2 border-b border-slate-100">
+              <div class="text-xs font-bold text-slate-900 truncate">{{ current_user.full_name }}</div>
+              <div class="text-[11px] text-slate-400 truncate">{{ current_user.email }}</div>
+            </div>
+            <a href="/dashboard" class="block px-4 py-2 text-xs font-semibold text-slate-700 hover:text-primary hover:bg-slate-50">Dashboard</a>
+            <a href="/sales-report" class="block px-4 py-2 text-xs font-semibold text-slate-700 hover:text-primary hover:bg-slate-50">My Invoices</a>
+            <a href="/logout" class="block px-4 py-2 text-xs font-semibold text-rose-600 hover:bg-rose-50">Log Out</a>
+          </div>
+        </div>
+        {% else %}
+        <a href="/login" class="hidden sm:inline-block text-xs font-bold text-slate-700 hover:text-primary transition-colors py-2 px-1">
+          Log in
+        </a>
+        <a href="/register" class="hidden sm:inline-flex items-center justify-center bg-accent hover:bg-accent-hover text-accent-text font-black text-sm px-6 py-2.5 rounded-xl shadow-md shadow-amber-500/25 transition-all cursor-pointer">
+          Get Started
+        </a>
+        {% endif %}
+      </div>
+    </header>
+
+    <div id="mobile-nav" class="hidden lg:hidden max-w-7xl mx-auto px-4 pt-3 pb-5 space-y-2 bg-white text-slate-900 rounded-2xl mt-2 shadow-2xl border border-slate-200">
+      <a href="/" class="block px-3 py-2 text-sm font-semibold text-slate-800 hover:bg-slate-50 rounded-lg">Home</a>
+      <a href="/#pricing" class="block px-3 py-2 text-sm font-semibold text-slate-800 hover:bg-slate-50 rounded-lg">Hosting Packages</a>
+      <a href="/checkout?tab=domains" class="block px-3 py-2 text-sm font-semibold text-slate-800 hover:bg-slate-50 rounded-lg">Domain Registration</a>
+      <a href="/dashboard" class="block px-3 py-2 text-sm font-semibold text-slate-800 hover:bg-slate-50 rounded-lg">Client Dashboard</a>
+      <a href="/sales-report" class="block px-3 py-2 text-sm font-semibold text-slate-800 hover:bg-slate-50 rounded-lg">Invoices</a>
+      <a href="/#features" class="block px-3 py-2 text-sm font-semibold text-slate-800 hover:bg-slate-50 rounded-lg">About & Features</a>
+      {% if current_user %}
+      <div class="pt-3 border-t border-slate-100 flex items-center justify-between">
+        <div class="flex items-center gap-2.5">
+          <div class="w-8 h-8 rounded-full bg-primary text-white font-extrabold text-xs flex items-center justify-center">
+            {{ (current_user.full_name[0] if current_user.full_name else 'C')|upper }}
+          </div>
+          <div>
+            <div class="text-xs font-bold text-slate-900">{{ current_user.full_name }}</div>
+            <div class="text-[10px] text-slate-500">{{ current_user.email }}</div>
+          </div>
+        </div>
+        <a href="/logout" class="text-xs font-bold text-rose-600 hover:underline">Log Out</a>
+      </div>
+      {% else %}
+      <div class="pt-3 border-t border-slate-100 flex items-center gap-3">
+        <a href="/login" class="flex-1 text-center py-2.5 text-xs font-bold text-slate-700 bg-slate-100 rounded-lg">Log in</a>
+        <a href="/register" class="flex-1 text-center py-2.5 text-xs font-bold text-white bg-primary rounded-lg shadow-sm">Get Started</a>
+      </div>
+      {% endif %}
+    </div>
+  </div>
+
+  <main class="flex-grow">
+    {% block content %}{% endblock %}
+  </main>
+
+  <footer class="bg-[#051336] text-white pt-16 pb-8 border-t border-blue-900/40">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-12 gap-10 pb-14 border-b border-white/10">
+        <div class="lg:col-span-4 space-y-5">
+          <a href="/" class="flex items-center gap-2.5 focus:outline-none" aria-label="Cloudoon Home">
+            <div class="w-10 h-10 flex-shrink-0 flex items-center justify-center text-white">
+              <svg class="w-10 h-10 text-primary drop-shadow-md" viewBox="0 0 100 100" fill="currentColor">
+                <path d="M50 2 L93 26 L93 74 L50 98 L7 74 L7 26 Z" />
+                <path d="M38 35 C38 35 62 35 62 35 C62 42 50 42 50 42 C44 42 44 58 50 58 C62 58 62 65 62 65 C62 65 38 65 38 65" fill="none" stroke="#ffffff" stroke-width="8" stroke-linecap="round" stroke-linejoin="round"/>
+              </svg>
+            </div>
+            <span class="text-2xl font-black tracking-tight text-white uppercase font-sans">
+              Cloudoon
+            </span>
+          </a>
+
+          <p class="text-xs sm:text-sm text-slate-300 leading-relaxed max-w-sm">
+            My service is not something I even think about because it is always there as we agreed. The customer service is responsive and knowledge needs for.
+          </p>
+
+          <div>
+            <div class="flex items-center gap-3 text-xs font-bold text-white uppercase tracking-wider mb-3">
+              <span>Follow us on</span>
+              <span class="h-0.5 w-10 bg-primary inline-block"></span>
+            </div>
+            <div class="flex items-center gap-2.5">
+              <a href="#" class="w-9 h-9 rounded-full bg-primary hover:bg-primary-hover text-white flex items-center justify-center transition-transform hover:scale-110 shadow-md shadow-primary/30" aria-label="Facebook">
+                <svg class="w-4 h-4 fill-current" viewBox="0 0 24 24"><path d="M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.47h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.47h-2.796v8.385C19.612 23.027 24 18.062 24 12.073z"/></svg>
+              </a>
+              <a href="#" class="w-9 h-9 rounded-full bg-primary hover:bg-primary-hover text-white flex items-center justify-center transition-transform hover:scale-110 shadow-md shadow-primary/30" aria-label="Twitter">
+                <svg class="w-4 h-4 fill-current" viewBox="0 0 24 24"><path d="M23.953 4.57a10 10 0 01-2.825.775 4.958 4.958 0 002.163-2.723c-.951.555-2.005.959-3.127 1.184a4.92 4.92 0 00-8.384 4.482C7.69 8.095 4.067 6.13 1.64 3.162a4.822 4.822 0 00-.666 2.475c0 1.71.87 3.213 2.188 4.096a4.904 4.904 0 01-2.228-.616v.06a4.923 4.923 0 003.946 4.827 4.996 4.996 0 01-2.212.085 4.936 4.936 0 004.604 3.417 9.867 9.867 0 01-6.102 2.105c-.39 0-.779-.023-1.17-.067a13.995 13.995 0 007.557 2.209c9.053 0 13.998-7.496 13.998-13.985 0-.21 0-.42-.015-.63A9.936 9.936 0 0024 4.59z"/></svg>
+              </a>
+              <a href="#" class="w-9 h-9 rounded-full bg-primary hover:bg-primary-hover text-white flex items-center justify-center transition-transform hover:scale-110 shadow-md shadow-primary/30" aria-label="Instagram">
+                <svg class="w-4 h-4 fill-current" viewBox="0 0 24 24"><path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zm0-2.163c-3.259 0-3.667.014-4.947.072-4.358.2-6.78 2.618-6.98 6.98-.059 1.281-.073 1.689-.073 4.948 0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98 1.281.058 1.689.072 4.948.072 3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98-1.281-.059-1.69-.073-4.949-.073zm0 5.838c-3.403 0-6.162 2.759-6.162 6.162s2.759 6.163 6.162 6.163 6.162-2.759 6.162-6.163c0-3.403-2.759-6.162-6.162-6.162zm0 10.162c-2.209 0-4-1.79-4-4 0-2.209 1.791-4 4-4s4 1.791 4 4c0 2.21-1.791 4-4 4zm6.406-11.845c-.796 0-1.441.645-1.441 1.44s.645 1.44 1.441 1.44c.795 0 1.439-.645 1.439-1.44s-.644-1.44-1.439-1.44z"/></svg>
+              </a>
+              <a href="#" class="w-9 h-9 rounded-full bg-primary hover:bg-primary-hover text-white flex items-center justify-center transition-transform hover:scale-110 shadow-md shadow-primary/30" aria-label="LinkedIn">
+                <svg class="w-4 h-4 fill-current" viewBox="0 0 24 24"><path d="M19 0h-14c-2.761 0-5 2.239-5 5v14c0 2.761 2.239 5 5 5h14c2.762 0 5-2.239 5-5v-14c0-2.761-2.238-5-5-5zm-11 19h-3v-11h3v11zm-1.5-12.268c-.966 0-1.75-.79-1.75-1.764s.784-1.764 1.75-1.764 1.75.79 1.75 1.764-.783 1.764-1.75 1.764zm13.5 12.268h-3v-5.604c0-3.368-4-3.113-4 0v5.604h-3v-11h3v1.765c1.396-2.586 7-2.777 7 2.476v6.759z"/></svg>
+              </a>
+            </div>
+          </div>
+        </div>
+
+        <div class="lg:col-span-2 space-y-4">
+          <div class="text-base font-bold text-white tracking-wide">
+            <div>Quick Links</div>
+            <span class="h-0.5 w-8 bg-primary block mt-1.5"></span>
+          </div>
+          <ul class="space-y-2.5 text-xs sm:text-sm text-slate-300">
+            <li><a href="/#faq" class="hover:text-primary transition-colors">Support Center</a></li>
+            <li><a href="/#features" class="hover:text-primary transition-colors">About Us</a></li>
+            <li><a href="/#hero" class="hover:text-primary transition-colors">Search Domain</a></li>
+            <li><a href="/dashboard" class="hover:text-primary transition-colors">My Account</a></li>
+            <li><a href="/dashboard" class="hover:text-primary transition-colors">Customer Profiles</a></li>
+            <li><a href="/#faq" class="hover:text-primary transition-colors">Contact Us</a></li>
+          </ul>
+        </div>
+
+        <div class="lg:col-span-2 space-y-4">
+          <div class="text-base font-bold text-white tracking-wide">
+            <div>Services</div>
+            <span class="h-0.5 w-8 bg-primary block mt-1.5"></span>
+          </div>
+          <ul class="space-y-2.5 text-xs sm:text-sm text-slate-300">
+            <li><a href="/checkout?tab=shared" class="hover:text-primary transition-colors">Shared Hosting</a></li>
+            <li><a href="/checkout?tab=shared&plan=wordpress-pro" class="hover:text-primary transition-colors">WordPress Hosting</a></li>
+            <li><a href="/checkout?tab=vps" class="hover:text-primary transition-colors">VPS Hosting</a></li>
+            <li><a href="/checkout?tab=vps" class="hover:text-primary transition-colors">Game Hosting</a></li>
+            <li><a href="/checkout?tab=dedicated" class="hover:text-primary transition-colors">Dedicated Hosting</a></li>
+            <li><a href="/checkout?tab=domains" class="hover:text-primary transition-colors">Domain Name</a></li>
+          </ul>
+        </div>
+
+        <div class="lg:col-span-4 space-y-6">
+          <div class="space-y-4">
+            <div class="text-base font-bold text-white tracking-wide">
+              <div>Get In Touch</div>
+              <span class="h-0.5 w-8 bg-primary block mt-1.5"></span>
+            </div>
+            <form action="/checkout" method="GET" class="flex items-center bg-[#0B1E4D] rounded-xl border border-blue-900/60 p-1.5">
+              <input type="email" placeholder="Type Your Mail" class="w-full bg-transparent px-3 py-2 text-xs sm:text-sm text-white placeholder-slate-400 focus:outline-none" required>
+              <button type="submit" class="bg-primary hover:bg-primary-hover text-white font-bold text-xs px-5 py-2.5 rounded-lg shadow-md transition-colors whitespace-nowrap">
+                Subscribe
+              </button>
+            </form>
+          </div>
+
+          <div class="space-y-3">
+            <div class="flex items-center gap-3 text-xs font-bold text-white tracking-wider">
+              <span>We Accepted</span>
+              <span class="h-0.5 w-8 bg-primary inline-block"></span>
+            </div>
+            <div class="flex items-center gap-2">
+              <div class="w-14 h-9 bg-white rounded-lg flex items-center justify-center font-black text-blue-700 text-xs italic shadow-sm tracking-tighter">
+                VISA
+              </div>
+              <div class="w-14 h-9 bg-white rounded-lg flex items-center justify-center relative shadow-sm">
+                <div class="w-4 h-4 rounded-full bg-red-500 opacity-90 -mr-1.5"></div>
+                <div class="w-4 h-4 rounded-full bg-amber-400 opacity-90"></div>
+              </div>
+              <div class="w-16 h-9 bg-white rounded-lg flex items-center justify-center font-bold text-orange-600 text-[11px] shadow-sm tracking-tight">
+                Payoneer
+              </div>
+              <div class="w-14 h-9 bg-white rounded-lg flex items-center justify-center font-black text-blue-800 text-xs italic shadow-sm">
+                PayPal
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="pt-8 flex flex-col sm:flex-row items-center justify-between text-xs text-slate-400 gap-4">
+        <div>
+          Copyright 2026 Cloudoon. All Rights Reserved
+        </div>
+        <div class="flex items-center gap-6">
+          <a href="#" class="hover:text-white transition-colors">Terms &amp; Conditions</a>
+          <span class="text-slate-600">|</span>
+          <a href="#" class="hover:text-white transition-colors">Privacy Policy</a>
+        </div>
+      </div>
+    </div>
+  </footer>
+
+  <div id="cart-drawer-backdrop" class="fixed inset-0 bg-slate-950/40 backdrop-blur-xs z-50 transition-opacity duration-300 opacity-0 pointer-events-none"></div>
+
+  <aside id="cart-drawer" class="fixed inset-y-0 right-0 w-full sm:w-[420px] bg-white shadow-2xl z-50 transform translate-x-full transition-transform duration-300 ease-in-out flex flex-col pointer-events-none">
+    <div class="h-16 px-6 border-b border-slate-100 flex items-center justify-between flex-shrink-0 bg-white">
+      <div class="flex items-center gap-2.5">
+        <div class="w-8 h-8 rounded-lg bg-primary/10 text-primary flex items-center justify-center font-bold">
+          <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 11V7a4 4 0 00-8 0v4M5 9h14l1 12H4L5 9z"/></svg>
+        </div>
+        <div>
+          <h3 class="text-base font-black text-slate-900">Order Summary</h3>
+          <p class="text-[11px] text-slate-400"><span id="drawer-items-count">0</span> item(s) selected</p>
+        </div>
+      </div>
+      <button type="button" id="cart-drawer-close-btn" class="p-2 rounded-xl text-slate-400 hover:text-slate-700 hover:bg-slate-100 transition-colors cursor-pointer">
+        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/></svg>
+      </button>
+    </div>
+
+    <div class="flex-1 overflow-y-auto p-6 space-y-4">
+      <div id="drawer-items-list" class="space-y-3"></div>
+      <div id="drawer-empty-state" class="text-center py-12 space-y-3">
+        <div class="w-16 h-16 rounded-full bg-slate-100 text-slate-400 mx-auto flex items-center justify-center">
+          <svg class="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M16 11V7a4 4 0 00-8 0v4M5 9h14l1 12H4L5 9z"/></svg>
+        </div>
+        <p class="text-sm font-bold text-slate-700">Your cart is currently empty</p>
+        <p class="text-xs text-slate-400">Choose a hosting package or search for a domain to get started.</p>
+        <a href="/checkout" class="inline-block mt-2 text-xs font-bold text-primary hover:underline">Explore hosting packages &rarr;</a>
+      </div>
+      <div id="drawer-pricing-summary" class="border-t border-slate-100 pt-4 space-y-2 text-xs hidden">
+        <div class="flex justify-between text-slate-500">
+          <span>Subtotal</span>
+          <span id="drawer-subtotal" class="font-bold text-slate-900 font-mono">0.00</span>
+        </div>
+        <div class="flex justify-between text-emerald-600">
+          <span>Launch Discount (20%)</span>
+          <span id="drawer-discount" class="font-bold font-mono">-0.00</span>
+        </div>
+        <div class="flex justify-between text-slate-500">
+          <span>Estimated Tax (16%)</span>
+          <span id="drawer-tax" class="font-bold text-slate-900 font-mono">0.00</span>
+        </div>
+        <div class="flex justify-between text-sm font-black text-slate-900 pt-2 border-t border-slate-200">
+          <span>Total Due Today</span>
+          <span id="drawer-total" class="text-primary font-mono text-base font-black">0.00</span>
+        </div>
+      </div>
+    </div>
+
+    <div id="drawer-actions" class="p-6 border-t border-slate-100 space-y-2.5 bg-slate-50/50 flex-shrink-0">
+      <a href="/checkout" id="drawer-checkout-btn" class="w-full bg-primary hover:bg-primary-hover text-white font-extrabold text-sm py-3.5 px-6 rounded-xl text-center block shadow-lg shadow-primary/25 transition-all">
+        Checkout Now &rarr;
+      </a>
+      <a href="/checkout" id="drawer-edit-btn" class="w-full bg-white hover:bg-slate-100 border border-slate-300 text-slate-800 font-bold text-xs py-2.5 px-6 rounded-xl text-center block transition-all shadow-2xs">
+        Edit Selected Items
+      </a>
+    </div>
+  </aside>
+
+  <script src="{{ url_for('static', filename='js/landing.js') }}"></script>
+  <script>
+    (function() {
+      const drawer = document.getElementById('cart-drawer');
+      const backdrop = document.getElementById('cart-drawer-backdrop');
+      const closeBtn = document.getElementById('cart-drawer-close-btn');
+      const cartPill = document.getElementById('nav-cart-pill');
+      const drawerCount = document.getElementById('drawer-items-count');
+      const drawerList = document.getElementById('drawer-items-list');
+      const drawerEmpty = document.getElementById('drawer-empty-state');
+      const drawerSummary = document.getElementById('drawer-pricing-summary');
+      const drawerSubtotal = document.getElementById('drawer-subtotal');
+      const drawerDiscount = document.getElementById('drawer-discount');
+      const drawerTax = document.getElementById('drawer-tax');
+      const drawerTotal = document.getElementById('drawer-total');
+      const navCount = document.getElementById('nav-cart-count');
+
+      const RATES = { 'USD': 1.0, 'KES': 130.0, 'EUR': 0.92, 'GBP': 0.79 };
+      const SYMS = { 'USD': '$', 'KES': 'KSh ', 'EUR': '\u20ac', 'GBP': '\u00a3' };
+
+      function getActiveCurrency() {
+        return localStorage.getItem('cloudoon_currency') || 'KES';
+      }
+
+      function drawerFormatMoney(usd) {
+        const curr = getActiveCurrency();
+        const rate = RATES[curr] || 130.0;
+        const sym = SYMS[curr] || 'KSh ';
+        const val = usd * rate;
+        if (curr === 'KES') {
+          return sym + Math.round(val).toLocaleString();
+        }
+        return sym + val.toFixed(2);
+      }
+
+      function getCartItems() {
+        try {
+          const raw = localStorage.getItem('cloudoon_cart');
+          return raw ? JSON.parse(raw) : [];
+        } catch {
+          return [];
+        }
+      }
+
+      function updateDrawerUI() {
+        const items = getCartItems();
+        const curr = getActiveCurrency();
+        if (navCount) navCount.textContent = items.length;
+        if (drawerCount) drawerCount.textContent = items.length;
+
+        if (!items || items.length === 0) {
+          if (drawerEmpty) drawerEmpty.classList.remove('hidden');
+          if (drawerSummary) drawerSummary.classList.add('hidden');
+          if (drawerList) drawerList.innerHTML = '';
+          return;
+        }
+
+        if (drawerEmpty) drawerEmpty.classList.add('hidden');
+        if (drawerSummary) drawerSummary.classList.remove('hidden');
+
+        if (drawerList) {
+          drawerList.innerHTML = '';
+          let subtotalUsd = 0;
+          items.forEach((item, idx) => {
+            const priceUsd = parseFloat(item.price || item.total || item.raw_first_year || (item.monthly_base ? item.monthly_base * 12 : 0) || 0);
+            subtotalUsd += priceUsd;
+            const row = document.createElement('div');
+            row.className = 'p-3 rounded-xl bg-slate-50 border border-slate-200/80 flex items-start justify-between gap-3 text-xs';
+            row.innerHTML = `
+              <div class="flex-grow">
+                <div class="font-bold text-slate-900">${item.name || 'Cloud Hosting Service'}</div>
+                <div class="text-[11px] text-slate-500 mt-0.5">${item.period || item.billing_cycle || 'Annual Plan'}</div>
+                <div class="font-extrabold text-primary font-mono text-xs mt-1">${drawerFormatMoney(priceUsd)}</div>
+              </div>
+              <button type="button" class="drawer-remove-item text-slate-400 hover:text-rose-600 p-1" data-idx="${idx}" title="Remove item">
+                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/></svg>
+              </button>
+            `;
+            drawerList.appendChild(row);
+          });
+
+          const discountUsd = subtotalUsd * 0.20;
+          const taxUsd = (subtotalUsd - discountUsd) * 0.16;
+          const totalUsd = (subtotalUsd - discountUsd) + taxUsd;
+
+          if (drawerSubtotal) drawerSubtotal.textContent = drawerFormatMoney(subtotalUsd);
+          if (drawerDiscount) drawerDiscount.textContent = '-' + drawerFormatMoney(discountUsd);
+          if (drawerTax) drawerTax.textContent = drawerFormatMoney(taxUsd);
+          if (drawerTotal) drawerTotal.textContent = drawerFormatMoney(totalUsd);
+
+          const currLabel = getActiveCurrency();
+          const subtotalEl = document.getElementById('drawer-subtotal');
+          const discountLbl = drawerSummary ? drawerSummary.querySelector('span:first-child') : null;
+
+          drawerList.querySelectorAll('.drawer-remove-item').forEach(btn => {
+            btn.addEventListener('click', () => {
+              const removeIdx = parseInt(btn.getAttribute('data-idx'));
+              const curr2 = getCartItems();
+              curr2.splice(removeIdx, 1);
+              localStorage.setItem('cloudoon_cart', JSON.stringify(curr2));
+              updateDrawerUI();
+            });
+          });
+        }
+      }
+
+      function openDrawer() {
+        updateDrawerUI();
+        if (backdrop && drawer) {
+          backdrop.classList.remove('opacity-0', 'pointer-events-none');
+          backdrop.classList.add('opacity-100', 'pointer-events-auto');
+          drawer.classList.remove('translate-x-full', 'pointer-events-none');
+          drawer.classList.add('translate-x-0', 'pointer-events-auto');
+        }
+      }
+
+      function closeDrawer() {
+        if (backdrop && drawer) {
+          backdrop.classList.add('opacity-0', 'pointer-events-none');
+          backdrop.classList.remove('opacity-100', 'pointer-events-auto');
+          drawer.classList.add('translate-x-full', 'pointer-events-none');
+          drawer.classList.remove('translate-x-0', 'pointer-events-auto');
+        }
+      }
+
+      if (cartPill) {
+        cartPill.addEventListener('click', (e) => {
+          e.preventDefault();
+          openDrawer();
+        });
+      }
+
+      if (closeBtn) closeBtn.addEventListener('click', closeDrawer);
+      if (backdrop) backdrop.addEventListener('click', closeDrawer);
+
+      window.openCartDrawer = openDrawer;
+      window.closeCartDrawer = closeDrawer;
+
+      const navCurrencySelector = document.getElementById('currency-selector');
+      if (navCurrencySelector) {
+        const savedCurrency = localStorage.getItem('cloudoon_currency') || 'KES';
+        navCurrencySelector.value = savedCurrency;
+        navCurrencySelector.addEventListener('change', (e) => {
+          const newCurr = e.target.value;
+          localStorage.setItem('cloudoon_currency', newCurr);
+          window.dispatchEvent(new CustomEvent('currencyChanged', { detail: newCurr }));
+        });
+      }
+
+      window.addEventListener('currencyChanged', (e) => {
+        if (navCurrencySelector && navCurrencySelector.value !== e.detail) {
+          navCurrencySelector.value = e.detail;
+        }
+        updateDrawerUI();
+      });
+
+      window.addEventListener('storage', () => {
+        updateDrawerUI();
+      });
+
+      updateDrawerUI();
+    })();
+  </script>
+  {% block extra_scripts %}{% endblock %}
+</body>
+</html>
