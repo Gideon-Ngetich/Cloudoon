@@ -125,6 +125,17 @@
               </svg>
             </button>
           </div>
+          {% if mode == 'register' %}
+          <div id="auth-password-strength" class="mt-2 space-y-1">
+            <div class="flex items-center justify-between text-[11px]">
+              <span class="text-slate-500">Strength: <strong id="password-strength-label" class="text-slate-400">None</strong></span>
+              <span id="password-strength-score" class="text-slate-400">0 / 5</span>
+            </div>
+            <div class="h-1.5 w-full bg-slate-100 rounded-full overflow-hidden">
+              <div id="password-strength-bar" class="h-full bg-slate-300 w-0 transition-all duration-300"></div>
+            </div>
+          </div>
+          {% endif %}
         </div>
 
         {% if mode == 'register' %}
@@ -228,6 +239,42 @@
       const devOtpCode = document.getElementById('dev-otp-code');
 
       let currentEmail = '';
+
+      const passwordStrengthLabel = document.getElementById('password-strength-label');
+      const passwordStrengthScore = document.getElementById('password-strength-score');
+      const passwordStrengthBar = document.getElementById('password-strength-bar');
+
+      if (passwordInput && passwordStrengthBar) {
+        passwordInput.addEventListener('input', async (e) => {
+          const pwd = e.target.value;
+          if (!pwd) {
+            passwordStrengthScore.textContent = '0 / 5';
+            passwordStrengthLabel.textContent = 'None';
+            passwordStrengthLabel.className = 'text-slate-400';
+            passwordStrengthBar.className = 'h-full bg-slate-300 w-0 transition-all duration-300';
+            passwordStrengthBar.style.width = '0%';
+            return;
+          }
+          try {
+            const res = await fetch('/api/auth/password-strength', {
+              method: 'POST',
+              headers: { 'Content-Type': 'application/json' },
+              body: JSON.stringify({ password: pwd })
+            });
+            const json = await res.json();
+            if (json.status === 'success') {
+              const score = json.data.score;
+              passwordStrengthScore.textContent = `${score} / 5`;
+              passwordStrengthLabel.textContent = json.data.level;
+              const textColors = ['text-rose-500', 'text-rose-400', 'text-amber-500', 'text-primary', 'text-emerald-500', 'text-emerald-600'];
+              passwordStrengthLabel.className = textColors[score] || 'text-slate-400';
+              const colors = ['bg-rose-500', 'bg-rose-400', 'bg-amber-500', 'bg-primary', 'bg-emerald-500', 'bg-emerald-600'];
+              passwordStrengthBar.className = `h-full ${colors[score] || 'bg-slate-300'} transition-all duration-300`;
+              passwordStrengthBar.style.width = `${(score / 5) * 100}%`;
+            }
+          } catch {}
+        });
+      }
 
       if (togglePasswordBtn && passwordInput) {
         togglePasswordBtn.addEventListener('click', () => {
