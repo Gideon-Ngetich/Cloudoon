@@ -48,22 +48,23 @@
     .scrollbar-thin::-webkit-scrollbar-thumb:hover {
       background-color: #94a3b8;
     }
+    .sidebar-mini .sidebar-label {
+      display: none;
+    }
   </style>
 </head>
 <body class="h-screen w-screen overflow-hidden flex bg-[#f8fafc] text-slate-900 font-sans antialiased">
   <aside id="dashboard-sidebar" class="w-64 h-screen flex-shrink-0 bg-white border-r border-slate-200 flex flex-col z-30 transition-all duration-300">
     <div class="h-16 px-5 border-b border-slate-100 flex items-center justify-between flex-shrink-0 bg-white">
       <a href="/" class="flex items-center gap-2.5 focus:outline-none" aria-label="Cloudoon Home">
-        <svg class="w-8 h-8 flex-shrink-0" viewBox="0 0 100 100" fill="none">
-          <circle cx="40" cy="58" r="22" stroke="#E7A403" stroke-width="8" fill="none"/>
-          <circle cx="50" cy="36" r="22" stroke="#00c0f9" stroke-width="8" fill="none"/>
-          <circle cx="62" cy="58" r="22" stroke="#395AF4" stroke-width="8" fill="none"/>
-        </svg>
-        <span class="text-xl font-black tracking-tight text-slate-900">
+        <div class="w-8 h-8 rounded-xl bg-gradient-to-tr from-primary to-blue-500 flex items-center justify-center text-white font-black text-sm shadow-xs flex-shrink-0">
+          C
+        </div>
+        <span class="text-xl font-black tracking-tight text-slate-900 sidebar-label">
           Cloudoon
         </span>
       </a>
-      <button id="sidebar-collapse-btn" class="text-slate-400 hover:text-slate-700 p-1.5 rounded-lg hover:bg-slate-50 transition-colors" title="Collapse sidebar">
+      <button id="sidebar-collapse-btn" type="button" class="text-slate-400 hover:text-slate-700 p-1.5 rounded-lg hover:bg-slate-50 transition-colors cursor-pointer" title="Collapse sidebar">
         <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
           <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 19l-7-7 7-7m8 14l-7-7 7-7" />
         </svg>
@@ -72,175 +73,94 @@
 
     <nav class="flex-1 overflow-y-auto py-4 px-3 space-y-5 scrollbar-thin text-xs">
       <div>
-        <div class="px-3 py-1 flex items-center justify-between text-[11px] font-extrabold uppercase tracking-wider text-slate-400">
-          <span>Compute</span>
-          <svg class="w-3 h-3 text-slate-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 15l7-7 7 7"/></svg>
+        <div class="px-3 py-1 text-[11px] font-extrabold uppercase tracking-wider text-slate-400 sidebar-label">
+          Main
         </div>
         <div class="mt-1 space-y-0.5">
-          <a href="#table-compute" class="nav-item flex items-center gap-3 px-3 py-2 rounded-lg font-bold text-primary bg-blue-50/70 border border-blue-100/60 transition-colors">
-            <svg class="w-4 h-4 text-primary" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 12h14M5 12a2 2 0 01-2-2V6a2 2 0 012-2h14a2 2 0 012 2v4a2 2 0 01-2 2M5 12a2 2 0 00-2 2v4a2 2 0 002 2h14a2 2 0 002-2v-4a2 2 0 00-2-2m-2-4h.01M17 16h.01"/></svg>
-            <span>VPS</span>
-          </a>
-          <a href="#table-compute" class="nav-item flex items-center gap-3 px-3 py-2 rounded-lg font-medium text-slate-600 hover:text-slate-900 hover:bg-slate-50 transition-colors">
-            <svg class="w-4 h-4 text-slate-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 11H5m14 0a2 2 0 012 2v6a2 2 0 01-2 2H5a2 2 0 01-2-2v-6a2 2 0 012-2m14 0V9a2 2 0 00-2-2M5 11V9a2 2 0 012-2m0 0V5a2 2 0 012-2h6a2 2 0 012 2v2M7 7h10"/></svg>
-            <span>VDS</span>
-          </a>
-          <a href="/checkout?tab=dedicated" class="nav-item flex items-center justify-between px-3 py-2 rounded-lg font-medium text-slate-600 hover:text-slate-900 hover:bg-slate-50 transition-colors">
-            <div class="flex items-center gap-3">
-              <svg class="w-4 h-4 text-slate-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 3v2m6-2v2M9 19v2m6-2v2M5 9H3m2 6H3m18-6h-2m2 6h-2M7 19h10a2 2 0 002-2V7a2 2 0 00-2-2H7a2 2 0 00-2 2v10a2 2 0 002 2zM9 9h6v6H9V9z"/></svg>
-              <span>Dedicated Server</span>
-            </div>
-            <svg class="w-3 h-3 text-slate-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14"/></svg>
-          </a>
-          <a href="#table-compute" class="nav-item flex items-center gap-3 px-3 py-2 rounded-lg font-medium text-slate-600 hover:text-slate-900 hover:bg-slate-50 transition-colors">
-            <svg class="w-4 h-4 text-slate-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z"/></svg>
-            <span>Images</span>
-          </a>
-          <a href="#table-storage" class="nav-item flex items-center gap-3 px-3 py-2 rounded-lg font-medium text-slate-600 hover:text-slate-900 hover:bg-slate-50 transition-colors">
-            <svg class="w-4 h-4 text-slate-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
-            <span>Auto Backup</span>
-          </a>
+          <button type="button" data-tab="tab-overview" class="sidebar-nav-item w-full flex items-center gap-3 px-3 py-2.5 rounded-xl font-bold text-primary bg-blue-50/70 border border-blue-100/60 transition-colors text-left cursor-pointer">
+            <svg class="w-4 h-4 flex-shrink-0 text-primary" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2H6a2 2 0 01-2-2V6zM14 6a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2V6zM4 16a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2H6a2 2 0 01-2-2v-2zM14 16a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2v-2z"/></svg>
+            <span class="sidebar-label">Overview</span>
+          </button>
         </div>
       </div>
 
       <div>
-        <div class="px-3 py-1 flex items-center justify-between text-[11px] font-extrabold uppercase tracking-wider text-slate-400">
-          <span>Network</span>
-          <svg class="w-3 h-3 text-slate-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 15l7-7 7 7"/></svg>
+        <div class="px-3 py-1 text-[11px] font-extrabold uppercase tracking-wider text-slate-400 sidebar-label">
+          Compute &amp; Hosting
         </div>
         <div class="mt-1 space-y-0.5">
-          <a href="#table-compute" class="nav-item flex items-center gap-3 px-3 py-2 rounded-lg font-medium text-slate-600 hover:text-slate-900 hover:bg-slate-50 transition-colors">
-            <svg class="w-4 h-4 text-slate-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z"/></svg>
-            <span>Private Networks</span>
-          </a>
-          <a href="#table-compute" class="nav-item flex items-center gap-3 px-3 py-2 rounded-lg font-medium text-slate-600 hover:text-slate-900 hover:bg-slate-50 transition-colors">
-            <svg class="w-4 h-4 text-slate-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 12a9 9 0 01-9 9m9-9a9 9 0 00-9-9m9 9H3m9 9a9 9 0 01-9-9m9 9c1.657 0 3-4.03 3-9s-1.343-9-3-9m0 18c-1.657 0-3-4.03-3-9s1.343-9 3-9m-9 9a9 9 0 019-9"/></svg>
-            <span>IP Assignment</span>
-          </a>
-          <a href="#table-domains" class="nav-item flex items-center gap-3 px-3 py-2 rounded-lg font-medium text-slate-600 hover:text-slate-900 hover:bg-slate-50 transition-colors">
-            <svg class="w-4 h-4 text-slate-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6V4m0 2a2 2 0 100 4m0-4a2 2 0 110 4m-6 8a2 2 0 100-4m0 4a2 2 0 110-4m0 4v2m0-6V4m6 6v10m6-2a2 2 0 100-4m0 4a2 2 0 110-4m0 4v2m0-6V4"/></svg>
-            <span>DNS Management</span>
-          </a>
-          <a href="#table-compute" class="nav-item flex items-center gap-3 px-3 py-2 rounded-lg font-medium text-slate-600 hover:text-slate-900 hover:bg-slate-50 transition-colors">
-            <svg class="w-4 h-4 text-slate-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z"/></svg>
-            <span>Firewall</span>
-          </a>
+          <button type="button" data-tab="tab-vps" class="sidebar-nav-item w-full flex items-center justify-between px-3 py-2.5 rounded-xl font-medium text-slate-600 hover:text-slate-900 hover:bg-slate-50 transition-colors text-left cursor-pointer border border-transparent">
+            <div class="flex items-center gap-3">
+              <svg class="w-4 h-4 flex-shrink-0 text-slate-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 12h14M5 12a2 2 0 01-2-2V6a2 2 0 012-2h14a2 2 0 012 2v4a2 2 0 01-2 2M5 12a2 2 0 00-2 2v4a2 2 0 002 2h14a2 2 0 002-2v-4a2 2 0 00-2-2m-2-4h.01M17 16h.01"/></svg>
+              <span class="sidebar-label">VPS Servers</span>
+            </div>
+            <span class="sidebar-label px-2 py-0.5 rounded-full text-[10px] bg-slate-100 text-slate-600 font-mono">{{ vps_items|length if vps_items else 0 }}</span>
+          </button>
+
+          <button type="button" data-tab="tab-dedicated" class="sidebar-nav-item w-full flex items-center justify-between px-3 py-2.5 rounded-xl font-medium text-slate-600 hover:text-slate-900 hover:bg-slate-50 transition-colors text-left cursor-pointer border border-transparent">
+            <div class="flex items-center gap-3">
+              <svg class="w-4 h-4 flex-shrink-0 text-slate-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 3v2m6-2v2M9 19v2m6-2v2M5 9H3m2 6H3m18-6h-2m2 6h-2M7 19h10a2 2 0 002-2V7a2 2 0 00-2-2H7a2 2 0 00-2 2v10a2 2 0 002 2zM9 9h6v6H9V9z"/></svg>
+              <span class="sidebar-label">Dedicated Servers</span>
+            </div>
+            <span class="sidebar-label px-2 py-0.5 rounded-full text-[10px] bg-slate-100 text-slate-600 font-mono">{{ dedicated_items|length if dedicated_items else 0 }}</span>
+          </button>
+
+          <button type="button" data-tab="tab-shared" class="sidebar-nav-item w-full flex items-center justify-between px-3 py-2.5 rounded-xl font-medium text-slate-600 hover:text-slate-900 hover:bg-slate-50 transition-colors text-left cursor-pointer border border-transparent">
+            <div class="flex items-center gap-3">
+              <svg class="w-4 h-4 flex-shrink-0 text-slate-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 11H5m14 0a2 2 0 012 2v6a2 2 0 01-2 2H5a2 2 0 01-2-2v-6a2 2 0 012-2m14 0V9a2 2 0 00-2-2M5 11V9a2 2 0 012-2m0 0V5a2 2 0 012-2h6a2 2 0 012 2v2M7 7h10"/></svg>
+              <span class="sidebar-label">Shared Hosting</span>
+            </div>
+            <span class="sidebar-label px-2 py-0.5 rounded-full text-[10px] bg-slate-100 text-slate-600 font-mono">{{ shared_items|length if shared_items else 0 }}</span>
+          </button>
         </div>
       </div>
 
       <div>
-        <div class="px-3 py-1 flex items-center justify-between text-[11px] font-extrabold uppercase tracking-wider text-slate-400">
-          <span>Storage</span>
-          <svg class="w-3 h-3 text-slate-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 15l7-7 7 7"/></svg>
+        <div class="px-3 py-1 text-[11px] font-extrabold uppercase tracking-wider text-slate-400 sidebar-label">
+          Domains &amp; DNS
         </div>
         <div class="mt-1 space-y-0.5">
-          <a href="#table-storage" class="nav-item flex items-center gap-3 px-3 py-2 rounded-lg font-medium text-slate-600 hover:text-slate-900 hover:bg-slate-50 transition-colors">
-            <svg class="w-4 h-4 text-slate-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20 7l-8-4-8 4m16 0l-8 4m8-4v10l-8 4m0-10L4 7m8 4v10M4 7v10l8 4"/></svg>
-            <span>Object Storage</span>
-          </a>
+          <button type="button" data-tab="tab-domains" class="sidebar-nav-item w-full flex items-center justify-between px-3 py-2.5 rounded-xl font-medium text-slate-600 hover:text-slate-900 hover:bg-slate-50 transition-colors text-left cursor-pointer border border-transparent">
+            <div class="flex items-center gap-3">
+              <svg class="w-4 h-4 flex-shrink-0 text-slate-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 12a9 9 0 01-9 9m9-9a9 9 0 00-9-9m9 9H3m9 9a9 9 0 01-9-9m9 9c1.657 0 3-4.03 3-9s-1.343-9-3-9m0 18c-1.657 0-3-4.03-3-9s1.343-9 3-9m-9 9a9 9 0 019-9"/></svg>
+              <span class="sidebar-label">Domain Portfolio</span>
+            </div>
+            <span class="sidebar-label px-2 py-0.5 rounded-full text-[10px] bg-slate-100 text-slate-600 font-mono">{{ domains|length if domains else 0 }}</span>
+          </button>
         </div>
       </div>
 
       <div>
-        <div class="px-3 py-1 flex items-center justify-between text-[11px] font-extrabold uppercase tracking-wider text-slate-400">
-          <span>Domains</span>
-          <svg class="w-3 h-3 text-slate-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 15l7-7 7 7"/></svg>
+        <div class="px-3 py-1 text-[11px] font-extrabold uppercase tracking-wider text-slate-400 sidebar-label">
+          Billing &amp; Finance
         </div>
         <div class="mt-1 space-y-0.5">
-          <a href="#table-domains" class="nav-item flex items-center gap-3 px-3 py-2 rounded-lg font-medium text-slate-600 hover:text-slate-900 hover:bg-slate-50 transition-colors">
-            <svg class="w-4 h-4 text-slate-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3.055 11H5a2 2 0 012 2v1a2 2 0 002 2 2 2 0 012 2v2.945M8 3.935V5.5A2.5 2.5 0 0010.5 8h.5a2 2 0 012 2 2 2 0 104 0 2 2 0 012-2h1.064M15 20.488V18a2 2 0 012-2h3.064M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
-            <span>Domain Management</span>
-          </a>
+          <button type="button" data-tab="tab-billing" class="sidebar-nav-item w-full flex items-center justify-between px-3 py-2.5 rounded-xl font-medium text-slate-600 hover:text-slate-900 hover:bg-slate-50 transition-colors text-left cursor-pointer border border-transparent">
+            <div class="flex items-center gap-3">
+              <svg class="w-4 h-4 flex-shrink-0 text-slate-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 14l6-6m-5.5.5h.01m4.99 5h.01M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16l3.5-2 3.5 2 3.5-2 3.5 2zM10 8.5a.5.5 0 11-1 0 .5.5 0 011 0zm5 5a.5.5 0 11-1 0 .5.5 0 011 0z"/></svg>
+              <span class="sidebar-label">Invoices &amp; Billing</span>
+            </div>
+            <span class="sidebar-label px-2 py-0.5 rounded-full text-[10px] bg-slate-100 text-slate-600 font-mono">{{ orders|length if orders else 0 }}</span>
+          </button>
         </div>
       </div>
 
       <div>
-        <div class="px-3 py-1 flex items-center justify-between text-[11px] font-extrabold uppercase tracking-wider text-slate-400">
-          <span>My Account</span>
-          <svg class="w-3 h-3 text-slate-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 15l7-7 7 7"/></svg>
+        <div class="px-3 py-1 text-[11px] font-extrabold uppercase tracking-wider text-slate-400 sidebar-label">
+          Actions
         </div>
         <div class="mt-1 space-y-0.5">
-          <a href="#account" class="nav-item flex items-center gap-3 px-3 py-2 rounded-lg font-medium text-slate-600 hover:text-slate-900 hover:bg-slate-50 transition-colors">
-            <svg class="w-4 h-4 text-slate-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z"/></svg>
-            <span>Access &amp; Security</span>
+          <a href="/checkout" class="flex items-center gap-3 px-3 py-2 rounded-xl font-medium text-slate-600 hover:text-primary hover:bg-slate-50 transition-colors">
+            <svg class="w-4 h-4 flex-shrink-0 text-slate-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"/></svg>
+            <span class="sidebar-label">Order Service</span>
           </a>
-          <a href="#account" class="nav-item flex items-center gap-3 px-3 py-2 rounded-lg font-medium text-slate-600 hover:text-slate-900 hover:bg-slate-50 transition-colors">
-            <svg class="w-4 h-4 text-slate-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 7a2 2 0 012 2m4 0a6 6 0 01-7.743 5.743L11 17H9v2H7v2H4a1 1 0 01-1-1v-2.586a1 1 0 01.293-.707l5.964-5.964A6 6 0 1121 9z"/></svg>
-            <span>Secrets</span>
+          <a href="/sales-report" class="flex items-center gap-3 px-3 py-2 rounded-xl font-medium text-slate-600 hover:text-primary hover:bg-slate-50 transition-colors">
+            <svg class="w-4 h-4 flex-shrink-0 text-slate-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 17v-2m3 2v-4m3 4v-6m2 10H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"/></svg>
+            <span class="sidebar-label">Sales Report</span>
           </a>
-          <a href="#account" class="nav-item flex items-center gap-3 px-3 py-2 rounded-lg font-medium text-slate-600 hover:text-slate-900 hover:bg-slate-50 transition-colors">
-            <svg class="w-4 h-4 text-slate-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z"/><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"/></svg>
-            <span>Settings</span>
-          </a>
-          <a href="#table-billing" class="nav-item flex items-center gap-3 px-3 py-2 rounded-lg font-medium text-slate-600 hover:text-slate-900 hover:bg-slate-50 transition-colors">
-            <svg class="w-4 h-4 text-slate-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 14l6-6m-5.5.5h.01m4.99 5h.01M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16l3.5-2 3.5 2 3.5-2 3.5 2zM10 8.5a.5.5 0 11-1 0 .5.5 0 011 0zm5 5a.5.5 0 11-1 0 .5.5 0 011 0z"/></svg>
-            <span>Billing &amp; Payment</span>
-          </a>
-          <a href="#account" class="nav-item flex items-center justify-between px-3 py-2 rounded-lg font-medium text-slate-600 hover:text-slate-900 hover:bg-slate-50 transition-colors">
-            <div class="flex items-center gap-3">
-              <svg class="w-4 h-4 text-slate-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4.354a4 4 0 110 5.292M15 21H3v-1a6 6 0 0112 0v1zm0 0h6v-1a6 6 0 00-9-5.197M13 7a4 4 0 11-8 0 4 4 0 018 0z"/></svg>
-              <span>User Management</span>
-            </div>
-            <span class="w-4 h-4 rounded-full bg-emerald-500 text-white font-bold text-[10px] flex items-center justify-center">1</span>
-          </a>
-          <a href="#account" class="nav-item flex items-center gap-3 px-3 py-2 rounded-lg font-medium text-slate-600 hover:text-slate-900 hover:bg-slate-50 transition-colors">
-            <svg class="w-4 h-4 text-slate-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"/></svg>
-            <span>DPA</span>
-          </a>
-        </div>
-      </div>
-
-      <div>
-        <div class="px-3 py-1 flex items-center justify-between text-[11px] font-extrabold uppercase tracking-wider text-slate-400">
-          <span>Support</span>
-          <svg class="w-3 h-3 text-slate-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 15l7-7 7 7"/></svg>
-        </div>
-        <div class="mt-1 space-y-0.5">
-          <a href="https://status.cloudoon.com" target="_blank" rel="noopener" class="nav-item flex items-center justify-between px-3 py-2 rounded-lg font-medium text-slate-600 hover:text-slate-900 hover:bg-slate-50 transition-colors">
-            <div class="flex items-center gap-3">
-              <span class="w-2.5 h-2.5 rounded-full bg-emerald-500 flex-shrink-0 animate-pulse"></span>
-              <span>Server Status</span>
-            </div>
-            <svg class="w-3 h-3 text-slate-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14"/></svg>
-          </a>
-          <a href="#table-billing" class="nav-item flex items-center justify-between px-3 py-2 rounded-lg font-medium text-slate-600 hover:text-slate-900 hover:bg-slate-50 transition-colors">
-            <div class="flex items-center gap-3">
-              <svg class="w-4 h-4 text-slate-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 3h2l.4 2M7 13h10l4-8H5.4M7 13L5.4 5M7 13l-2.293 2.293c-.63.63-.184 1.707.707 1.707H17m0 0a2 2 0 100 4 2 2 0 000-4zm-8 2a2 2 0 11-4 0 2 2 0 014 0z"/></svg>
-              <span>Order Status</span>
-            </div>
-            <svg class="w-3 h-3 text-slate-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14"/></svg>
-          </a>
-          <a href="/#faq" class="nav-item flex items-center justify-between px-3 py-2 rounded-lg font-medium text-slate-600 hover:text-slate-900 hover:bg-slate-50 transition-colors">
-            <div class="flex items-center gap-3">
-              <svg class="w-4 h-4 text-slate-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253"/></svg>
-              <span>Product Docs</span>
-            </div>
-            <svg class="w-3 h-3 text-slate-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14"/></svg>
-          </a>
-          <a href="/api/catalog" target="_blank" class="nav-item flex items-center justify-between px-3 py-2 rounded-lg font-medium text-slate-600 hover:text-slate-900 hover:bg-slate-50 transition-colors">
-            <div class="flex items-center gap-3">
-              <svg class="w-4 h-4 text-slate-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 20l4-16m4 4l4 4-4 4M6 16l-4-4 4-4"/></svg>
-              <span>API &amp; CLI</span>
-            </div>
-            <svg class="w-3 h-3 text-slate-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14"/></svg>
-          </a>
-          <a href="/#resources" class="nav-item flex items-center justify-between px-3 py-2 rounded-lg font-medium text-slate-600 hover:text-slate-900 hover:bg-slate-50 transition-colors">
-            <div class="flex items-center gap-3">
-              <svg class="w-4 h-4 text-slate-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 20H5a2 2 0 01-2-2V6a2 2 0 012-2h10a2 2 0 012 2v1m2 13a2 2 0 01-2-2V7m2 13a2 2 0 002-2V9a2 2 0 00-2-2h-2m-4-3H9M7 16h6M7 8h6v4H7V8z"/></svg>
-              <span>Tutorials</span>
-            </div>
-            <svg class="w-3 h-3 text-slate-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14"/></svg>
-          </a>
-          <a href="/#faq" class="nav-item flex items-center justify-between px-3 py-2 rounded-lg font-medium text-slate-600 hover:text-slate-900 hover:bg-slate-50 transition-colors">
-            <div class="flex items-center gap-3">
-              <svg class="w-4 h-4 text-slate-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8.228 9c.549-1.165 2.03-2 3.772-2 2.21 0 4 1.343 4 3 0 1.4-1.278 2.575-3.006 2.907-.542.104-.994.54-.994 1.093m0 3h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
-              <span>Help Desk</span>
-            </div>
-            <svg class="w-3 h-3 text-slate-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14"/></svg>
-          </a>
-          <a href="/#faq" class="nav-item flex items-center gap-3 px-3 py-2 rounded-lg font-medium text-slate-600 hover:text-slate-900 hover:bg-slate-50 transition-colors">
-            <svg class="w-4 h-4 text-slate-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 12h.01M12 12h.01M16 12h.01M21 12c0 4.418-4.03 8-9 8a9.863 9.863 0 01-4.255-.949L3 20l1.395-3.72C3.512 15.042 3 13.574 3 12c0-4.418 4.03-8 9-8s9 3.582 9 8z"/></svg>
-            <span>Contact Us</span>
+          <a href="/" class="flex items-center gap-3 px-3 py-2 rounded-xl font-medium text-slate-600 hover:text-primary hover:bg-slate-50 transition-colors">
+            <svg class="w-4 h-4 flex-shrink-0 text-slate-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6"/></svg>
+            <span class="sidebar-label">Back to Site</span>
           </a>
         </div>
       </div>
@@ -248,569 +168,589 @@
   </aside>
 
   <div class="flex-1 h-screen flex flex-col overflow-hidden min-w-0">
-    <header class="h-16 bg-white border-b border-slate-200 px-4 sm:px-6 flex items-center justify-between flex-shrink-0 z-20">
-      <div class="flex items-center gap-3 sm:gap-6 flex-grow max-w-xl">
-        <button id="mobile-menu-toggle" class="lg:hidden p-2 rounded-lg text-slate-500 hover:bg-slate-100 focus:outline-none">
+    <header class="h-16 bg-white border-b border-slate-200 px-4 sm:px-8 flex items-center justify-between flex-shrink-0 z-20">
+      <div class="flex items-center gap-3">
+        <button id="mobile-menu-toggle" type="button" class="lg:hidden p-2 rounded-xl text-slate-600 hover:bg-slate-100 focus:outline-none cursor-pointer" aria-label="Toggle navigation">
           <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"/></svg>
         </button>
-
-        <div class="hidden sm:flex items-center gap-2 text-xs font-semibold text-slate-500">
-          <a href="/" class="hover:text-primary transition-colors">Cloudoon</a>
-          <span>/</span>
-          <span class="text-slate-900 font-bold">Cloud Infrastructure</span>
-        </div>
-
-        <div class="relative w-full max-w-xs sm:max-w-sm">
-          <input
-            type="text"
-            id="table-global-search"
-            placeholder="Search instances, IPs, domains..."
-            class="w-full pl-9 pr-4 py-2 bg-slate-50 border border-slate-200 rounded-xl text-xs text-slate-900 placeholder-slate-400 focus:bg-white focus:outline-none focus:ring-2 focus:ring-primary/20 focus:border-primary transition-all"
-          >
-          <svg class="w-4 h-4 text-slate-400 absolute left-3 top-2.5 pointer-events-none" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"/>
-          </svg>
-        </div>
+        <span class="text-sm font-bold text-slate-400 hidden sm:inline">Dashboard</span>
       </div>
 
-      <div class="flex items-center gap-3 sm:gap-4 flex-shrink-0">
-        <a href="/checkout" class="hidden md:inline-flex items-center gap-1.5 bg-primary hover:bg-primary-hover text-white text-xs font-bold px-3.5 py-2 rounded-xl shadow-sm shadow-primary/20 transition-all">
-          <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"/></svg>
-          <span>Deploy Resource</span>
+      <div class="flex items-center gap-3">
+        <div class="w-9 h-9 rounded-full bg-gradient-to-tr from-primary to-blue-500 text-white font-black text-sm flex items-center justify-center shadow-xs flex-shrink-0">
+          {{ (user.full_name[0] if user and user.full_name else 'C')|upper }}
+        </div>
+        <div class="text-right sm:text-left leading-tight min-w-0">
+          <div class="text-xs sm:text-sm font-black text-slate-900 truncate max-w-[220px]">{{ user.full_name if user and user.full_name else 'Customer' }}</div>
+          <div class="text-[11px] text-slate-500 truncate max-w-[220px]">{{ user.email if user and user.email else 'customer@cloudoon.com' }}</div>
+        </div>
+        <a href="/logout" class="ml-1 p-2 rounded-xl text-slate-400 hover:text-rose-600 hover:bg-rose-50 transition-colors" title="Log Out" aria-label="Log Out">
+          <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1"/></svg>
         </a>
-
-        <div class="hidden lg:flex items-center gap-2 px-2.5 py-1 rounded-full bg-emerald-50 border border-emerald-200/60 text-emerald-700 text-[11px] font-bold">
-          <span class="w-2 h-2 rounded-full bg-emerald-500 animate-pulse"></span>
-          <span>All Systems Operational</span>
-        </div>
-
-        <button class="relative p-2 rounded-xl text-slate-500 hover:text-slate-700 hover:bg-slate-100 transition-colors" title="Notifications">
-          <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 17h5l-1.405-1.405A2.032 2.032 0 0118 14.158V11a6.002 6.002 0 00-4-5.659V5a2 2 0 10-4 0v.341C7.67 6.165 6 8.388 6 11v3.159c0 .538-.214 1.055-.595 1.436L4 17h5m6 0v1a3 3 0 11-6 0v-1m6 0H9"/></svg>
-          <span class="absolute top-1.5 right-1.5 w-2 h-2 rounded-full bg-primary"></span>
-        </button>
-
-        <div class="h-6 w-[1px] bg-slate-200 hidden sm:block"></div>
-
-        <div class="flex items-center gap-3 pl-1">
-          <div class="w-9 h-9 rounded-full bg-gradient-to-tr from-primary to-blue-400 text-white font-extrabold text-xs flex items-center justify-center shadow-sm">
-            {{ (user.full_name[0] if user and user.full_name else 'C')|upper }}
-          </div>
-          <div class="hidden sm:block text-left leading-tight">
-            <div class="text-xs font-black text-slate-900 truncate max-w-[130px]">{{ user.full_name if user else 'Customer' }}</div>
-            <div class="text-[10px] text-slate-500 truncate max-w-[130px]">{{ user.email if user else 'customer@cloudoon.com' }}</div>
-          </div>
-          <a href="/logout" class="p-1.5 rounded-lg text-slate-400 hover:text-rose-600 hover:bg-rose-50 transition-colors" title="Sign out">
-            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1"/></svg>
-          </a>
-        </div>
       </div>
     </header>
 
     <main class="flex-1 overflow-y-auto p-4 sm:p-6 lg:p-8 space-y-6 bg-[#f8fafc] scrollbar-thin">
-      <div class="flex flex-col md:flex-row md:items-center justify-between gap-4">
+      <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
         <div>
-          <h1 class="text-2xl sm:text-3xl font-black text-slate-900 tracking-tight">Overview</h1>
-          <p class="text-xs sm:text-sm text-slate-500 mt-0.5">Comprehensive real-time ledger of your compute nodes, networks, registered domains, and billing records.</p>
+          <h1 class="text-2xl sm:text-3xl font-black text-slate-900 tracking-tight">Cloud Infrastructure</h1>
+          <p class="text-xs sm:text-sm text-slate-500 mt-0.5">Manage your dedicated resources, virtual servers, domains, and billing ledgers.</p>
         </div>
         <div class="flex items-center gap-2">
-          <a href="/checkout?tab=vps" class="inline-flex items-center gap-1.5 bg-white border border-slate-300 hover:border-slate-400 text-slate-800 text-xs font-bold px-3 py-2 rounded-xl transition-all shadow-sm">
-            <svg class="w-3.5 h-3.5 text-primary" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6v6m0 0v6m0-6h6m-6 0H6"/></svg>
-            <span>+ Add VPS</span>
+          <a href="/checkout" class="inline-flex items-center gap-1.5 bg-primary hover:bg-primary-hover text-white text-xs font-bold px-4 py-2 rounded-xl shadow-xs transition-all">
+            <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"/></svg>
+            <span>+ Deploy Resource</span>
           </a>
-          <a href="/checkout?tab=domains" class="inline-flex items-center gap-1.5 bg-white border border-slate-300 hover:border-slate-400 text-slate-800 text-xs font-bold px-3 py-2 rounded-xl transition-all shadow-sm">
-            <svg class="w-3.5 h-3.5 text-primary" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 12a9 9 0 01-9 9m9-9a9 9 0 00-9-9m9 9H3m9 9a9 9 0 01-9-9m9 9c1.657 0 3-4.03 3-9s-1.343-9-3-9m0 18c-1.657 0-3-4.03-3-9s1.343-9 3-9m-9 9a9 9 0 019-9"/></svg>
-            <span>+ Register Domain</span>
-          </a>
-          <a href="/sales-report" class="inline-flex items-center gap-1.5 bg-[#0B1B3D] hover:bg-[#152a5c] text-white text-xs font-bold px-3.5 py-2 rounded-xl transition-all shadow-sm">
-            <span>Sales Report</span>
-            <span>&rarr;</span>
-          </a>
-        </div>
-      </div>
-
-      <div class="bg-white rounded-2xl border border-slate-200 overflow-hidden shadow-sm divide-y sm:divide-y-0 sm:divide-x divide-slate-200 grid grid-cols-2 lg:grid-cols-4">
-        <div class="p-4 sm:p-5">
-          <div class="text-[11px] font-bold text-slate-400 uppercase tracking-wider">Active Compute &amp; Stacks</div>
-          <div class="text-2xl font-black text-slate-900 mt-1 flex items-baseline gap-2">
-            <span>{{ purchased_items|length if purchased_items else 2 }}</span>
-            <span class="text-[11px] font-bold text-emerald-600 bg-emerald-50 px-2 py-0.5 rounded-full">100% Online</span>
-          </div>
-          <div class="text-[11px] text-slate-500 mt-1">Tier-3 ISO27001 Certified</div>
-        </div>
-
-        <div class="p-4 sm:p-5">
-          <div class="text-[11px] font-bold text-slate-400 uppercase tracking-wider">Domain Portfolio</div>
-          <div class="text-2xl font-black text-slate-900 mt-1 flex items-baseline gap-2">
-            <span>{{ domains|length if domains else 1 }}</span>
-            <span class="text-[11px] font-bold text-primary bg-blue-50 px-2 py-0.5 rounded-full">Anycast DNS</span>
-          </div>
-          <div class="text-[11px] text-slate-500 mt-1">Free WHOIS Privacy active</div>
-        </div>
-
-        <div class="p-4 sm:p-5">
-          <div class="text-[11px] font-bold text-slate-400 uppercase tracking-wider">Total Orders &amp; Invoices</div>
-          <div class="text-2xl font-black text-slate-900 mt-1 flex items-baseline gap-2">
-            <span>{{ orders|length if orders else 1 }}</span>
-            <span class="text-[11px] font-bold text-slate-700 bg-slate-100 px-2 py-0.5 rounded-full">Database Linked</span>
-          </div>
-          <div class="text-[11px] text-slate-500 mt-1">PostgreSQL persistent storage</div>
-        </div>
-
-        <div class="p-4 sm:p-5">
-          <div class="text-[11px] font-bold text-slate-400 uppercase tracking-wider">Monthly Spend Rate</div>
-          <div class="text-2xl font-black text-slate-900 mt-1 flex items-baseline gap-2">
-            <span>KES {{ "%.2f"|format(orders[0].total_due_today if orders else 504.17) }}</span>
-          </div>
-          <div class="text-[11px] text-primary font-semibold mt-1">Renews: {{ orders[0].renewal_date if orders else '21 October 2029' }}</div>
         </div>
       </div>
 
       <div class="border-b border-slate-200 flex items-center gap-1 sm:gap-2 overflow-x-auto pb-px text-xs font-bold scrollbar-thin">
-        <button type="button" class="tab-btn px-4 py-2.5 border-b-2 border-primary text-primary flex items-center gap-2 whitespace-nowrap" data-target="table-compute">
-          <span>Compute &amp; Services</span>
-          <span class="px-2 py-0.5 rounded-full text-[10px] bg-blue-100 text-primary">{{ purchased_items|length if purchased_items else 2 }}</span>
+        <button type="button" class="tab-btn px-4 py-3 border-b-2 border-primary text-primary flex items-center gap-2 whitespace-nowrap cursor-pointer transition-colors" data-target="tab-overview">
+          <span>Overview</span>
         </button>
-        <button type="button" class="tab-btn px-4 py-2.5 border-b-2 border-transparent text-slate-500 hover:text-slate-800 flex items-center gap-2 whitespace-nowrap" data-target="table-domains">
-          <span>Domains &amp; DNS</span>
-          <span class="px-2 py-0.5 rounded-full text-[10px] bg-slate-100 text-slate-600">{{ domains|length if domains else 1 }}</span>
+        <button type="button" class="tab-btn px-4 py-3 border-b-2 border-transparent text-slate-500 hover:text-slate-800 flex items-center gap-2 whitespace-nowrap cursor-pointer transition-colors" data-target="tab-vps">
+          <span>VPS Servers</span>
+          <span class="px-2 py-0.5 rounded-full text-[10px] bg-slate-100 text-slate-700 font-mono">{{ vps_items|length if vps_items else 0 }}</span>
         </button>
-        <button type="button" class="tab-btn px-4 py-2.5 border-b-2 border-transparent text-slate-500 hover:text-slate-800 flex items-center gap-2 whitespace-nowrap" data-target="table-billing">
+        <button type="button" class="tab-btn px-4 py-3 border-b-2 border-transparent text-slate-500 hover:text-slate-800 flex items-center gap-2 whitespace-nowrap cursor-pointer transition-colors" data-target="tab-dedicated">
+          <span>Dedicated Servers</span>
+          <span class="px-2 py-0.5 rounded-full text-[10px] bg-slate-100 text-slate-700 font-mono">{{ dedicated_items|length if dedicated_items else 0 }}</span>
+        </button>
+        <button type="button" class="tab-btn px-4 py-3 border-b-2 border-transparent text-slate-500 hover:text-slate-800 flex items-center gap-2 whitespace-nowrap cursor-pointer transition-colors" data-target="tab-shared">
+          <span>Shared Hosting</span>
+          <span class="px-2 py-0.5 rounded-full text-[10px] bg-slate-100 text-slate-700 font-mono">{{ shared_items|length if shared_items else 0 }}</span>
+        </button>
+        <button type="button" class="tab-btn px-4 py-3 border-b-2 border-transparent text-slate-500 hover:text-slate-800 flex items-center gap-2 whitespace-nowrap cursor-pointer transition-colors" data-target="tab-domains">
+          <span>Domains</span>
+          <span class="px-2 py-0.5 rounded-full text-[10px] bg-slate-100 text-slate-700 font-mono">{{ domains|length if domains else 0 }}</span>
+        </button>
+        <button type="button" class="tab-btn px-4 py-3 border-b-2 border-transparent text-slate-500 hover:text-slate-800 flex items-center gap-2 whitespace-nowrap cursor-pointer transition-colors" data-target="tab-billing">
           <span>Invoices &amp; Billing</span>
-          <span class="px-2 py-0.5 rounded-full text-[10px] bg-slate-100 text-slate-600">{{ orders|length if orders else 1 }}</span>
-        </button>
-        <button type="button" class="tab-btn px-4 py-2.5 border-b-2 border-transparent text-slate-500 hover:text-slate-800 flex items-center gap-2 whitespace-nowrap" data-target="table-storage">
-          <span>Storage Volumes</span>
-          <span class="px-2 py-0.5 rounded-full text-[10px] bg-slate-100 text-slate-600">2</span>
+          <span class="px-2 py-0.5 rounded-full text-[10px] bg-slate-100 text-slate-700 font-mono">{{ orders|length if orders else 0 }}</span>
         </button>
       </div>
 
-      <section id="table-compute" class="dashboard-section space-y-3">
-        <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-2">
-          <div>
-            <h2 class="text-base font-extrabold text-slate-900">Compute Instances &amp; Active Products</h2>
-            <p class="text-xs text-slate-500">All virtual machines, web hosting environments, and servers allocated to your organization.</p>
+      <section id="tab-overview" class="dashboard-panel space-y-6">
+        <div class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-3 sm:gap-4">
+          <div class="bg-white p-4 sm:p-5 rounded-2xl border border-slate-200 shadow-xs cursor-pointer hover:border-primary/50 transition-colors" onclick="switchTab('tab-vps')">
+            <div class="text-[11px] font-bold text-slate-400 uppercase tracking-wider">VPS Instances</div>
+            <div class="text-2xl font-black text-slate-900 mt-1 flex items-baseline gap-2">
+              <span>{{ vps_items|length if vps_items else 0 }}</span>
+              <span class="text-[10px] font-bold text-emerald-600 bg-emerald-50 px-2 py-0.5 rounded-full">Active</span>
+            </div>
+            <div class="text-[11px] text-slate-500 mt-1">Cloud KVM Nodes</div>
           </div>
-          <div class="flex items-center gap-2 text-xs">
-            <span class="text-slate-400 text-[11px] font-semibold">Filter:</span>
-            <button type="button" class="service-filter-btn px-2.5 py-1 rounded-lg bg-primary text-white font-bold" data-filter="all">All</button>
-            <button type="button" class="service-filter-btn px-2.5 py-1 rounded-lg bg-white border border-slate-200 text-slate-600 hover:bg-slate-50 font-medium" data-filter="vps">VPS</button>
-            <button type="button" class="service-filter-btn px-2.5 py-1 rounded-lg bg-white border border-slate-200 text-slate-600 hover:bg-slate-50 font-medium" data-filter="domain">Domains</button>
-            <button type="button" class="service-filter-btn px-2.5 py-1 rounded-lg bg-white border border-slate-200 text-slate-600 hover:bg-slate-50 font-medium" data-filter="shared">Shared</button>
+
+          <div class="bg-white p-4 sm:p-5 rounded-2xl border border-slate-200 shadow-xs cursor-pointer hover:border-primary/50 transition-colors" onclick="switchTab('tab-dedicated')">
+            <div class="text-[11px] font-bold text-slate-400 uppercase tracking-wider">Dedicated Servers</div>
+            <div class="text-2xl font-black text-slate-900 mt-1 flex items-baseline gap-2">
+              <span>{{ dedicated_items|length if dedicated_items else 0 }}</span>
+              <span class="text-[10px] font-bold text-blue-600 bg-blue-50 px-2 py-0.5 rounded-full">Bare Metal</span>
+            </div>
+            <div class="text-[11px] text-slate-500 mt-1">Single-tenant nodes</div>
+          </div>
+
+          <div class="bg-white p-4 sm:p-5 rounded-2xl border border-slate-200 shadow-xs cursor-pointer hover:border-primary/50 transition-colors" onclick="switchTab('tab-shared')">
+            <div class="text-[11px] font-bold text-slate-400 uppercase tracking-wider">Shared Hosting</div>
+            <div class="text-2xl font-black text-slate-900 mt-1 flex items-baseline gap-2">
+              <span>{{ shared_items|length if shared_items else 0 }}</span>
+              <span class="text-[10px] font-bold text-indigo-600 bg-indigo-50 px-2 py-0.5 rounded-full">cPanel</span>
+            </div>
+            <div class="text-[11px] text-slate-500 mt-1">Web Environments</div>
+          </div>
+
+          <div class="bg-white p-4 sm:p-5 rounded-2xl border border-slate-200 shadow-xs cursor-pointer hover:border-primary/50 transition-colors" onclick="switchTab('tab-domains')">
+            <div class="text-[11px] font-bold text-slate-400 uppercase tracking-wider">Domains</div>
+            <div class="text-2xl font-black text-slate-900 mt-1 flex items-baseline gap-2">
+              <span>{{ domains|length if domains else 0 }}</span>
+              <span class="text-[10px] font-bold text-emerald-600 bg-emerald-50 px-2 py-0.5 rounded-full">Anycast</span>
+            </div>
+            <div class="text-[11px] text-slate-500 mt-1">DNS Protected</div>
+          </div>
+
+          <div class="bg-white p-4 sm:p-5 rounded-2xl border border-slate-200 shadow-xs cursor-pointer hover:border-primary/50 transition-colors col-span-2 md:col-span-1" onclick="switchTab('tab-billing')">
+            <div class="text-[11px] font-bold text-slate-400 uppercase tracking-wider">Total Invoices</div>
+            <div class="text-2xl font-black text-slate-900 mt-1 flex items-baseline gap-2">
+              <span>{{ orders|length if orders else 0 }}</span>
+              <span class="text-[10px] font-bold text-emerald-600 bg-emerald-50 px-2 py-0.5 rounded-full">Paid</span>
+            </div>
+            <div class="text-[11px] text-slate-500 mt-1">Ledger History</div>
           </div>
         </div>
 
-        <div class="bg-white rounded-2xl border border-slate-200 overflow-hidden shadow-sm">
-          <div class="overflow-x-auto">
-            <table class="w-full text-left text-xs border-collapse">
-              <thead class="bg-slate-50 border-b border-slate-200 text-slate-600 font-extrabold text-[11px] uppercase tracking-wider">
-                <tr>
-                  <th class="py-3 px-4">Service &amp; Hardware Specs</th>
-                  <th class="py-3 px-4">Type</th>
-                  <th class="py-3 px-4">IP Address / Host</th>
-                  <th class="py-3 px-4">Datacenter</th>
-                  <th class="py-3 px-4">Status</th>
-                  <th class="py-3 px-4">Monthly Rate</th>
-                  <th class="py-3 px-4">Renewal Date</th>
-                  <th class="py-3 px-4 text-right">Actions</th>
-                </tr>
-              </thead>
-              <tbody class="divide-y divide-slate-100 text-slate-700 font-medium" id="services-tbody">
-                {% if purchased_items %}
-                  {% for item in purchased_items %}
-                  <tr class="hover:bg-slate-50/80 transition-colors service-row" data-category="{{ item.category|lower }}">
-                    <td class="py-3.5 px-4">
-                      <div class="flex items-center gap-3">
-                        <div class="w-8 h-8 rounded-lg bg-primary/10 text-primary flex items-center justify-center flex-shrink-0 font-bold">
-                          {% if 'vps' in item.category|lower %}
-                            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 12h14M5 12a2 2 0 01-2-2V6a2 2 0 012-2h14a2 2 0 012 2v4a2 2 0 01-2 2M5 12a2 2 0 00-2 2v4a2 2 0 002 2h14a2 2 0 002-2v-4a2 2 0 00-2-2m-2-4h.01M17 16h.01"/></svg>
-                          {% elif 'domain' in item.category|lower %}
-                            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 12a9 9 0 01-9 9m9-9a9 9 0 00-9-9m9 9H3m9 9a9 9 0 01-9-9m9 9c1.657 0 3-4.03 3-9s-1.343-9-3-9m0 18c-1.657 0-3-4.03-3-9s1.343-9 3-9m-9 9a9 9 0 019-9"/></svg>
-                          {% else %}
-                            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 11H5m14 0a2 2 0 012 2v6a2 2 0 01-2 2H5a2 2 0 01-2-2v-6a2 2 0 012-2m14 0V9a2 2 0 00-2-2M5 11V9a2 2 0 012-2m0 0V5a2 2 0 012-2h6a2 2 0 012 2v2M7 7h10"/></svg>
-                          {% endif %}
-                        </div>
-                        <div>
-                          <div class="font-extrabold text-slate-900 text-xs sm:text-sm">{{ item.name }}</div>
-                          <div class="text-[11px] text-slate-400 font-mono">{{ item.order_number }} &bull; 36-Month Lock</div>
-                        </div>
-                      </div>
-                    </td>
-                    <td class="py-3.5 px-4">
-                      <span class="inline-block px-2.5 py-0.5 rounded-full text-[10px] font-extrabold uppercase tracking-wide bg-blue-50 text-primary border border-blue-200/50">
-                        {{ item.category|upper }}
-                      </span>
-                    </td>
-                    <td class="py-3.5 px-4 font-mono text-slate-600 text-xs">
-                      {% if 'vps' in item.category|lower %}
-                        197.232.48.12
-                      {% elif 'domain' in item.category|lower %}
-                        ns1.cloudoon.com
-                      {% else %}
-                        102.134.19.45
-                      {% endif %}
-                    </td>
-                    <td class="py-3.5 px-4 text-slate-600">
-                      <div class="flex items-center gap-1.5">
-                        <span class="w-2 h-2 rounded-full bg-blue-400"></span>
-                        <span>Nairobi (NBO-1)</span>
-                      </div>
-                    </td>
-                    <td class="py-3.5 px-4">
-                      <span class="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full text-[10px] font-bold bg-emerald-50 text-emerald-700 border border-emerald-200/60">
-                        <span class="w-1.5 h-1.5 rounded-full bg-emerald-500 animate-pulse"></span>
-                        <span>Running</span>
-                      </span>
-                    </td>
-                    <td class="py-3.5 px-4 font-bold text-slate-900">
-                      {{ item.currency_symbol }}{{ "%.2f"|format(item.monthly_base) }}/mo
-                    </td>
-                    <td class="py-3.5 px-4 text-slate-500 text-xs">
-                      {{ item.renewal_date }}
-                    </td>
-                    <td class="py-3.5 px-4 text-right">
-                      <div class="inline-flex items-center gap-1.5">
-                        <button type="button" onclick="alert('Connecting to Web Console for {{ item.name }}...')" class="px-2.5 py-1 rounded-lg border border-slate-200 hover:border-primary text-slate-700 hover:text-primary text-[11px] font-bold bg-white transition-all shadow-2xs">
-                          Console
-                        </button>
-                        <a href="/invoice/{{ item.order_number }}" class="px-2.5 py-1 rounded-lg bg-slate-100 hover:bg-slate-200 text-slate-700 text-[11px] font-bold transition-all">
-                          Receipt
-                        </a>
-                      </div>
-                    </td>
-                  </tr>
-                  {% endfor %}
-                {% else %}
-                  <tr class="hover:bg-slate-50/80 transition-colors service-row" data-category="vps">
-                    <td class="py-3.5 px-4">
-                      <div class="flex items-center gap-3">
-                        <div class="w-8 h-8 rounded-lg bg-primary/10 text-primary flex items-center justify-center flex-shrink-0 font-bold">
-                          <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 12h14M5 12a2 2 0 01-2-2V6a2 2 0 012-2h14a2 2 0 012 2v4a2 2 0 01-2 2M5 12a2 2 0 00-2 2v4a2 2 0 002 2h14a2 2 0 002-2v-4a2 2 0 00-2-2m-2-4h.01M17 16h.01"/></svg>
-                        </div>
-                        <div>
-                          <div class="font-extrabold text-slate-900 text-xs sm:text-sm">VPS Cloud Server (4 vCPU, 8GB RAM, 200GB NVMe)</div>
-                          <div class="text-[11px] text-slate-400 font-mono">SA-36531 &bull; Ubuntu 22.04 LTS</div>
-                        </div>
-                      </div>
-                    </td>
-                    <td class="py-3.5 px-4">
-                      <span class="inline-block px-2.5 py-0.5 rounded-full text-[10px] font-extrabold uppercase tracking-wide bg-blue-50 text-primary border border-blue-200/50">
-                        VPS
-                      </span>
-                    </td>
-                    <td class="py-3.5 px-4 font-mono text-slate-600 text-xs">197.232.48.12</td>
-                    <td class="py-3.5 px-4 text-slate-600">
-                      <div class="flex items-center gap-1.5">
-                        <span class="w-2 h-2 rounded-full bg-blue-400"></span>
-                        <span>Nairobi (NBO-1)</span>
-                      </div>
-                    </td>
-                    <td class="py-3.5 px-4">
-                      <span class="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full text-[10px] font-bold bg-emerald-50 text-emerald-700 border border-emerald-200/60">
-                        <span class="w-1.5 h-1.5 rounded-full bg-emerald-500 animate-pulse"></span>
-                        <span>Running</span>
-                      </span>
-                    </td>
-                    <td class="py-3.5 px-4 font-bold text-slate-900">KES 2,580.00/mo</td>
-                    <td class="py-3.5 px-4 text-slate-500 text-xs">21 October 2029</td>
-                    <td class="py-3.5 px-4 text-right">
-                      <div class="inline-flex items-center gap-1.5">
-                        <button type="button" onclick="alert('Connecting to Web Console...')" class="px-2.5 py-1 rounded-lg border border-slate-200 hover:border-primary text-slate-700 hover:text-primary text-[11px] font-bold bg-white transition-all">
-                          Console
-                        </button>
-                        <a href="/sales-report" class="px-2.5 py-1 rounded-lg bg-slate-100 hover:bg-slate-200 text-slate-700 text-[11px] font-bold transition-all">
-                          Receipt
-                        </a>
-                      </div>
-                    </td>
-                  </tr>
-                  <tr class="hover:bg-slate-50/80 transition-colors service-row" data-category="domain">
-                    <td class="py-3.5 px-4">
-                      <div class="flex items-center gap-3">
-                        <div class="w-8 h-8 rounded-lg bg-primary/10 text-primary flex items-center justify-center flex-shrink-0 font-bold">
-                          <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 12a9 9 0 01-9 9m9-9a9 9 0 00-9-9m9 9H3m9 9a9 9 0 01-9-9m9 9c1.657 0 3-4.03 3-9s-1.343-9-3-9m0 18c-1.657 0-3-4.03-3-9s1.343-9 3-9m-9 9a9 9 0 019-9"/></svg>
-                        </div>
-                        <div>
-                          <div class="font-extrabold text-slate-900 text-xs sm:text-sm">sarahkimani.co.ke</div>
-                          <div class="text-[11px] text-slate-400 font-mono">SA-36531 &bull; Kenya ccTLD</div>
-                        </div>
-                      </div>
-                    </td>
-                    <td class="py-3.5 px-4">
-                      <span class="inline-block px-2.5 py-0.5 rounded-full text-[10px] font-extrabold uppercase tracking-wide bg-blue-50 text-primary border border-blue-200/50">
-                        DOMAIN
-                      </span>
-                    </td>
-                    <td class="py-3.5 px-4 font-mono text-slate-600 text-xs">ns1.cloudoon.com</td>
-                    <td class="py-3.5 px-4 text-slate-600">
-                      <div class="flex items-center gap-1.5">
-                        <span class="w-2 h-2 rounded-full bg-emerald-400"></span>
-                        <span>Global Anycast</span>
-                      </div>
-                    </td>
-                    <td class="py-3.5 px-4">
-                      <span class="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full text-[10px] font-bold bg-emerald-50 text-emerald-700 border border-emerald-200/60">
-                        <span class="w-1.5 h-1.5 rounded-full bg-emerald-500 animate-pulse"></span>
-                        <span>Resolving</span>
-                      </span>
-                    </td>
-                    <td class="py-3.5 px-4 font-bold text-slate-900">KES 86.50/mo</td>
-                    <td class="py-3.5 px-4 text-slate-500 text-xs">21 October 2029</td>
-                    <td class="py-3.5 px-4 text-right">
-                      <div class="inline-flex items-center gap-1.5">
-                        <button type="button" onclick="alert('Opening DNS records for sarahkimani.co.ke')" class="px-2.5 py-1 rounded-lg border border-slate-200 hover:border-primary text-slate-700 hover:text-primary text-[11px] font-bold bg-white transition-all">
-                          DNS Editor
-                        </button>
-                        <a href="/sales-report" class="px-2.5 py-1 rounded-lg bg-slate-100 hover:bg-slate-200 text-slate-700 text-[11px] font-bold transition-all">
-                          Receipt
-                        </a>
-                      </div>
-                    </td>
-                  </tr>
-                {% endif %}
-              </tbody>
-            </table>
+        <div class="bg-white rounded-2xl border border-slate-200 p-6 shadow-xs">
+          <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4 pb-5 border-b border-slate-100">
+            <div>
+              <h2 class="text-base font-extrabold text-slate-900">Provisioned Resource Summary</h2>
+              <p class="text-xs text-slate-500 mt-0.5">Quickly select any resource category to view only those specific instances.</p>
+            </div>
+            <a href="/checkout" class="inline-flex items-center gap-1.5 text-xs font-bold text-primary hover:underline">
+              <span>+ Provision New Service</span>
+              <span>&rarr;</span>
+            </a>
+          </div>
+
+          <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 pt-5">
+            <div class="p-4 rounded-xl border border-slate-200 hover:border-primary hover:shadow-xs transition-all cursor-pointer bg-slate-50/50" onclick="switchTab('tab-vps')">
+              <div class="w-10 h-10 rounded-xl bg-primary/10 text-primary flex items-center justify-center font-bold mb-3">
+                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 12h14M5 12a2 2 0 01-2-2V6a2 2 0 012-2h14a2 2 0 012 2v4a2 2 0 01-2 2M5 12a2 2 0 00-2 2v4a2 2 0 002 2h14a2 2 0 002-2v-4a2 2 0 00-2-2m-2-4h.01M17 16h.01"/></svg>
+              </div>
+              <div class="font-bold text-sm text-slate-900">VPS Servers</div>
+              <div class="text-xs text-slate-500 mt-1">{{ vps_items|length if vps_items else 0 }} cloud instance(s) running</div>
+              <div class="mt-3 text-xs font-bold text-primary flex items-center gap-1">Open VPS Tab &rarr;</div>
+            </div>
+
+            <div class="p-4 rounded-xl border border-slate-200 hover:border-primary hover:shadow-xs transition-all cursor-pointer bg-slate-50/50" onclick="switchTab('tab-dedicated')">
+              <div class="w-10 h-10 rounded-xl bg-blue-50 text-blue-600 flex items-center justify-center font-bold mb-3">
+                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 3v2m6-2v2M9 19v2m6-2v2M5 9H3m2 6H3m18-6h-2m2 6h-2M7 19h10a2 2 0 002-2V7a2 2 0 00-2-2H7a2 2 0 00-2 2v10a2 2 0 002 2zM9 9h6v6H9V9z"/></svg>
+              </div>
+              <div class="font-bold text-sm text-slate-900">Dedicated Servers</div>
+              <div class="text-xs text-slate-500 mt-1">{{ dedicated_items|length if dedicated_items else 0 }} bare-metal server(s)</div>
+              <div class="mt-3 text-xs font-bold text-primary flex items-center gap-1">Open Dedicated Tab &rarr;</div>
+            </div>
+
+            <div class="p-4 rounded-xl border border-slate-200 hover:border-primary hover:shadow-xs transition-all cursor-pointer bg-slate-50/50" onclick="switchTab('tab-shared')">
+              <div class="w-10 h-10 rounded-xl bg-indigo-50 text-indigo-600 flex items-center justify-center font-bold mb-3">
+                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 11H5m14 0a2 2 0 012 2v6a2 2 0 01-2 2H5a2 2 0 01-2-2v-6a2 2 0 012-2m14 0V9a2 2 0 00-2-2M5 11V9a2 2 0 012-2m0 0V5a2 2 0 012-2h6a2 2 0 012 2v2M7 7h10"/></svg>
+              </div>
+              <div class="font-bold text-sm text-slate-900">Shared Hosting</div>
+              <div class="text-xs text-slate-500 mt-1">{{ shared_items|length if shared_items else 0 }} web hosting account(s)</div>
+              <div class="mt-3 text-xs font-bold text-primary flex items-center gap-1">Open Shared Tab &rarr;</div>
+            </div>
+
+            <div class="p-4 rounded-xl border border-slate-200 hover:border-primary hover:shadow-xs transition-all cursor-pointer bg-slate-50/50" onclick="switchTab('tab-domains')">
+              <div class="w-10 h-10 rounded-xl bg-emerald-50 text-emerald-600 flex items-center justify-center font-bold mb-3">
+                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 12a9 9 0 01-9 9m9-9a9 9 0 00-9-9m9 9H3m9 9a9 9 0 01-9-9m9 9c1.657 0 3-4.03 3-9s-1.343-9-3-9m0 18c-1.657 0-3-4.03-3-9s1.343-9 3-9m-9 9a9 9 0 019-9"/></svg>
+              </div>
+              <div class="font-bold text-sm text-slate-900">Domains</div>
+              <div class="text-xs text-slate-500 mt-1">{{ domains|length if domains else 0 }} domain(s) configured</div>
+              <div class="mt-3 text-xs font-bold text-primary flex items-center gap-1">Open Domains Tab &rarr;</div>
+            </div>
           </div>
         </div>
       </section>
 
-      <section id="table-domains" class="dashboard-section space-y-3 pt-4">
-        <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-2">
+      <section id="tab-vps" class="dashboard-panel space-y-4 hidden">
+        <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-3">
           <div>
-            <h2 class="text-base font-extrabold text-slate-900">Domains &amp; Anycast DNS Portfolio</h2>
-            <p class="text-xs text-slate-500">Live DNS zone delegation, SSL certificates, and WHOIS privacy settings.</p>
+            <h2 class="text-lg font-black text-slate-900">Virtual Private Servers (VPS)</h2>
+            <p class="text-xs text-slate-500">Dedicated KVM instances with dedicated vCPU cores, NVMe storage, and root shell access.</p>
           </div>
-          <a href="/checkout?tab=domains" class="inline-flex items-center gap-1.5 text-xs font-bold text-primary hover:underline">
-            <span>+ Register New Domain</span>
-            <span>&rarr;</span>
+          <a href="/checkout?tab=vps" class="inline-flex items-center gap-1.5 bg-primary hover:bg-primary-hover text-white text-xs font-bold px-3.5 py-2 rounded-xl shadow-xs transition-all flex-shrink-0">
+            <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"/></svg>
+            <span>+ Deploy VPS Instance</span>
           </a>
         </div>
 
-        <div class="bg-white rounded-2xl border border-slate-200 overflow-hidden shadow-sm">
+        {% if vps_items %}
+        <div class="bg-white rounded-2xl border border-slate-200 overflow-hidden shadow-xs">
           <div class="overflow-x-auto">
             <table class="w-full text-left text-xs border-collapse">
               <thead class="bg-slate-50 border-b border-slate-200 text-slate-600 font-extrabold text-[11px] uppercase tracking-wider">
                 <tr>
-                  <th class="py-3 px-4">Domain Name</th>
-                  <th class="py-3 px-4">Status</th>
-                  <th class="py-3 px-4">Auto-Renew</th>
-                  <th class="py-3 px-4">Nameservers</th>
-                  <th class="py-3 px-4">WHOIS Privacy</th>
-                  <th class="py-3 px-4">Expiry Date</th>
-                  <th class="py-3 px-4 text-right">Actions</th>
+                  <th class="py-3.5 px-4">VPS Instance &amp; Specs</th>
+                  <th class="py-3.5 px-4">IPv4 Address</th>
+                  <th class="py-3.5 px-4">Datacenter</th>
+                  <th class="py-3.5 px-4">Status</th>
+                  <th class="py-3.5 px-4">Monthly Rate</th>
+                  <th class="py-3.5 px-4">Renewal Date</th>
+                  <th class="py-3.5 px-4 text-right">Actions</th>
                 </tr>
               </thead>
               <tbody class="divide-y divide-slate-100 text-slate-700 font-medium">
-                {% if domains %}
-                  {% for d in domains %}
-                  <tr class="hover:bg-slate-50/80 transition-colors">
-                    <td class="py-3.5 px-4 font-mono font-bold text-slate-900 text-sm">
-                      <div class="flex items-center gap-2">
-                        <span class="w-2 h-2 rounded-full bg-emerald-500"></span>
-                        <span>{{ d.domain }}</span>
+                {% for item in vps_items %}
+                <tr class="hover:bg-slate-50/80 transition-colors">
+                  <td class="py-3.5 px-4">
+                    <div class="flex items-center gap-3">
+                      <div class="w-9 h-9 rounded-xl bg-primary/10 text-primary flex items-center justify-center font-bold flex-shrink-0">
+                        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 12h14M5 12a2 2 0 01-2-2V6a2 2 0 012-2h14a2 2 0 012 2v4a2 2 0 01-2 2M5 12a2 2 0 00-2 2v4a2 2 0 002 2h14a2 2 0 002-2v-4a2 2 0 00-2-2m-2-4h.01M17 16h.01"/></svg>
                       </div>
-                    </td>
-                    <td class="py-3.5 px-4">
-                      <span class="inline-flex items-center px-2 py-0.5 rounded-full text-[10px] font-bold bg-emerald-50 text-emerald-700 border border-emerald-200">
-                        Active
-                      </span>
-                    </td>
-                    <td class="py-3.5 px-4 font-bold text-emerald-700">Enabled</td>
-                    <td class="py-3.5 px-4 font-mono text-slate-500 text-[11px]">ns1.cloudoon.com / ns2</td>
-                    <td class="py-3.5 px-4 font-bold text-primary">Protected</td>
-                    <td class="py-3.5 px-4 text-slate-500">{{ d.expires_at or '21 October 2029' }}</td>
-                    <td class="py-3.5 px-4 text-right">
-                      <div class="inline-flex items-center gap-1.5">
-                        <button type="button" onclick="alert('Zone editor for {{ d.domain }}')" class="px-2.5 py-1 rounded-lg border border-slate-200 hover:border-primary text-slate-700 hover:text-primary text-[11px] font-bold bg-white transition-all">
-                          Manage DNS
-                        </button>
-                        <button type="button" onclick="alert('Domain lock status: ON')" class="px-2.5 py-1 rounded-lg bg-slate-100 hover:bg-slate-200 text-slate-700 text-[11px] font-bold transition-all">
-                          Transfer Lock
-                        </button>
+                      <div>
+                        <div class="font-extrabold text-slate-900 text-xs sm:text-sm">{{ item.name }}</div>
+                        <div class="text-[11px] text-slate-400 font-mono">{{ item.order_number }} &bull; KVM Virtualized</div>
                       </div>
-                    </td>
-                  </tr>
-                  {% endfor %}
-                {% else %}
-                  <tr class="hover:bg-slate-50/80 transition-colors">
-                    <td class="py-3.5 px-4 font-mono font-bold text-slate-900 text-sm">
-                      <div class="flex items-center gap-2">
-                        <span class="w-2 h-2 rounded-full bg-emerald-500"></span>
-                        <span>sarahkimani.co.ke</span>
-                      </div>
-                    </td>
-                    <td class="py-3.5 px-4">
-                      <span class="inline-flex items-center px-2 py-0.5 rounded-full text-[10px] font-bold bg-emerald-50 text-emerald-700 border border-emerald-200">
-                        Active
-                      </span>
-                    </td>
-                    <td class="py-3.5 px-4 font-bold text-emerald-700">Enabled</td>
-                    <td class="py-3.5 px-4 font-mono text-slate-500 text-[11px]">ns1.cloudoon.com / ns2</td>
-                    <td class="py-3.5 px-4 font-bold text-primary">Protected</td>
-                    <td class="py-3.5 px-4 text-slate-500">21 October 2029</td>
-                    <td class="py-3.5 px-4 text-right">
-                      <div class="inline-flex items-center gap-1.5">
-                        <button type="button" onclick="alert('Zone editor for sarahkimani.co.ke')" class="px-2.5 py-1 rounded-lg border border-slate-200 hover:border-primary text-slate-700 hover:text-primary text-[11px] font-bold bg-white transition-all">
-                          Manage DNS
-                        </button>
-                        <button type="button" onclick="alert('Domain lock status: ON')" class="px-2.5 py-1 rounded-lg bg-slate-100 hover:bg-slate-200 text-slate-700 text-[11px] font-bold transition-all">
-                          Transfer Lock
-                        </button>
-                      </div>
-                    </td>
-                  </tr>
-                {% endif %}
+                    </div>
+                  </td>
+                  <td class="py-3.5 px-4 font-mono text-slate-700 text-xs">197.232.48.12</td>
+                  <td class="py-3.5 px-4 text-slate-600">
+                    <div class="flex items-center gap-1.5">
+                      <span class="w-2 h-2 rounded-full bg-blue-500"></span>
+                      <span>Nairobi (NBO-1)</span>
+                    </div>
+                  </td>
+                  <td class="py-3.5 px-4">
+                    <span class="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full text-[10px] font-bold bg-emerald-50 text-emerald-700 border border-emerald-200/60">
+                      <span class="w-1.5 h-1.5 rounded-full bg-emerald-500 animate-pulse"></span>
+                      <span>Running</span>
+                    </span>
+                  </td>
+                  <td class="py-3.5 px-4 font-bold text-slate-900">
+                    {{ item.currency_symbol }}{{ "%.2f"|format(item.monthly_base) }}/mo
+                  </td>
+                  <td class="py-3.5 px-4 text-slate-500 text-xs">{{ item.renewal_date }}</td>
+                  <td class="py-3.5 px-4 text-right">
+                    <div class="inline-flex items-center gap-1.5">
+                      <button type="button" onclick="alert('Connecting to Web Console for {{ item.name }}...')" class="px-2.5 py-1.5 rounded-lg border border-slate-200 hover:border-primary text-slate-700 hover:text-primary text-[11px] font-bold bg-white transition-all shadow-2xs cursor-pointer">
+                        Console
+                      </button>
+                      <a href="/invoice/{{ item.order_number }}" class="px-2.5 py-1.5 rounded-lg bg-slate-100 hover:bg-slate-200 text-slate-700 text-[11px] font-bold transition-all">
+                        Receipt
+                      </a>
+                    </div>
+                  </td>
+                </tr>
+                {% endfor %}
               </tbody>
             </table>
           </div>
         </div>
+        {% else %}
+        <div class="bg-white rounded-2xl border border-dashed border-slate-300 p-12 text-center">
+          <div class="w-14 h-14 mx-auto rounded-2xl bg-blue-50 text-primary flex items-center justify-center font-bold mb-4">
+            <svg class="w-7 h-7" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 12h14M5 12a2 2 0 01-2-2V6a2 2 0 012-2h14a2 2 0 012 2v4a2 2 0 01-2 2M5 12a2 2 0 00-2 2v4a2 2 0 002 2h14a2 2 0 002-2v-4a2 2 0 00-2-2m-2-4h.01M17 16h.01"/></svg>
+          </div>
+          <h3 class="text-base font-black text-slate-900">No VPS Instances Active</h3>
+          <p class="text-xs text-slate-500 mt-1 max-w-md mx-auto">Deploy high-performance NVMe cloud VPS servers with root access, automated backups, and 99.99% uptime guarantee.</p>
+          <div class="mt-5">
+            <a href="/checkout?tab=vps" class="inline-flex items-center gap-1.5 bg-primary hover:bg-primary-hover text-white text-xs font-bold px-4 py-2.5 rounded-xl shadow-xs transition-all">
+              <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"/></svg>
+              <span>Deploy First VPS Instance</span>
+            </a>
+          </div>
+        </div>
+        {% endif %}
       </section>
 
-      <section id="table-billing" class="dashboard-section space-y-3 pt-4">
-        <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-2">
+      <section id="tab-dedicated" class="dashboard-panel space-y-4 hidden">
+        <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-3">
           <div>
-            <h2 class="text-base font-extrabold text-slate-900">Invoices &amp; Official Receipts</h2>
-            <p class="text-xs text-slate-500">Persistent sales ledger matched with accounting records in PostgreSQL database.</p>
+            <h2 class="text-lg font-black text-slate-900">Dedicated Bare-Metal Servers</h2>
+            <p class="text-xs text-slate-500">Single-tenant physical servers with raw hardware compute, IPMI KVM management, and 10Gbps unmetered uplink.</p>
+          </div>
+          <a href="/checkout?tab=dedicated" class="inline-flex items-center gap-1.5 bg-primary hover:bg-primary-hover text-white text-xs font-bold px-3.5 py-2 rounded-xl shadow-xs transition-all flex-shrink-0">
+            <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"/></svg>
+            <span>+ Deploy Dedicated Server</span>
+          </a>
+        </div>
+
+        {% if dedicated_items %}
+        <div class="bg-white rounded-2xl border border-slate-200 overflow-hidden shadow-xs">
+          <div class="overflow-x-auto">
+            <table class="w-full text-left text-xs border-collapse">
+              <thead class="bg-slate-50 border-b border-slate-200 text-slate-600 font-extrabold text-[11px] uppercase tracking-wider">
+                <tr>
+                  <th class="py-3.5 px-4">Server Model &amp; Hardware</th>
+                  <th class="py-3.5 px-4">Primary IP</th>
+                  <th class="py-3.5 px-4">Datacenter / Rack</th>
+                  <th class="py-3.5 px-4">Uplink</th>
+                  <th class="py-3.5 px-4">Status</th>
+                  <th class="py-3.5 px-4">Monthly Rate</th>
+                  <th class="py-3.5 px-4">Renewal Date</th>
+                  <th class="py-3.5 px-4 text-right">Actions</th>
+                </tr>
+              </thead>
+              <tbody class="divide-y divide-slate-100 text-slate-700 font-medium">
+                {% for item in dedicated_items %}
+                <tr class="hover:bg-slate-50/80 transition-colors">
+                  <td class="py-3.5 px-4">
+                    <div class="flex items-center gap-3">
+                      <div class="w-9 h-9 rounded-xl bg-blue-50 text-blue-600 flex items-center justify-center font-bold flex-shrink-0">
+                        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 3v2m6-2v2M9 19v2m6-2v2M5 9H3m2 6H3m18-6h-2m2 6h-2M7 19h10a2 2 0 002-2V7a2 2 0 00-2-2H7a2 2 0 00-2 2v10a2 2 0 002 2zM9 9h6v6H9V9z"/></svg>
+                      </div>
+                      <div>
+                        <div class="font-extrabold text-slate-900 text-xs sm:text-sm">{{ item.name }}</div>
+                        <div class="text-[11px] text-slate-400 font-mono">{{ item.order_number }} &bull; Bare Metal</div>
+                      </div>
+                    </div>
+                  </td>
+                  <td class="py-3.5 px-4 font-mono text-slate-700 text-xs">102.134.19.45</td>
+                  <td class="py-3.5 px-4 text-slate-600">
+                    <div class="flex items-center gap-1.5">
+                      <span class="w-2 h-2 rounded-full bg-blue-500"></span>
+                      <span>NBO-1 / Rack 4B</span>
+                    </div>
+                  </td>
+                  <td class="py-3.5 px-4 font-semibold text-slate-800">10 Gbps Unmetered</td>
+                  <td class="py-3.5 px-4">
+                    <span class="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full text-[10px] font-bold bg-emerald-50 text-emerald-700 border border-emerald-200/60">
+                      <span class="w-1.5 h-1.5 rounded-full bg-emerald-500 animate-pulse"></span>
+                      <span>Online</span>
+                    </span>
+                  </td>
+                  <td class="py-3.5 px-4 font-bold text-slate-900">
+                    {{ item.currency_symbol }}{{ "%.2f"|format(item.monthly_base) }}/mo
+                  </td>
+                  <td class="py-3.5 px-4 text-slate-500 text-xs">{{ item.renewal_date }}</td>
+                  <td class="py-3.5 px-4 text-right">
+                    <div class="inline-flex items-center gap-1.5">
+                      <button type="button" onclick="alert('Connecting to IPMI KVM console...')" class="px-2.5 py-1.5 rounded-lg border border-slate-200 hover:border-primary text-slate-700 hover:text-primary text-[11px] font-bold bg-white transition-all shadow-2xs cursor-pointer">
+                        IPMI KVM
+                      </button>
+                      <a href="/invoice/{{ item.order_number }}" class="px-2.5 py-1.5 rounded-lg bg-slate-100 hover:bg-slate-200 text-slate-700 text-[11px] font-bold transition-all">
+                        Receipt
+                      </a>
+                    </div>
+                  </td>
+                </tr>
+                {% endfor %}
+              </tbody>
+            </table>
+          </div>
+        </div>
+        {% else %}
+        <div class="bg-white rounded-2xl border border-dashed border-slate-300 p-12 text-center">
+          <div class="w-14 h-14 mx-auto rounded-2xl bg-blue-50 text-blue-600 flex items-center justify-center font-bold mb-4">
+            <svg class="w-7 h-7" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 3v2m6-2v2M9 19v2m6-2v2M5 9H3m2 6H3m18-6h-2m2 6h-2M7 19h10a2 2 0 002-2V7a2 2 0 00-2-2H7a2 2 0 00-2 2v10a2 2 0 002 2zM9 9h6v6H9V9z"/></svg>
+          </div>
+          <h3 class="text-base font-black text-slate-900">No Dedicated Servers Active</h3>
+          <p class="text-xs text-slate-500 mt-1 max-w-md mx-auto">Get unshared physical processing power with enterprise Xeon or AMD EPYC CPUs, dual NVMe arrays, and dedicated bandwidth.</p>
+          <div class="mt-5">
+            <a href="/checkout?tab=dedicated" class="inline-flex items-center gap-1.5 bg-primary hover:bg-primary-hover text-white text-xs font-bold px-4 py-2.5 rounded-xl shadow-xs transition-all">
+              <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"/></svg>
+              <span>Deploy Dedicated Server</span>
+            </a>
+          </div>
+        </div>
+        {% endif %}
+      </section>
+
+      <section id="tab-shared" class="dashboard-panel space-y-4 hidden">
+        <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-3">
+          <div>
+            <h2 class="text-lg font-black text-slate-900">Shared Web Hosting Packages</h2>
+            <p class="text-xs text-slate-500">Fully managed cPanel hosting with free SSL certificates, automated daily backups, and unlimited webmail.</p>
+          </div>
+          <a href="/checkout?tab=shared" class="inline-flex items-center gap-1.5 bg-primary hover:bg-primary-hover text-white text-xs font-bold px-3.5 py-2 rounded-xl shadow-xs transition-all flex-shrink-0">
+            <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"/></svg>
+            <span>+ Order Web Hosting</span>
+          </a>
+        </div>
+
+        {% if shared_items %}
+        <div class="bg-white rounded-2xl border border-slate-200 overflow-hidden shadow-xs">
+          <div class="overflow-x-auto">
+            <table class="w-full text-left text-xs border-collapse">
+              <thead class="bg-slate-50 border-b border-slate-200 text-slate-600 font-extrabold text-[11px] uppercase tracking-wider">
+                <tr>
+                  <th class="py-3.5 px-4">Hosting Plan</th>
+                  <th class="py-3.5 px-4">Control Panel</th>
+                  <th class="py-3.5 px-4">Server IP</th>
+                  <th class="py-3.5 px-4">Status</th>
+                  <th class="py-3.5 px-4">Monthly Rate</th>
+                  <th class="py-3.5 px-4">Renewal Date</th>
+                  <th class="py-3.5 px-4 text-right">Actions</th>
+                </tr>
+              </thead>
+              <tbody class="divide-y divide-slate-100 text-slate-700 font-medium">
+                {% for item in shared_items %}
+                <tr class="hover:bg-slate-50/80 transition-colors">
+                  <td class="py-3.5 px-4">
+                    <div class="flex items-center gap-3">
+                      <div class="w-9 h-9 rounded-xl bg-indigo-50 text-indigo-600 flex items-center justify-center font-bold flex-shrink-0">
+                        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 11H5m14 0a2 2 0 012 2v6a2 2 0 01-2 2H5a2 2 0 01-2-2v-6a2 2 0 012-2m14 0V9a2 2 0 00-2-2M5 11V9a2 2 0 012-2m0 0V5a2 2 0 012-2h6a2 2 0 012 2v2M7 7h10"/></svg>
+                      </div>
+                      <div>
+                        <div class="font-extrabold text-slate-900 text-xs sm:text-sm">{{ item.name }}</div>
+                        <div class="text-[11px] text-slate-400 font-mono">{{ item.order_number }} &bull; LiteSpeed Server</div>
+                      </div>
+                    </div>
+                  </td>
+                  <td class="py-3.5 px-4 font-bold text-slate-800">cPanel 112</td>
+                  <td class="py-3.5 px-4 font-mono text-slate-700 text-xs">197.232.48.55</td>
+                  <td class="py-3.5 px-4">
+                    <span class="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full text-[10px] font-bold bg-emerald-50 text-emerald-700 border border-emerald-200/60">
+                      <span class="w-1.5 h-1.5 rounded-full bg-emerald-500 animate-pulse"></span>
+                      <span>Active</span>
+                    </span>
+                  </td>
+                  <td class="py-3.5 px-4 font-bold text-slate-900">
+                    {{ item.currency_symbol }}{{ "%.2f"|format(item.monthly_base) }}/mo
+                  </td>
+                  <td class="py-3.5 px-4 text-slate-500 text-xs">{{ item.renewal_date }}</td>
+                  <td class="py-3.5 px-4 text-right">
+                    <div class="inline-flex items-center gap-1.5">
+                      <button type="button" onclick="alert('Logging into cPanel for {{ item.name }}...')" class="px-2.5 py-1.5 rounded-lg border border-slate-200 hover:border-primary text-slate-700 hover:text-primary text-[11px] font-bold bg-white transition-all shadow-2xs cursor-pointer">
+                        cPanel Login
+                      </button>
+                      <a href="/invoice/{{ item.order_number }}" class="px-2.5 py-1.5 rounded-lg bg-slate-100 hover:bg-slate-200 text-slate-700 text-[11px] font-bold transition-all">
+                        Receipt
+                      </a>
+                    </div>
+                  </td>
+                </tr>
+                {% endfor %}
+              </tbody>
+            </table>
+          </div>
+        </div>
+        {% else %}
+        <div class="bg-white rounded-2xl border border-dashed border-slate-300 p-12 text-center">
+          <div class="w-14 h-14 mx-auto rounded-2xl bg-indigo-50 text-indigo-600 flex items-center justify-center font-bold mb-4">
+            <svg class="w-7 h-7" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 11H5m14 0a2 2 0 012 2v6a2 2 0 01-2 2H5a2 2 0 01-2-2v-6a2 2 0 012-2m14 0V9a2 2 0 00-2-2M5 11V9a2 2 0 012-2m0 0V5a2 2 0 012-2h6a2 2 0 012 2v2M7 7h10"/></svg>
+          </div>
+          <h3 class="text-base font-black text-slate-900">No Shared Hosting Packages</h3>
+          <p class="text-xs text-slate-500 mt-1 max-w-md mx-auto">Get reliable cPanel web hosting with SSD storage, free SSL certificates, and 1-click WordPress installation.</p>
+          <div class="mt-5">
+            <a href="/checkout?tab=shared" class="inline-flex items-center gap-1.5 bg-primary hover:bg-primary-hover text-white text-xs font-bold px-4 py-2.5 rounded-xl shadow-xs transition-all">
+              <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"/></svg>
+              <span>Order Shared Hosting</span>
+            </a>
+          </div>
+        </div>
+        {% endif %}
+      </section>
+
+      <section id="tab-domains" class="dashboard-panel space-y-4 hidden">
+        <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-3">
+          <div>
+            <h2 class="text-lg font-black text-slate-900">Domains &amp; Anycast DNS Portfolio</h2>
+            <p class="text-xs text-slate-500">Global DNS zone delegation, WHOIS privacy protection, and automated domain renewals.</p>
+          </div>
+          <a href="/checkout?tab=domains" class="inline-flex items-center gap-1.5 bg-primary hover:bg-primary-hover text-white text-xs font-bold px-3.5 py-2 rounded-xl shadow-xs transition-all flex-shrink-0">
+            <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 12a9 9 0 01-9 9m9-9a9 9 0 00-9-9m9 9H3m9 9a9 9 0 01-9-9m9 9c1.657 0 3-4.03 3-9s-1.343-9-3-9m0 18c-1.657 0-3-4.03-3-9s1.343-9 3-9m-9 9a9 9 0 019-9"/></svg>
+            <span>+ Register New Domain</span>
+          </a>
+        </div>
+
+        {% if domains %}
+        <div class="bg-white rounded-2xl border border-slate-200 overflow-hidden shadow-xs">
+          <div class="overflow-x-auto">
+            <table class="w-full text-left text-xs border-collapse">
+              <thead class="bg-slate-50 border-b border-slate-200 text-slate-600 font-extrabold text-[11px] uppercase tracking-wider">
+                <tr>
+                  <th class="py-3.5 px-4">Domain Name</th>
+                  <th class="py-3.5 px-4">Status</th>
+                  <th class="py-3.5 px-4">Auto-Renew</th>
+                  <th class="py-3.5 px-4">Nameservers</th>
+                  <th class="py-3.5 px-4">WHOIS Privacy</th>
+                  <th class="py-3.5 px-4">Expiry Date</th>
+                  <th class="py-3.5 px-4 text-right">Actions</th>
+                </tr>
+              </thead>
+              <tbody class="divide-y divide-slate-100 text-slate-700 font-medium">
+                {% for d in domains %}
+                <tr class="hover:bg-slate-50/80 transition-colors">
+                  <td class="py-3.5 px-4 font-mono font-bold text-slate-900 text-sm">
+                    <div class="flex items-center gap-2">
+                      <span class="w-2 h-2 rounded-full bg-emerald-500"></span>
+                      <span>{{ d.domain }}</span>
+                    </div>
+                  </td>
+                  <td class="py-3.5 px-4">
+                    <span class="inline-flex items-center px-2 py-0.5 rounded-full text-[10px] font-bold bg-emerald-50 text-emerald-700 border border-emerald-200">
+                      Active
+                    </span>
+                  </td>
+                  <td class="py-3.5 px-4 font-bold text-emerald-700">Enabled</td>
+                  <td class="py-3.5 px-4 font-mono text-slate-500 text-[11px]">ns1.cloudoon.com / ns2</td>
+                  <td class="py-3.5 px-4 font-bold text-primary">Protected</td>
+                  <td class="py-3.5 px-4 text-slate-500">{{ d.expires_at or '21 October 2029' }}</td>
+                  <td class="py-3.5 px-4 text-right">
+                    <div class="inline-flex items-center gap-1.5">
+                      <button type="button" onclick="alert('Zone editor for {{ d.domain }}')" class="px-2.5 py-1.5 rounded-lg border border-slate-200 hover:border-primary text-slate-700 hover:text-primary text-[11px] font-bold bg-white transition-all cursor-pointer">
+                        Manage DNS
+                      </button>
+                      <button type="button" onclick="alert('Domain lock status: ON')" class="px-2.5 py-1.5 rounded-lg bg-slate-100 hover:bg-slate-200 text-slate-700 text-[11px] font-bold transition-all cursor-pointer">
+                        Transfer Lock
+                      </button>
+                    </div>
+                  </td>
+                </tr>
+                {% endfor %}
+              </tbody>
+            </table>
+          </div>
+        </div>
+        {% else %}
+        <div class="bg-white rounded-2xl border border-dashed border-slate-300 p-12 text-center">
+          <div class="w-14 h-14 mx-auto rounded-2xl bg-emerald-50 text-emerald-600 flex items-center justify-center font-bold mb-4">
+            <svg class="w-7 h-7" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 12a9 9 0 01-9 9m9-9a9 9 0 00-9-9m9 9H3m9 9a9 9 0 01-9-9m9 9c1.657 0 3-4.03 3-9s-1.343-9-3-9m0 18c-1.657 0-3-4.03-3-9s1.343-9 3-9m-9 9a9 9 0 019-9"/></svg>
+          </div>
+          <h3 class="text-base font-black text-slate-900">No Domains Registered</h3>
+          <p class="text-xs text-slate-500 mt-1 max-w-md mx-auto">Register a new domain name (.co.ke, .com, .org, .net) with Anycast DNS and free WHOIS privacy protection.</p>
+          <div class="mt-5">
+            <a href="/checkout?tab=domains" class="inline-flex items-center gap-1.5 bg-primary hover:bg-primary-hover text-white text-xs font-bold px-4 py-2.5 rounded-xl shadow-xs transition-all">
+              <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 12a9 9 0 01-9 9m9-9a9 9 0 00-9-9m9 9H3m9 9a9 9 0 01-9-9m9 9c1.657 0 3-4.03 3-9s-1.343-9-3-9m0 18c-1.657 0-3-4.03-3-9s1.343-9 3-9m-9 9a9 9 0 019-9"/></svg>
+              <span>Register First Domain</span>
+            </a>
+          </div>
+        </div>
+        {% endif %}
+      </section>
+
+      <section id="tab-billing" class="dashboard-panel space-y-4 hidden">
+        <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-3">
+          <div>
+            <h2 class="text-lg font-black text-slate-900">Invoices &amp; Official Receipts</h2>
+            <p class="text-xs text-slate-500">Accounting ledger of all settled orders, M-Pesa receipts, and card transactions.</p>
           </div>
           <a href="/sales-report" class="inline-flex items-center gap-1.5 text-xs font-bold text-primary hover:underline">
-            <span>View Cash Sales Report</span>
+            <span>View Full Sales Report</span>
             <span>&rarr;</span>
           </a>
         </div>
 
-        <div class="bg-white rounded-2xl border border-slate-200 overflow-hidden shadow-sm">
+        {% if orders %}
+        <div class="bg-white rounded-2xl border border-slate-200 overflow-hidden shadow-xs">
           <div class="overflow-x-auto">
             <table class="w-full text-left text-xs border-collapse">
               <thead class="bg-slate-50 border-b border-slate-200 text-slate-600 font-extrabold text-[11px] uppercase tracking-wider">
                 <tr>
-                  <th class="py-3 px-4">Invoice #</th>
-                  <th class="py-3 px-4">Date Issued</th>
-                  <th class="py-3 px-4">Payment Method</th>
-                  <th class="py-3 px-4">Payment Status</th>
-                  <th class="py-3 px-4">Served By</th>
-                  <th class="py-3 px-4 text-right">Total Amount</th>
-                  <th class="py-3 px-4 text-right">Document</th>
+                  <th class="py-3.5 px-4">Invoice #</th>
+                  <th class="py-3.5 px-4">Date Issued</th>
+                  <th class="py-3.5 px-4">Payment Method</th>
+                  <th class="py-3.5 px-4">Status</th>
+                  <th class="py-3.5 px-4">Served By</th>
+                  <th class="py-3.5 px-4 text-right">Total Amount</th>
+                  <th class="py-3.5 px-4 text-right">Document</th>
                 </tr>
               </thead>
               <tbody class="divide-y divide-slate-100 text-slate-700 font-medium">
-                {% if orders %}
-                  {% for o in orders %}
-                  <tr class="hover:bg-slate-50/80 transition-colors">
-                    <td class="py-3.5 px-4 font-mono font-bold text-slate-900">{{ o.order_number }}</td>
-                    <td class="py-3.5 px-4 text-slate-500">{{ o.created_at }}</td>
-                    <td class="py-3.5 px-4">
-                      <span class="inline-flex items-center gap-1.5 font-semibold text-slate-800">
-                        <svg class="w-3.5 h-3.5 text-slate-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 10h18M7 15h1m4 0h1m-7 4h12a3 3 0 003-3V8a3 3 0 00-3-3H6a3 3 0 00-3 3v8a3 3 0 003 3z"/></svg>
-                        <span>{{ o.payment_method }}</span>
-                      </span>
-                    </td>
-                    <td class="py-3.5 px-4">
-                      <span class="px-2.5 py-0.5 rounded-full text-[10px] font-bold bg-emerald-50 text-emerald-700 border border-emerald-200">
-                        {{ o.payment_status|upper }}
-                      </span>
-                    </td>
-                    <td class="py-3.5 px-4 text-slate-600">{{ o.served_by or 'Kiprotich oscar' }}</td>
-                    <td class="py-3.5 px-4 text-right font-bold text-slate-900 font-mono text-sm">
-                      {{ o.currency_symbol }}{{ "%.2f"|format(o.total_due_today) }}
-                    </td>
-                    <td class="py-3.5 px-4 text-right">
-                      <a href="/invoice/{{ o.order_number }}" class="inline-flex items-center gap-1 px-3 py-1 rounded-lg border border-slate-200 hover:border-primary text-slate-800 hover:text-primary text-[11px] font-bold bg-white transition-all">
-                        <span>Invoice</span>
-                        <span>&rarr;</span>
-                      </a>
-                    </td>
-                  </tr>
-                  {% endfor %}
-                {% else %}
-                  <tr class="hover:bg-slate-50/80 transition-colors">
-                    <td class="py-3.5 px-4 font-mono font-bold text-slate-900">SA-36531</td>
-                    <td class="py-3.5 px-4 text-slate-500">06 Nov 2026 at 07:23</td>
-                    <td class="py-3.5 px-4">M-Pesa</td>
-                    <td class="py-3.5 px-4">
-                      <span class="px-2.5 py-0.5 rounded-full text-[10px] font-bold bg-emerald-50 text-emerald-700 border border-emerald-200">
-                        PAID
-                      </span>
-                    </td>
-                    <td class="py-3.5 px-4 text-slate-600">Kiprotich oscar</td>
-                    <td class="py-3.5 px-4 text-right font-bold text-slate-900 font-mono text-sm">KES 504.17</td>
-                    <td class="py-3.5 px-4 text-right">
-                      <a href="/sales-report" class="inline-flex items-center gap-1 px-3 py-1 rounded-lg border border-slate-200 hover:border-primary text-slate-800 hover:text-primary text-[11px] font-bold bg-white transition-all">
-                        <span>Invoice</span>
-                        <span>&rarr;</span>
-                      </a>
-                    </td>
-                  </tr>
-                {% endif %}
+                {% for o in orders %}
+                <tr class="hover:bg-slate-50/80 transition-colors">
+                  <td class="py-3.5 px-4 font-mono font-bold text-slate-900">{{ o.order_number }}</td>
+                  <td class="py-3.5 px-4 text-slate-500">{{ o.created_at }}</td>
+                  <td class="py-3.5 px-4">
+                    <span class="inline-flex items-center gap-1.5 font-semibold text-slate-800">
+                      <svg class="w-3.5 h-3.5 text-slate-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 10h18M7 15h1m4 0h1m-7 4h12a3 3 0 003-3V8a3 3 0 00-3-3H6a3 3 0 00-3 3v8a3 3 0 003 3z"/></svg>
+                      <span>{{ o.payment_method }}</span>
+                    </span>
+                  </td>
+                  <td class="py-3.5 px-4">
+                    <span class="px-2.5 py-0.5 rounded-full text-[10px] font-bold bg-emerald-50 text-emerald-700 border border-emerald-200">
+                      {{ o.payment_status|upper }}
+                    </span>
+                  </td>
+                  <td class="py-3.5 px-4 text-slate-600">{{ o.served_by or 'Kiprotich oscar' }}</td>
+                  <td class="py-3.5 px-4 text-right font-bold text-slate-900 font-mono text-sm">
+                    {{ o.currency_symbol }}{{ "%.2f"|format(o.total_due_today) }}
+                  </td>
+                  <td class="py-3.5 px-4 text-right">
+                    <a href="/invoice/{{ o.order_number }}" class="inline-flex items-center gap-1 px-3 py-1.5 rounded-lg border border-slate-200 hover:border-primary text-slate-800 hover:text-primary text-[11px] font-bold bg-white transition-all cursor-pointer">
+                      <span>Receipt</span>
+                      <span>&rarr;</span>
+                    </a>
+                  </td>
+                </tr>
+                {% endfor %}
               </tbody>
             </table>
           </div>
         </div>
-      </section>
-
-      <section id="table-storage" class="dashboard-section space-y-3 pt-4">
-        <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-2">
-          <div>
-            <h2 class="text-base font-extrabold text-slate-900">Storage Volumes &amp; Automated Snapshots</h2>
-            <p class="text-xs text-slate-500">NVMe block storage pools and geo-distributed backup archives.</p>
+        {% else %}
+        <div class="bg-white rounded-2xl border border-dashed border-slate-300 p-12 text-center">
+          <div class="w-14 h-14 mx-auto rounded-2xl bg-slate-100 text-slate-500 flex items-center justify-center font-bold mb-4">
+            <svg class="w-7 h-7" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 14l6-6m-5.5.5h.01m4.99 5h.01M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16l3.5-2 3.5 2 3.5-2 3.5 2zM10 8.5a.5.5 0 11-1 0 .5.5 0 011 0zm5 5a.5.5 0 11-1 0 .5.5 0 011 0z"/></svg>
           </div>
-          <button type="button" onclick="alert('Creating manual snapshot...')" class="inline-flex items-center gap-1.5 text-xs font-bold text-primary hover:underline">
-            <span>+ Create Snapshot</span>
-            <span>&rarr;</span>
-          </button>
-        </div>
-
-        <div class="bg-white rounded-2xl border border-slate-200 overflow-hidden shadow-sm">
-          <div class="overflow-x-auto">
-            <table class="w-full text-left text-xs border-collapse">
-              <thead class="bg-slate-50 border-b border-slate-200 text-slate-600 font-extrabold text-[11px] uppercase tracking-wider">
-                <tr>
-                  <th class="py-3 px-4">Volume / Resource</th>
-                  <th class="py-3 px-4">Attached Instance</th>
-                  <th class="py-3 px-4">Capacity &amp; Type</th>
-                  <th class="py-3 px-4">Last Snapshot</th>
-                  <th class="py-3 px-4">Backup Schedule</th>
-                  <th class="py-3 px-4">Status</th>
-                  <th class="py-3 px-4 text-right">Actions</th>
-                </tr>
-              </thead>
-              <tbody class="divide-y divide-slate-100 text-slate-700 font-medium">
-                <tr class="hover:bg-slate-50/80 transition-colors">
-                  <td class="py-3.5 px-4 font-bold text-slate-900">vol-primary-nvme-01</td>
-                  <td class="py-3.5 px-4 font-mono text-slate-600">vps-nbo-4core</td>
-                  <td class="py-3.5 px-4">200 GB NVMe Gen4</td>
-                  <td class="py-3.5 px-4 text-slate-500">Today at 02:00 UTC</td>
-                  <td class="py-3.5 px-4 text-emerald-700 font-bold">Daily Automated</td>
-                  <td class="py-3.5 px-4">
-                    <span class="px-2.5 py-0.5 rounded-full text-[10px] font-bold bg-emerald-50 text-emerald-700 border border-emerald-200">
-                      OPTIMAL
-                    </span>
-                  </td>
-                  <td class="py-3.5 px-4 text-right">
-                    <button type="button" onclick="alert('Snapshot taken successfully!')" class="px-2.5 py-1 rounded-lg border border-slate-200 hover:border-primary text-slate-700 hover:text-primary text-[11px] font-bold bg-white transition-all">
-                      Snapshot
-                    </button>
-                  </td>
-                </tr>
-                <tr class="hover:bg-slate-50/80 transition-colors">
-                  <td class="py-3.5 px-4 font-bold text-slate-900">vol-backup-archive-02</td>
-                  <td class="py-3.5 px-4 font-mono text-slate-600">archive-storage-01</td>
-                  <td class="py-3.5 px-4">500 GB Object S3</td>
-                  <td class="py-3.5 px-4 text-slate-500">Yesterday at 23:30 UTC</td>
-                  <td class="py-3.5 px-4 text-emerald-700 font-bold">Weekly Archival</td>
-                  <td class="py-3.5 px-4">
-                    <span class="px-2.5 py-0.5 rounded-full text-[10px] font-bold bg-emerald-50 text-emerald-700 border border-emerald-200">
-                      OPTIMAL
-                    </span>
-                  </td>
-                  <td class="py-3.5 px-4 text-right">
-                    <button type="button" onclick="alert('Opening Object Storage Manager...')" class="px-2.5 py-1 rounded-lg border border-slate-200 hover:border-primary text-slate-700 hover:text-primary text-[11px] font-bold bg-white transition-all">
-                      Manage
-                    </button>
-                  </td>
-                </tr>
-              </tbody>
-            </table>
+          <h3 class="text-base font-black text-slate-900">No Invoices on Record</h3>
+          <p class="text-xs text-slate-500 mt-1 max-w-md mx-auto">When you order hosting, domains, or servers, your invoices and receipts will appear here.</p>
+          <div class="mt-5">
+            <a href="/checkout" class="inline-flex items-center gap-1.5 bg-primary hover:bg-primary-hover text-white text-xs font-bold px-4 py-2.5 rounded-xl shadow-xs transition-all">
+              <span>Browse Catalog</span>
+            </a>
           </div>
         </div>
+        {% endif %}
       </section>
     </main>
   </div>
@@ -823,7 +763,7 @@
     if (collapseBtn && sidebar) {
       collapseBtn.addEventListener('click', () => {
         sidebar.classList.toggle('w-64');
-        sidebar.classList.toggle('w-16');
+        sidebar.classList.toggle('w-20');
         sidebar.classList.toggle('sidebar-mini');
       });
     }
@@ -835,61 +775,81 @@
     }
 
     const tabBtns = document.querySelectorAll('.tab-btn');
-    const sections = document.querySelectorAll('.dashboard-section');
+    const tabPanels = document.querySelectorAll('.dashboard-panel');
+    const sidebarNavItems = document.querySelectorAll('.sidebar-nav-item');
+
+    function switchTab(targetId) {
+      tabBtns.forEach(b => {
+        const matches = b.getAttribute('data-target') === targetId;
+        if (matches) {
+          b.classList.remove('border-transparent', 'text-slate-500');
+          b.classList.add('border-primary', 'text-primary');
+        } else {
+          b.classList.add('border-transparent', 'text-slate-500');
+          b.classList.remove('border-primary', 'text-primary');
+        }
+      });
+
+      tabPanels.forEach(panel => {
+        if (panel.id === targetId) {
+          panel.classList.remove('hidden');
+        } else {
+          panel.classList.add('hidden');
+        }
+      });
+
+      sidebarNavItems.forEach(item => {
+        const itemTarget = item.getAttribute('data-tab');
+        if (itemTarget === targetId) {
+          item.classList.add('bg-blue-50/70', 'text-primary', 'border-blue-100/60', 'font-bold');
+          item.classList.remove('text-slate-600', 'font-medium', 'border-transparent');
+          const icon = item.querySelector('svg');
+          if (icon) {
+            icon.classList.remove('text-slate-400');
+            icon.classList.add('text-primary');
+          }
+        } else if (itemTarget) {
+          item.classList.remove('bg-blue-50/70', 'text-primary', 'border-blue-100/60', 'font-bold');
+          item.classList.add('text-slate-600', 'font-medium', 'border-transparent');
+          const icon = item.querySelector('svg');
+          if (icon) {
+            icon.classList.remove('text-primary');
+            icon.classList.add('text-slate-400');
+          }
+        }
+      });
+    }
+
+    window.switchTab = switchTab;
 
     tabBtns.forEach(btn => {
       btn.addEventListener('click', () => {
         const targetId = btn.getAttribute('data-target');
-        tabBtns.forEach(b => {
-          b.classList.remove('border-primary', 'text-primary');
-          b.classList.add('border-transparent', 'text-slate-500');
-        });
-        btn.classList.add('border-primary', 'text-primary');
-        btn.classList.remove('border-transparent', 'text-slate-500');
-
-        sections.forEach(sec => {
-          if (sec.id === targetId) {
-            sec.scrollIntoView({ behavior: 'smooth', block: 'start' });
-          }
-        });
+        switchTab(targetId);
       });
     });
 
-    const searchInput = document.getElementById('table-global-search');
-    if (searchInput) {
-      searchInput.addEventListener('input', (e) => {
-        const term = e.target.value.toLowerCase();
-        const rows = document.querySelectorAll('#services-tbody tr, #table-domains tbody tr, #table-billing tbody tr');
-        rows.forEach(row => {
-          const text = row.textContent.toLowerCase();
-          row.style.display = text.includes(term) ? '' : 'none';
-        });
+    sidebarNavItems.forEach(item => {
+      item.addEventListener('click', (e) => {
+        const tab = item.getAttribute('data-tab');
+        if (tab) {
+          e.preventDefault();
+          switchTab(tab);
+          if (window.innerWidth < 1024 && sidebar) {
+            sidebar.classList.add('hidden');
+          }
+        }
       });
+    });
+
+    const urlParams = new URLSearchParams(window.location.search);
+    const initialTabParam = urlParams.get('tab') || window.location.hash.replace('#', '');
+    if (initialTabParam) {
+      const candidate = initialTabParam.startsWith('tab-') ? initialTabParam : `tab-${initialTabParam}`;
+      if (document.getElementById(candidate)) {
+        switchTab(candidate);
+      }
     }
-
-    const filterBtns = document.querySelectorAll('.service-filter-btn');
-    const serviceRows = document.querySelectorAll('.service-row');
-
-    filterBtns.forEach(btn => {
-      btn.addEventListener('click', () => {
-        const filter = btn.getAttribute('data-filter');
-        filterBtns.forEach(b => {
-          b.classList.remove('bg-primary', 'text-white');
-          b.classList.add('bg-white', 'text-slate-600', 'border', 'border-slate-200');
-        });
-        btn.classList.add('bg-primary', 'text-white');
-        btn.classList.remove('bg-white', 'text-slate-600', 'border');
-
-        serviceRows.forEach(row => {
-          const category = row.getAttribute('data-category') || '';
-          if (filter === 'all' || category.includes(filter)) {
-            row.style.display = '';
-          } else {
-            row.style.display = 'none';
-          }
-        });
-      });
-    });
   </script>
 </body>
 </html>

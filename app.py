@@ -79,10 +79,17 @@ def dashboard():
     orders = db.get_user_orders(email)
     domains = db.get_user_domains(email)
 
+    vps_items = [i for i in purchased_items if "vps" in i.get("category", "").lower() or "vps" in i.get("name", "").lower()]
+    dedicated_items = [i for i in purchased_items if "dedicated" in i.get("category", "").lower() or "dedicated" in i.get("name", "").lower()]
+    shared_items = [i for i in purchased_items if "shared" in i.get("category", "").lower() or "shared" in i.get("name", "").lower() or ("hosting" in i.get("category", "").lower() and "vps" not in i.get("category", "").lower() and "dedicated" not in i.get("category", "").lower())]
+
     return render_template(
         "dashboard.html",
         user=user,
         purchased_items=purchased_items,
+        vps_items=vps_items,
+        dedicated_items=dedicated_items,
+        shared_items=shared_items,
         orders=orders,
         domains=domains
     )
