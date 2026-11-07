@@ -204,32 +204,6 @@
         </div>
       </div>
 
-      <div class="border-b border-slate-200 flex items-center gap-1 sm:gap-2 overflow-x-auto pb-px text-xs font-bold scrollbar-thin">
-        <button type="button" class="tab-btn px-4 py-3 border-b-2 border-primary text-primary flex items-center gap-2 whitespace-nowrap cursor-pointer transition-colors" data-target="tab-overview">
-          <span>Overview</span>
-        </button>
-        <button type="button" class="tab-btn px-4 py-3 border-b-2 border-transparent text-slate-500 hover:text-slate-800 flex items-center gap-2 whitespace-nowrap cursor-pointer transition-colors" data-target="tab-vps">
-          <span>VPS Servers</span>
-          <span class="px-2 py-0.5 rounded-full text-[10px] bg-slate-100 text-slate-700 font-mono">{{ vps_items|length if vps_items else 0 }}</span>
-        </button>
-        <button type="button" class="tab-btn px-4 py-3 border-b-2 border-transparent text-slate-500 hover:text-slate-800 flex items-center gap-2 whitespace-nowrap cursor-pointer transition-colors" data-target="tab-dedicated">
-          <span>Dedicated Servers</span>
-          <span class="px-2 py-0.5 rounded-full text-[10px] bg-slate-100 text-slate-700 font-mono">{{ dedicated_items|length if dedicated_items else 0 }}</span>
-        </button>
-        <button type="button" class="tab-btn px-4 py-3 border-b-2 border-transparent text-slate-500 hover:text-slate-800 flex items-center gap-2 whitespace-nowrap cursor-pointer transition-colors" data-target="tab-shared">
-          <span>Shared Hosting</span>
-          <span class="px-2 py-0.5 rounded-full text-[10px] bg-slate-100 text-slate-700 font-mono">{{ shared_items|length if shared_items else 0 }}</span>
-        </button>
-        <button type="button" class="tab-btn px-4 py-3 border-b-2 border-transparent text-slate-500 hover:text-slate-800 flex items-center gap-2 whitespace-nowrap cursor-pointer transition-colors" data-target="tab-domains">
-          <span>Domains</span>
-          <span class="px-2 py-0.5 rounded-full text-[10px] bg-slate-100 text-slate-700 font-mono">{{ domains|length if domains else 0 }}</span>
-        </button>
-        <button type="button" class="tab-btn px-4 py-3 border-b-2 border-transparent text-slate-500 hover:text-slate-800 flex items-center gap-2 whitespace-nowrap cursor-pointer transition-colors" data-target="tab-billing">
-          <span>Invoices &amp; Billing</span>
-          <span class="px-2 py-0.5 rounded-full text-[10px] bg-slate-100 text-slate-700 font-mono">{{ orders|length if orders else 0 }}</span>
-        </button>
-      </div>
-
       <section id="tab-overview" class="dashboard-panel space-y-6">
         <div class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-3 sm:gap-4">
           <div class="bg-white p-4 sm:p-5 rounded-2xl border border-slate-200 shadow-xs cursor-pointer hover:border-primary/50 transition-colors" onclick="switchTab('tab-vps')">
@@ -774,22 +748,10 @@
       });
     }
 
-    const tabBtns = document.querySelectorAll('.tab-btn');
     const tabPanels = document.querySelectorAll('.dashboard-panel');
     const sidebarNavItems = document.querySelectorAll('.sidebar-nav-item');
 
     function switchTab(targetId) {
-      tabBtns.forEach(b => {
-        const matches = b.getAttribute('data-target') === targetId;
-        if (matches) {
-          b.classList.remove('border-transparent', 'text-slate-500');
-          b.classList.add('border-primary', 'text-primary');
-        } else {
-          b.classList.add('border-transparent', 'text-slate-500');
-          b.classList.remove('border-primary', 'text-primary');
-        }
-      });
-
       tabPanels.forEach(panel => {
         if (panel.id === targetId) {
           panel.classList.remove('hidden');
@@ -821,13 +783,6 @@
     }
 
     window.switchTab = switchTab;
-
-    tabBtns.forEach(btn => {
-      btn.addEventListener('click', () => {
-        const targetId = btn.getAttribute('data-target');
-        switchTab(targetId);
-      });
-    });
 
     sidebarNavItems.forEach(item => {
       item.addEventListener('click', (e) => {

@@ -167,6 +167,19 @@ class Database:
             )
         """)
 
+        cur.execute(f"""
+            CREATE TABLE IF NOT EXISTS ip_logs (
+                id {serial_type},
+                ip TEXT NOT NULL,
+                method TEXT NOT NULL,
+                path TEXT NOT NULL,
+                status_code INTEGER DEFAULT 200,
+                user_agent TEXT,
+                referrer TEXT,
+                created_at TEXT
+            )
+        """)
+
         if not self.is_postgres:
             self.conn.commit()
 
@@ -472,5 +485,91 @@ class Database:
         for r in rows:
             results.append(dict(zip([desc[0] for desc in cur.description], r)) if self.is_postgres else dict(r))
         return results
+
+    def log_request(self, ip, method, path, status_code=200, user_agent="", referrer=""):
+        try:
+            created_at = datetime.utcnow().strftime("%Y-%m-%d %H:%M:%S")
+            cur = self.get_cursor()
+            sql = """
+                INSERT INTO ip_logs (ip, method, path, status_code, user_agent, referrer, created_at)
+                VALUES (%s, %s, %s, %s, %s, %s, %s)
+            """ if self.is_postgres else """
+                INSERT INTO ip_logs (ip, method, path, status_code, user_agent, referrer, created_at)
+                VALUES (?, ?, ?, ?, ?, ?, ?)
+            """
+            cur.execute(sql, (str(ip)[:64], str(method)[:10], str(path)[:255], int(status_code or 200), str(user_agent)[:255], str(referrer)[:255], created_at))
+            if not self.is_postgres:
+                self.conn.commit()
+        except Exception:
+            pass
+
+    def get_recent_ip_logs(self, limit=150, search=None):
+        try:
+            cur = self.get_cursor()
+            if search:
+                term = f"%{search.strip().lower()}%"
+                sql = """
+                    SELECT * FROM ip_logs
+                    WHERE LOWER(ip) LIKE %s OR LOWER(path) LIKE %s OR LOWER(method) LIKE %s
+                    ORDER BY id DESC LIMIT %s
+                """ if self.is_postgres else """
+                    SELECT * FROM ip_logs
+                    WHERE LOWER(ip) LIKE ? OR LOWER(path) LIKE ? OR LOWER(method) LIKE ?
+                    ORDER BY id DESC LIMIT ?
+                """
+                cur.execute(sql, (term, term, term, limit))
+            else:
+                sql = "SELECT * FROM ip_logs ORDER BY id DESC LIMIT %s" if self.is_postgres else "SELECT * FROM ip_logs ORDER BY id DESC LIMIT ?"
+                cur.execute(sql, (limit,))
+
+            rows = cur.fetchall()
+            results = []
+            for r in rows:
+                if self.is_postgres:
+                    cols = [desc[0] for desc in cur.description]
+                    results.append(dict(zip(cols, r)))
+                else:
+                    results.append(dict(r))
+            return results
+        except Exception:
+            return []
+
+    def get_ip_stats(self):
+        try:
+            cur = self.get_cursor()
+            cur.execute("SELECT COUNT(*) FROM ip_logs")
+            total = cur.fetchone()[0] or 0
+
+            cur.execute("SELECT COUNT(DISTINCT ip) FROM ip_logs")
+            unique = cur.fetchone()[0] or 0
+
+            cur.execute("SELECT path, COUNT(*) as cnt FROM ip_logs GROUP BY path ORDER BY cnt DESC LIMIT 5")
+            top_paths = [{"path": r[0], "count": r[1]} for r in cur.fetchall()]
+
+            cur.execute("SELECT ip, COUNT(*) as cnt FROM ip_logs GROUP BY ip ORDER BY cnt DESC LIMIT 5")
+            top_ips = [{"ip": r[0], "count": r[1]} for r in cur.fetchall()]
+
+            return {
+                "total_requests": total,
+                "unique_ips": unique,
+                "top_paths": top_paths,
+                "top_ips": top_ips
+            }
+        except Exception:
+            return {
+                "total_requests": 0,
+                "unique_ips": 0,
+                "top_paths": [],
+                "top_ips": []
+            }
+
+    def clear_ip_logs(self):
+        try:
+            cur = self.get_cursor()
+            cur.execute("DELETE FROM ip_logs")
+            if not self.is_postgres:
+                self.conn.commit()
+        except Exception:
+            pass
 
 db = Database()

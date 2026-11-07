@@ -406,5 +406,48 @@ def api_user_purchases():
     items = db.get_user_purchased_items(email) if email else []
     return jsonify({"status": "success", "data": items})
 
+@app.after_request
+def monitor_ip_request(response):
+    try:
+        path = request.path
+        if not path.startswith("/static") and path not in ("/favicon.ico", "/robots.txt"):
+            forwarded = request.headers.get("X-Forwarded-For")
+            if forwarded:
+                client_ip = forwarded.split(",")[0].strip()
+            else:
+                client_ip = request.headers.get("CF-Connecting-IP") or request.headers.get("X-Real-IP") or request.remote_addr or "127.0.0.1"
+
+            db.log_request(
+                ip=client_ip,
+                method=request.method,
+                path=path,
+                status_code=response.status_code,
+                user_agent=request.headers.get("User-Agent", "")[:255],
+                referrer=request.headers.get("Referer", "")[:255]
+            )
+    except Exception:
+        pass
+    return response
+
+@app.route("/mn", methods=["GET", "POST"])
+def ip_monitoring():
+    if request.method == "POST" and request.form.get("action") == "clear":
+        db.clear_ip_logs()
+        return redirect("/mn")
+
+    search_query = request.args.get("q", "").strip()
+    logs = db.get_recent_ip_logs(limit=200, search=search_query if search_query else None)
+    stats = db.get_ip_stats()
+
+    if request.args.get("format") == "json":
+        return jsonify({"stats": stats, "logs": logs})
+
+    return render_template(
+        "monitoring.html",
+        logs=logs,
+        stats=stats,
+        search_query=search_query
+    )
+
 if __name__ == "__main__":
     app.run(debug=True, port=5000)
