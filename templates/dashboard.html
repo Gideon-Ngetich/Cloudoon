@@ -54,7 +54,9 @@
   </style>
 </head>
 <body class="h-screen w-screen overflow-hidden flex bg-[#f8fafc] text-slate-900 font-sans antialiased">
-  <aside id="dashboard-sidebar" class="w-64 h-screen flex-shrink-0 bg-white border-r border-slate-200 flex flex-col z-30 transition-all duration-300">
+  <div id="sidebar-backdrop" class="fixed inset-0 bg-slate-950/50 backdrop-blur-xs z-40 lg:hidden opacity-0 pointer-events-none transition-opacity duration-300"></div>
+
+  <aside id="dashboard-sidebar" class="w-64 h-screen flex-shrink-0 bg-white border-r border-slate-200 flex flex-col z-50 transition-transform duration-300 fixed inset-y-0 left-0 -translate-x-full lg:static lg:translate-x-0">
     <div class="h-16 px-5 border-b border-slate-100 flex items-center justify-between flex-shrink-0 bg-white">
       <a href="/" class="flex items-center gap-2.5 focus:outline-none" aria-label="Cloudoon Home">
         <div class="w-8 h-8 rounded-xl bg-gradient-to-tr from-primary to-blue-500 flex items-center justify-center text-white font-black text-sm shadow-xs flex-shrink-0">
@@ -64,7 +66,10 @@
           Cloudoon
         </span>
       </a>
-      <button id="sidebar-collapse-btn" type="button" class="text-slate-400 hover:text-slate-700 p-1.5 rounded-lg hover:bg-slate-50 transition-colors cursor-pointer" title="Collapse sidebar">
+      <button id="sidebar-close-btn" type="button" class="lg:hidden text-slate-400 hover:text-slate-700 p-2 rounded-xl hover:bg-slate-100 transition-colors cursor-pointer" aria-label="Close sidebar">
+        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/></svg>
+      </button>
+      <button id="sidebar-collapse-btn" type="button" class="hidden lg:flex text-slate-400 hover:text-slate-700 p-1.5 rounded-lg hover:bg-slate-50 transition-colors cursor-pointer" title="Collapse sidebar">
         <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
           <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 19l-7-7 7-7m8 14l-7-7 7-7" />
         </svg>
@@ -731,8 +736,50 @@
 
   <script>
     const sidebar = document.getElementById('dashboard-sidebar');
+    const backdrop = document.getElementById('sidebar-backdrop');
     const collapseBtn = document.getElementById('sidebar-collapse-btn');
+    const closeBtn = document.getElementById('sidebar-close-btn');
     const mobileToggle = document.getElementById('mobile-menu-toggle');
+
+    function openMobileSidebar() {
+      if (!sidebar) return;
+      sidebar.classList.remove('-translate-x-full');
+      sidebar.classList.add('translate-x-0');
+      if (backdrop) {
+        backdrop.classList.remove('opacity-0', 'pointer-events-none');
+        backdrop.classList.add('opacity-100', 'pointer-events-auto');
+      }
+      document.body.classList.add('overflow-hidden');
+    }
+
+    function closeMobileSidebar() {
+      if (!sidebar) return;
+      sidebar.classList.add('-translate-x-full');
+      sidebar.classList.remove('translate-x-0');
+      if (backdrop) {
+        backdrop.classList.add('opacity-0', 'pointer-events-none');
+        backdrop.classList.remove('opacity-100', 'pointer-events-auto');
+      }
+      document.body.classList.remove('overflow-hidden');
+    }
+
+    if (mobileToggle) {
+      mobileToggle.addEventListener('click', (e) => {
+        e.preventDefault();
+        openMobileSidebar();
+      });
+    }
+
+    if (closeBtn) {
+      closeBtn.addEventListener('click', (e) => {
+        e.preventDefault();
+        closeMobileSidebar();
+      });
+    }
+
+    if (backdrop) {
+      backdrop.addEventListener('click', closeMobileSidebar);
+    }
 
     if (collapseBtn && sidebar) {
       collapseBtn.addEventListener('click', () => {
@@ -742,11 +789,11 @@
       });
     }
 
-    if (mobileToggle && sidebar) {
-      mobileToggle.addEventListener('click', () => {
-        sidebar.classList.toggle('hidden');
-      });
-    }
+    document.addEventListener('keydown', (e) => {
+      if (e.key === 'Escape') {
+        closeMobileSidebar();
+      }
+    });
 
     const tabPanels = document.querySelectorAll('.dashboard-panel');
     const sidebarNavItems = document.querySelectorAll('.sidebar-nav-item');
@@ -790,8 +837,8 @@
         if (tab) {
           e.preventDefault();
           switchTab(tab);
-          if (window.innerWidth < 1024 && sidebar) {
-            sidebar.classList.add('hidden');
+          if (window.innerWidth < 1024) {
+            closeMobileSidebar();
           }
         }
       });
