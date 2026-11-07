@@ -832,6 +832,7 @@ document.addEventListener('DOMContentLoaded', () => {
   }
 
   if (toggleWhois) {
+    toggleWhois.checked = state.items.some(i => i.id === 'whois-privacy');
     toggleWhois.addEventListener('change', (e) => {
       state.items = state.items.filter(i => i.id !== 'whois-privacy');
       if (e.target.checked) {
@@ -848,18 +849,6 @@ document.addEventListener('DOMContentLoaded', () => {
       }
       renderSummary();
     });
-    if (toggleWhois.checked) {
-      state.items.push({
-        id: 'whois-privacy',
-        name: 'WHOIS Privacy Protection',
-        category: 'domain_addon',
-        monthly_base: 1.99 / 12,
-        monthly_renewal: 1.99 / 12,
-        is_yearly: true,
-        raw_first_year: 1.99,
-        raw_renewal: 1.99
-      });
-    }
   }
 
   function updateVpsCalculations() {
