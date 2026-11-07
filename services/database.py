@@ -27,7 +27,7 @@ class Database:
         if self.pg_url and ("postgresql://" in self.pg_url or "postgres://" in self.pg_url):
             try:
                 import psycopg2
-                self.conn = psycopg2.connect(self.pg_url)
+                self.conn = psycopg2.connect(self.pg_url, connect_timeout=1)
                 self.conn.autocommit = True
                 self.is_postgres = True
                 return
@@ -36,7 +36,7 @@ class Database:
 
             try:
                 import psycopg
-                self.conn = psycopg.connect(self.pg_url, autocommit=True)
+                self.conn = psycopg.connect(self.pg_url, autocommit=True, connect_timeout=1)
                 self.is_postgres = True
                 return
             except Exception:
@@ -176,6 +176,19 @@ class Database:
                 status_code INTEGER DEFAULT 200,
                 user_agent TEXT,
                 referrer TEXT,
+                created_at TEXT
+            )
+        """)
+
+        cur.execute(f"""
+            CREATE TABLE IF NOT EXISTS domain_dns_records (
+                id {serial_type},
+                domain TEXT NOT NULL,
+                record_type TEXT NOT NULL,
+                name TEXT NOT NULL,
+                value TEXT NOT NULL,
+                ttl INTEGER DEFAULT 3600,
+                priority INTEGER DEFAULT 10,
                 created_at TEXT
             )
         """)
@@ -488,6 +501,9 @@ class Database:
 
     def log_request(self, ip, method, path, status_code=200, user_agent="", referrer=""):
         try:
+            p = str(path or "")
+            if p.startswith("/mn") or p.startswith("/api/monitoring"):
+                return
             created_at = datetime.utcnow().strftime("%Y-%m-%d %H:%M:%S")
             cur = self.get_cursor()
             sql = """
@@ -571,5 +587,99 @@ class Database:
                 self.conn.commit()
         except Exception:
             pass
+
+    def get_domain_dns_records(self, domain):
+        try:
+            domain_clean = str(domain or "").strip().lower()
+            if not domain_clean:
+                return []
+            cur = self.get_cursor()
+            sql = "SELECT * FROM domain_dns_records WHERE LOWER(domain) = %s ORDER BY id ASC" if self.is_postgres else "SELECT * FROM domain_dns_records WHERE LOWER(domain) = ? ORDER BY id ASC"
+            cur.execute(sql, (domain_clean,))
+            rows = cur.fetchall()
+            results = []
+            for r in rows:
+                results.append(dict(zip([desc[0] for desc in cur.description], r)) if self.is_postgres else dict(r))
+
+            if not results:
+                default_records = [
+                    ("A", "@", "197.232.48.12", 3600, 10),
+                    ("A", "mail", "197.232.48.55", 3600, 10),
+                    ("CNAME", "www", "@", 3600, 10),
+                    ("MX", "@", f"mail.{domain_clean}", 3600, 10),
+                    ("TXT", "@", "v=spf1 a mx include:_spf.cloudoon.com ~all", 3600, 10),
+                    ("NS", "@", "ns1.cloudoon.com", 86400, 10),
+                    ("NS", "@", "ns2.cloudoon.com", 86400, 10),
+                ]
+                now_str = datetime.utcnow().strftime("%Y-%m-%d %H:%M:%S")
+                for r_type, r_name, r_val, r_ttl, r_prio in default_records:
+                    ins_sql = """
+                        INSERT INTO domain_dns_records (domain, record_type, name, value, ttl, priority, created_at)
+                        VALUES (%s, %s, %s, %s, %s, %s, %s)
+                    """ if self.is_postgres else """
+                        INSERT INTO domain_dns_records (domain, record_type, name, value, ttl, priority, created_at)
+                        VALUES (?, ?, ?, ?, ?, ?, ?)
+                    """
+                    cur.execute(ins_sql, (domain_clean, r_type, r_name, r_val, r_ttl, r_prio, now_str))
+                if not self.is_postgres:
+                    self.conn.commit()
+
+                cur.execute(sql, (domain_clean,))
+                rows = cur.fetchall()
+                results = []
+                for r in rows:
+                    results.append(dict(zip([desc[0] for desc in cur.description], r)) if self.is_postgres else dict(r))
+            return results
+        except Exception:
+            return []
+
+    def add_domain_dns_record(self, domain, record_type, name, value, ttl=3600, priority=10):
+        try:
+            domain_clean = str(domain or "").strip().lower()
+            cur = self.get_cursor()
+            now_str = datetime.utcnow().strftime("%Y-%m-%d %H:%M:%S")
+            sql = """
+                INSERT INTO domain_dns_records (domain, record_type, name, value, ttl, priority, created_at)
+                VALUES (%s, %s, %s, %s, %s, %s, %s)
+            """ if self.is_postgres else """
+                INSERT INTO domain_dns_records (domain, record_type, name, value, ttl, priority, created_at)
+                VALUES (?, ?, ?, ?, ?, ?, ?)
+            """
+            cur.execute(sql, (domain_clean, str(record_type).upper().strip(), str(name).strip(), str(value).strip(), int(ttl or 3600), int(priority or 10), now_str))
+            if not self.is_postgres:
+                self.conn.commit()
+            return True
+        except Exception:
+            return False
+
+    def update_domain_dns_record(self, record_id, record_type, name, value, ttl=3600, priority=10):
+        try:
+            cur = self.get_cursor()
+            sql = """
+                UPDATE domain_dns_records
+                SET record_type = %s, name = %s, value = %s, ttl = %s, priority = %s
+                WHERE id = %s
+            """ if self.is_postgres else """
+                UPDATE domain_dns_records
+                SET record_type = ?, name = ?, value = ?, ttl = ?, priority = ?
+                WHERE id = ?
+            """
+            cur.execute(sql, (str(record_type).upper().strip(), str(name).strip(), str(value).strip(), int(ttl or 3600), int(priority or 10), int(record_id)))
+            if not self.is_postgres:
+                self.conn.commit()
+            return True
+        except Exception:
+            return False
+
+    def delete_domain_dns_record(self, record_id):
+        try:
+            cur = self.get_cursor()
+            sql = "DELETE FROM domain_dns_records WHERE id = %s" if self.is_postgres else "DELETE FROM domain_dns_records WHERE id = ?"
+            cur.execute(sql, (int(record_id),))
+            if not self.is_postgres:
+                self.conn.commit()
+            return True
+        except Exception:
+            return False
 
 db = Database()

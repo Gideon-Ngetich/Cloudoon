@@ -132,6 +132,14 @@
             </div>
             <span class="sidebar-label px-2 py-0.5 rounded-full text-[10px] bg-slate-100 text-slate-600 font-mono">{{ domains|length if domains else 0 }}</span>
           </button>
+
+          <button type="button" data-tab="tab-dns" class="sidebar-nav-item w-full flex items-center justify-between px-3 py-2.5 rounded-xl font-medium text-slate-600 hover:text-slate-900 hover:bg-slate-50 transition-colors text-left cursor-pointer border border-transparent">
+            <div class="flex items-center gap-3">
+              <svg class="w-4 h-4 flex-shrink-0 text-slate-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 20l4-16m4 4l4 4-4 4M6 16l-4-4 4-4"/></svg>
+              <span class="sidebar-label">DNS Zone Records</span>
+            </div>
+            <span class="sidebar-label px-2 py-0.5 rounded-full text-[10px] bg-amber-50 text-amber-800 font-mono font-bold" id="sidebar-dns-count">{{ dns_records|length if dns_records else 0 }}</span>
+          </button>
         </div>
       </div>
 
@@ -636,7 +644,7 @@
                   <td class="py-3.5 px-4 text-slate-500">{{ d.expires_at or '21 October 2029' }}</td>
                   <td class="py-3.5 px-4 text-right">
                     <div class="inline-flex items-center gap-1.5">
-                      <button type="button" onclick="alert('Zone editor for {{ d.domain }}')" class="px-2.5 py-1.5 rounded-lg border border-slate-200 hover:border-primary text-slate-700 hover:text-primary text-[11px] font-bold bg-white transition-all cursor-pointer">
+                      <button type="button" onclick="openDnsManager('{{ d.domain }}')" class="px-3.5 py-1.5 rounded-lg border border-slate-200 hover:border-accent text-slate-700 hover:text-amber-800 text-[11px] font-bold bg-white transition-all cursor-pointer whitespace-nowrap">
                         Manage DNS
                       </button>
                       <button type="button" onclick="alert('Domain lock status: ON')" class="px-2.5 py-1.5 rounded-lg bg-slate-100 hover:bg-slate-200 text-slate-700 text-[11px] font-bold transition-all cursor-pointer">
@@ -665,6 +673,156 @@
           </div>
         </div>
         {% endif %}
+      </section>
+
+      <section id="tab-dns" class="dashboard-panel space-y-5 hidden">
+        <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-3">
+          <div>
+            <h2 class="text-lg font-black text-slate-900">DNS Zone Records Management</h2>
+            <p class="text-xs text-slate-500">Configure and update A records, CNAME, MX, TXT, and Anycast routing for your domains.</p>
+          </div>
+          <div class="flex items-center gap-2 flex-wrap">
+            <div class="relative">
+              <select id="dns-domain-selector" onchange="onDnsDomainChange(this.value)" class="appearance-none bg-white border border-slate-200 text-slate-900 font-bold text-xs py-2.5 pl-3.5 pr-8 rounded-xl shadow-2xs focus:outline-none focus:ring-2 focus:ring-accent cursor-pointer">
+                {% for d in domains %}
+                <option value="{{ d.domain }}" {% if loop.first %}selected{% endif %}>{{ d.domain }}</option>
+                {% endfor %}
+                {% if not domains %}
+                <option value="cloudoon.co.ke" selected>cloudoon.co.ke</option>
+                {% endif %}
+              </select>
+              <div class="pointer-events-none absolute inset-y-0 right-0 flex items-center pr-2.5 text-slate-400">
+                <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M19 9l-7 7-7-7"/></svg>
+              </div>
+            </div>
+
+            <button type="button" onclick="toggleDnsRecordForm()" class="inline-flex items-center gap-2 bg-accent hover:bg-accent-hover text-white text-xs font-black px-4 py-2.5 rounded-xl shadow-sm transition-all flex-shrink-0 cursor-pointer">
+              <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M12 4v16m8-8H4"/></svg>
+              <span>Add DNS Record</span>
+            </button>
+          </div>
+        </div>
+
+        <div id="dns-record-form-card" class="hidden bg-white rounded-2xl border border-slate-200 p-5 shadow-xs transition-all">
+          <div class="flex items-center justify-between pb-3 border-b border-slate-100">
+            <h3 id="dns-form-title" class="text-sm font-black text-slate-900">Add New DNS Record</h3>
+            <button type="button" onclick="toggleDnsRecordForm(false)" class="text-slate-400 hover:text-slate-700 p-1 rounded-lg cursor-pointer">
+              <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/></svg>
+            </button>
+          </div>
+
+          <form id="dns-record-form" onsubmit="handleDnsFormSubmit(event)" class="pt-4 space-y-4">
+            <input type="hidden" id="dns-edit-id" value="">
+            <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-3">
+              <div>
+                <label class="block text-[11px] font-bold text-slate-500 uppercase tracking-wider mb-1">Type</label>
+                <select id="dns-input-type" onchange="onRecordTypeChange(this.value)" class="w-full bg-slate-50 border border-slate-200 text-slate-900 font-bold text-xs p-2.5 rounded-xl focus:outline-none focus:ring-2 focus:ring-accent">
+                  <option value="A">A (IPv4 Address)</option>
+                  <option value="AAAA">AAAA (IPv6 Address)</option>
+                  <option value="CNAME">CNAME (Alias)</option>
+                  <option value="MX">MX (Mail Exchanger)</option>
+                  <option value="TXT">TXT (SPF / Verification)</option>
+                  <option value="NS">NS (Name Server)</option>
+                </select>
+              </div>
+
+              <div>
+                <label class="block text-[11px] font-bold text-slate-500 uppercase tracking-wider mb-1">Host / Name</label>
+                <input type="text" id="dns-input-name" placeholder="@ (or www, mail)" required class="w-full bg-slate-50 border border-slate-200 text-slate-900 font-mono text-xs p-2.5 rounded-xl focus:outline-none focus:ring-2 focus:ring-accent">
+              </div>
+
+              <div class="lg:col-span-2">
+                <label id="dns-value-label" class="block text-[11px] font-bold text-slate-500 uppercase tracking-wider mb-1">Points To / Target</label>
+                <input type="text" id="dns-input-value" placeholder="e.g. 197.232.48.12" required class="w-full bg-slate-50 border border-slate-200 text-slate-900 font-mono text-xs p-2.5 rounded-xl focus:outline-none focus:ring-2 focus:ring-accent">
+              </div>
+
+              <div>
+                <label class="block text-[11px] font-bold text-slate-500 uppercase tracking-wider mb-1">TTL</label>
+                <select id="dns-input-ttl" class="w-full bg-slate-50 border border-slate-200 text-slate-900 font-medium text-xs p-2.5 rounded-xl focus:outline-none focus:ring-2 focus:ring-accent">
+                  <option value="300">300s (5 mins)</option>
+                  <option value="1800">1800s (30 mins)</option>
+                  <option value="3600" selected>3600s (1 hour)</option>
+                  <option value="14400">14400s (4 hours)</option>
+                  <option value="86400">86400s (1 day)</option>
+                </select>
+              </div>
+            </div>
+
+            <div id="dns-priority-container" class="hidden max-w-xs">
+              <label class="block text-[11px] font-bold text-slate-500 uppercase tracking-wider mb-1">Priority (MX)</label>
+              <input type="number" id="dns-input-priority" value="10" min="0" max="65535" class="w-full bg-slate-50 border border-slate-200 text-slate-900 font-mono text-xs p-2.5 rounded-xl focus:outline-none focus:ring-2 focus:ring-accent">
+            </div>
+
+            <div class="flex items-center gap-2 pt-2">
+              <button type="submit" id="dns-submit-btn" class="bg-accent hover:bg-accent-hover text-white text-xs font-black px-5 py-2.5 rounded-xl shadow-xs transition-all cursor-pointer">
+                Save Record
+              </button>
+              <button type="button" onclick="toggleDnsRecordForm(false)" class="bg-slate-100 hover:bg-slate-200 text-slate-700 text-xs font-bold px-4 py-2.5 rounded-xl transition-all cursor-pointer">
+                Cancel
+              </button>
+            </div>
+          </form>
+        </div>
+
+        <div class="flex items-center gap-2 overflow-x-auto pb-1 scrollbar-thin text-xs">
+          <button type="button" onclick="filterDnsRecords('ALL')" class="dns-filter-btn px-3.5 py-1.5 rounded-xl font-bold bg-amber-50 text-amber-800 border border-amber-200/80 cursor-pointer" data-filter="ALL">All Records</button>
+          <button type="button" onclick="filterDnsRecords('A')" class="dns-filter-btn px-3.5 py-1.5 rounded-xl font-medium text-slate-600 hover:text-slate-900 hover:bg-slate-50 border border-transparent cursor-pointer" data-filter="A">A Records</button>
+          <button type="button" onclick="filterDnsRecords('AAAA')" class="dns-filter-btn px-3.5 py-1.5 rounded-xl font-medium text-slate-600 hover:text-slate-900 hover:bg-slate-50 border border-transparent cursor-pointer" data-filter="AAAA">AAAA</button>
+          <button type="button" onclick="filterDnsRecords('CNAME')" class="dns-filter-btn px-3.5 py-1.5 rounded-xl font-medium text-slate-600 hover:text-slate-900 hover:bg-slate-50 border border-transparent cursor-pointer" data-filter="CNAME">CNAME</button>
+          <button type="button" onclick="filterDnsRecords('MX')" class="dns-filter-btn px-3.5 py-1.5 rounded-xl font-medium text-slate-600 hover:text-slate-900 hover:bg-slate-50 border border-transparent cursor-pointer" data-filter="MX">MX</button>
+          <button type="button" onclick="filterDnsRecords('TXT')" class="dns-filter-btn px-3.5 py-1.5 rounded-xl font-medium text-slate-600 hover:text-slate-900 hover:bg-slate-50 border border-transparent cursor-pointer" data-filter="TXT">TXT</button>
+          <button type="button" onclick="filterDnsRecords('NS')" class="dns-filter-btn px-3.5 py-1.5 rounded-xl font-medium text-slate-600 hover:text-slate-900 hover:bg-slate-50 border border-transparent cursor-pointer" data-filter="NS">NS</button>
+        </div>
+
+        <div class="bg-white rounded-2xl border border-slate-200 overflow-hidden shadow-xs">
+          <div class="overflow-x-auto">
+            <table class="w-full text-left text-xs border-collapse">
+              <thead class="bg-slate-50 border-b border-slate-200 text-slate-600 font-extrabold text-[11px] uppercase tracking-wider">
+                <tr>
+                  <th class="py-3.5 px-4">Type</th>
+                  <th class="py-3.5 px-4">Host / Name</th>
+                  <th class="py-3.5 px-4">Target / Points To</th>
+                  <th class="py-3.5 px-4">TTL</th>
+                  <th class="py-3.5 px-4">Priority</th>
+                  <th class="py-3.5 px-4 text-right">Actions</th>
+                </tr>
+              </thead>
+              <tbody id="dns-records-tbody" class="divide-y divide-slate-100 text-slate-700 font-medium">
+                {% if dns_records %}
+                {% for r in dns_records %}
+                <tr class="hover:bg-slate-50/80 transition-colors dns-row" data-type="{{ r.record_type }}">
+                  <td class="py-3.5 px-4">
+                    <span class="inline-flex items-center px-2.5 py-0.5 rounded-md text-[10px] font-black {% if r.record_type == 'A' %}bg-blue-50 text-blue-700 border border-blue-200{% elif r.record_type == 'CNAME' %}bg-purple-50 text-purple-700 border border-purple-200{% elif r.record_type == 'MX' %}bg-amber-50 text-amber-800 border border-amber-200{% elif r.record_type == 'TXT' %}bg-emerald-50 text-emerald-700 border border-emerald-200{% else %}bg-slate-100 text-slate-700 border border-slate-200{% endif %}">
+                      {{ r.record_type }}
+                    </span>
+                  </td>
+                  <td class="py-3.5 px-4 font-mono font-bold text-slate-900">{{ r.name }}</td>
+                  <td class="py-3.5 px-4 font-mono text-slate-700 max-w-[280px] truncate" title="{{ r.value }}">{{ r.value }}</td>
+                  <td class="py-3.5 px-4 text-slate-500 font-mono">{{ r.ttl }}s</td>
+                  <td class="py-3.5 px-4 text-slate-500 font-mono">{{ r.priority if r.record_type in ('MX', 'SRV') else '-' }}</td>
+                  <td class="py-3.5 px-4 text-right">
+                    <div class="inline-flex items-center gap-1.5">
+                      <button type="button" onclick="editDnsRecord({{ r.id }}, '{{ r.record_type }}', '{{ r.name }}', '{{ r.value }}', {{ r.ttl }}, {{ r.priority or 10 }})" class="px-2.5 py-1.5 rounded-lg border border-slate-200 hover:border-accent text-slate-700 hover:text-amber-800 text-[11px] font-bold bg-white transition-all cursor-pointer">
+                        Edit
+                      </button>
+                      <button type="button" onclick="deleteDnsRecord({{ r.id }})" class="px-2.5 py-1.5 rounded-lg bg-rose-50 hover:bg-rose-100 text-rose-600 text-[11px] font-bold transition-all cursor-pointer">
+                        Delete
+                      </button>
+                    </div>
+                  </td>
+                </tr>
+                {% endfor %}
+                {% else %}
+                <tr id="dns-empty-row">
+                  <td colspan="6" class="py-8 text-center text-slate-400">
+                    No DNS records found for this domain. Click "+ Add DNS Record" to create one.
+                  </td>
+                </tr>
+                {% endif %}
+              </tbody>
+            </table>
+          </div>
+        </div>
       </section>
 
       <section id="tab-billing" class="dashboard-panel space-y-4 hidden">
@@ -861,6 +1019,249 @@
         switchTab(candidate);
       }
     }
+
+    function openDnsManager(domain) {
+      const sel = document.getElementById('dns-domain-selector');
+      if (sel && domain) {
+        sel.value = domain;
+      }
+      switchTab('tab-dns');
+      if (domain) {
+        loadDnsRecords(domain);
+      }
+    }
+    window.openDnsManager = openDnsManager;
+
+    function onDnsDomainChange(domain) {
+      if (domain) {
+        loadDnsRecords(domain);
+      }
+    }
+    window.onDnsDomainChange = onDnsDomainChange;
+
+    let currentDnsRecords = [];
+
+    async function loadDnsRecords(domain) {
+      try {
+        const res = await fetch('/api/dns/' + encodeURIComponent(domain));
+        const data = await res.json();
+        if (data && data.records) {
+          currentDnsRecords = data.records;
+          renderDnsRows(data.records);
+          const countBadge = document.getElementById('sidebar-dns-count');
+          if (countBadge) {
+            countBadge.textContent = data.records.length;
+          }
+        }
+      } catch (err) {
+      }
+    }
+    window.loadDnsRecords = loadDnsRecords;
+
+    function getBadgeClass(type) {
+      if (type === 'A') return 'bg-blue-50 text-blue-700 border border-blue-200';
+      if (type === 'AAAA') return 'bg-cyan-50 text-cyan-700 border border-cyan-200';
+      if (type === 'CNAME') return 'bg-purple-50 text-purple-700 border border-purple-200';
+      if (type === 'MX') return 'bg-amber-50 text-amber-800 border border-amber-200';
+      if (type === 'TXT') return 'bg-emerald-50 text-emerald-700 border border-emerald-200';
+      return 'bg-slate-100 text-slate-700 border border-slate-200';
+    }
+
+    function renderDnsRows(records) {
+      const tbody = document.getElementById('dns-records-tbody');
+      if (!tbody) return;
+      if (!records || records.length === 0) {
+        tbody.innerHTML = '<tr id="dns-empty-row"><td colspan="6" class="py-8 text-center text-slate-400">No DNS records found for this domain. Click "+ Add DNS Record" to create one.</td></tr>';
+        return;
+      }
+      tbody.innerHTML = records.map(r => {
+        const prio = (r.record_type === 'MX' || r.record_type === 'SRV') ? (r.priority || 10) : '-';
+        return '<tr class="hover:bg-slate-50/80 transition-colors dns-row" data-type="' + r.record_type + '">' +
+          '<td class="py-3.5 px-4"><span class="inline-flex items-center px-2.5 py-0.5 rounded-md text-[10px] font-black ' + getBadgeClass(r.record_type) + '">' + r.record_type + '</span></td>' +
+          '<td class="py-3.5 px-4 font-mono font-bold text-slate-900">' + r.name + '</td>' +
+          '<td class="py-3.5 px-4 font-mono text-slate-700 max-w-[280px] truncate" title="' + r.value + '">' + r.value + '</td>' +
+          '<td class="py-3.5 px-4 text-slate-500 font-mono">' + r.ttl + 's</td>' +
+          '<td class="py-3.5 px-4 text-slate-500 font-mono">' + prio + '</td>' +
+          '<td class="py-3.5 px-4 text-right"><div class="inline-flex items-center gap-1.5">' +
+          '<button type="button" onclick="editDnsRecord(' + r.id + ', \'' + r.record_type + '\', \'' + r.name + '\', \'' + r.value.replace(/'/g, "\\'") + '\', ' + r.ttl + ', ' + (r.priority || 10) + ')" class="px-2.5 py-1.5 rounded-lg border border-slate-200 hover:border-accent text-slate-700 hover:text-amber-800 text-[11px] font-bold bg-white transition-all cursor-pointer">Edit</button>' +
+          '<button type="button" onclick="deleteDnsRecord(' + r.id + ')" class="px-2.5 py-1.5 rounded-lg bg-rose-50 hover:bg-rose-100 text-rose-600 text-[11px] font-bold transition-all cursor-pointer">Delete</button>' +
+          '</div></td>' +
+          '</tr>';
+      }).join('');
+    }
+    window.renderDnsRows = renderDnsRows;
+
+    function toggleDnsRecordForm(show) {
+      const card = document.getElementById('dns-record-form-card');
+      if (!card) return;
+      if (show === undefined) {
+        card.classList.toggle('hidden');
+      } else if (show) {
+        card.classList.remove('hidden');
+      } else {
+        card.classList.add('hidden');
+      }
+      if (!card.classList.contains('hidden') && show === undefined) {
+        resetDnsForm();
+      }
+    }
+    window.toggleDnsRecordForm = toggleDnsRecordForm;
+
+    function resetDnsForm() {
+      const form = document.getElementById('dns-record-form');
+      if (form) form.reset();
+      const editId = document.getElementById('dns-edit-id');
+      if (editId) editId.value = '';
+      const title = document.getElementById('dns-form-title');
+      if (title) title.textContent = 'Add New DNS Record';
+      const btn = document.getElementById('dns-submit-btn');
+      if (btn) btn.textContent = 'Save Record';
+      onRecordTypeChange('A');
+    }
+
+    function onRecordTypeChange(type) {
+      const prioContainer = document.getElementById('dns-priority-container');
+      const valLabel = document.getElementById('dns-value-label');
+      const valInput = document.getElementById('dns-input-value');
+      if (prioContainer) {
+        if (type === 'MX' || type === 'SRV') {
+          prioContainer.classList.remove('hidden');
+        } else {
+          prioContainer.classList.add('hidden');
+        }
+      }
+      if (valLabel && valInput) {
+        if (type === 'A') {
+          valLabel.textContent = 'Points To / IPv4';
+          valInput.placeholder = 'e.g. 197.232.48.12';
+        } else if (type === 'AAAA') {
+          valLabel.textContent = 'Points To / IPv6';
+          valInput.placeholder = 'e.g. 2001:0db8:85a3::8a2e:0370:7334';
+        } else if (type === 'CNAME') {
+          valLabel.textContent = 'Target Host / Alias';
+          valInput.placeholder = 'e.g. @ or mydomain.com';
+        } else if (type === 'MX') {
+          valLabel.textContent = 'Mail Server Host';
+          valInput.placeholder = 'e.g. mail.mydomain.com';
+        } else if (type === 'TXT') {
+          valLabel.textContent = 'TXT Value / Record Data';
+          valInput.placeholder = 'e.g. v=spf1 a mx ~all';
+        } else if (type === 'NS') {
+          valLabel.textContent = 'Nameserver FQDN';
+          valInput.placeholder = 'e.g. ns1.cloudoon.com';
+        }
+      }
+    }
+    window.onRecordTypeChange = onRecordTypeChange;
+
+    function filterDnsRecords(filterType) {
+      const rows = document.querySelectorAll('.dns-row');
+      rows.forEach(r => {
+        const type = r.getAttribute('data-type');
+        if (filterType === 'ALL' || type === filterType) {
+          r.classList.remove('hidden');
+        } else {
+          r.classList.add('hidden');
+        }
+      });
+      const btns = document.querySelectorAll('.dns-filter-btn');
+      btns.forEach(b => {
+        if (b.getAttribute('data-filter') === filterType) {
+          b.className = 'dns-filter-btn px-3.5 py-1.5 rounded-xl font-bold bg-amber-50 text-amber-800 border border-amber-200/80 cursor-pointer';
+        } else {
+          b.className = 'dns-filter-btn px-3.5 py-1.5 rounded-xl font-medium text-slate-600 hover:text-slate-900 hover:bg-slate-50 border border-transparent cursor-pointer';
+        }
+      });
+    }
+    window.filterDnsRecords = filterDnsRecords;
+
+    async function handleDnsFormSubmit(e) {
+      e.preventDefault();
+      const domainSel = document.getElementById('dns-domain-selector');
+      const domain = domainSel ? domainSel.value : 'cloudoon.co.ke';
+      const editId = document.getElementById('dns-edit-id').value;
+      const rType = document.getElementById('dns-input-type').value;
+      const rName = document.getElementById('dns-input-name').value;
+      const rValue = document.getElementById('dns-input-value').value;
+      const rTtl = parseInt(document.getElementById('dns-input-ttl').value || '3600', 10);
+      const rPrio = parseInt(document.getElementById('dns-input-priority').value || '10', 10);
+
+      const payload = {
+        domain: domain,
+        record_type: rType,
+        name: rName,
+        value: rValue,
+        ttl: rTtl,
+        priority: rPrio
+      };
+
+      try {
+        let url = editId ? ('/api/dns/update/' + editId) : ('/api/dns/' + encodeURIComponent(domain) + '/add');
+        const res = await fetch(url, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify(payload)
+        });
+        const data = await res.json();
+        if (data && data.records) {
+          currentDnsRecords = data.records;
+          renderDnsRows(data.records);
+          const countBadge = document.getElementById('sidebar-dns-count');
+          if (countBadge) {
+            countBadge.textContent = data.records.length;
+          }
+        } else {
+          loadDnsRecords(domain);
+        }
+        toggleDnsRecordForm(false);
+        resetDnsForm();
+      } catch (err) {
+      }
+    }
+    window.handleDnsFormSubmit = handleDnsFormSubmit;
+
+    function editDnsRecord(id, type, name, value, ttl, priority) {
+      const card = document.getElementById('dns-record-form-card');
+      if (!card) return;
+      card.classList.remove('hidden');
+      document.getElementById('dns-edit-id').value = id;
+      document.getElementById('dns-input-type').value = type;
+      document.getElementById('dns-input-name').value = name;
+      document.getElementById('dns-input-value').value = value;
+      document.getElementById('dns-input-ttl').value = ttl;
+      document.getElementById('dns-input-priority').value = priority || 10;
+      onRecordTypeChange(type);
+      document.getElementById('dns-form-title').textContent = 'Edit ' + type + ' Record';
+      document.getElementById('dns-submit-btn').textContent = 'Update Record';
+      card.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+    }
+    window.editDnsRecord = editDnsRecord;
+
+    async function deleteDnsRecord(id) {
+      if (!confirm('Are you sure you want to delete this DNS record?')) return;
+      const domainSel = document.getElementById('dns-domain-selector');
+      const domain = domainSel ? domainSel.value : 'cloudoon.co.ke';
+      try {
+        const res = await fetch('/api/dns/delete/' + id, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ domain: domain })
+        });
+        const data = await res.json();
+        if (data && data.records) {
+          currentDnsRecords = data.records;
+          renderDnsRows(data.records);
+          const countBadge = document.getElementById('sidebar-dns-count');
+          if (countBadge) {
+            countBadge.textContent = data.records.length;
+          }
+        } else {
+          loadDnsRecords(domain);
+        }
+      } catch (err) {
+      }
+    }
+    window.deleteDnsRecord = deleteDnsRecord;
   </script>
 </body>
 </html>

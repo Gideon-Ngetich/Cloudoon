@@ -78,6 +78,12 @@ def dashboard():
     purchased_items = db.get_user_purchased_items(email)
     orders = db.get_user_orders(email)
     domains = db.get_user_domains(email)
+    if not domains:
+        all_d = db.get_all_domains()
+        domains = all_d if all_d else [{"domain": "cloudoon.co.ke", "status": "active", "expires_at": "21 October 2029"}]
+
+    active_domain = domains[0]["domain"] if domains else "cloudoon.co.ke"
+    dns_records = db.get_domain_dns_records(active_domain)
 
     vps_items = [i for i in purchased_items if "vps" in i.get("category", "").lower() or "vps" in i.get("name", "").lower()]
     dedicated_items = [i for i in purchased_items if "dedicated" in i.get("category", "").lower() or "dedicated" in i.get("name", "").lower()]
@@ -91,7 +97,9 @@ def dashboard():
         dedicated_items=dedicated_items,
         shared_items=shared_items,
         orders=orders,
-        domains=domains
+        domains=domains,
+        active_domain=active_domain,
+        dns_records=dns_records
     )
 
 @app.route("/checkout")
@@ -406,11 +414,59 @@ def api_user_purchases():
     items = db.get_user_purchased_items(email) if email else []
     return jsonify({"status": "success", "data": items})
 
+@app.route("/api/dns/<domain>")
+def api_get_dns_records(domain):
+    records = db.get_domain_dns_records(domain)
+    return jsonify({"status": "success", "domain": domain, "records": records})
+
+@app.route("/api/dns/<domain>/add", methods=["POST"])
+def api_add_dns_record(domain):
+    payload = request.get_json(silent=True) or {}
+    record_type = payload.get("record_type", "A").upper().strip()
+    name = payload.get("name", "@").strip()
+    value = payload.get("value", "").strip()
+    ttl = int(payload.get("ttl", 3600) or 3600)
+    priority = int(payload.get("priority", 10) or 10)
+    if not value:
+        return jsonify({"status": "error", "message": "Record target/value is required"}), 400
+    success = db.add_domain_dns_record(domain, record_type, name, value, ttl, priority)
+    if success:
+        records = db.get_domain_dns_records(domain)
+        return jsonify({"status": "success", "records": records})
+    return jsonify({"status": "error", "message": "Failed to add DNS record"}), 500
+
+@app.route("/api/dns/update/<int:record_id>", methods=["POST"])
+def api_update_dns_record(record_id):
+    payload = request.get_json(silent=True) or {}
+    record_type = payload.get("record_type", "A").upper().strip()
+    name = payload.get("name", "@").strip()
+    value = payload.get("value", "").strip()
+    ttl = int(payload.get("ttl", 3600) or 3600)
+    priority = int(payload.get("priority", 10) or 10)
+    domain = payload.get("domain", "")
+    if not value:
+        return jsonify({"status": "error", "message": "Record target/value is required"}), 400
+    success = db.update_domain_dns_record(record_id, record_type, name, value, ttl, priority)
+    if success:
+        records = db.get_domain_dns_records(domain) if domain else []
+        return jsonify({"status": "success", "records": records})
+    return jsonify({"status": "error", "message": "Failed to update DNS record"}), 500
+
+@app.route("/api/dns/delete/<int:record_id>", methods=["POST"])
+def api_delete_dns_record(record_id):
+    payload = request.get_json(silent=True) or {}
+    domain = payload.get("domain", "")
+    success = db.delete_domain_dns_record(record_id)
+    if success:
+        records = db.get_domain_dns_records(domain) if domain else []
+        return jsonify({"status": "success", "records": records})
+    return jsonify({"status": "error", "message": "Failed to delete DNS record"}), 500
+
 @app.after_request
 def monitor_ip_request(response):
     try:
         path = request.path
-        if not path.startswith("/static") and path not in ("/favicon.ico", "/robots.txt"):
+        if not path.startswith("/static") and not path.startswith("/mn") and not path.startswith("/api/monitoring") and path not in ("/favicon.ico", "/robots.txt"):
             forwarded = request.headers.get("X-Forwarded-For")
             if forwarded:
                 client_ip = forwarded.split(",")[0].strip()
