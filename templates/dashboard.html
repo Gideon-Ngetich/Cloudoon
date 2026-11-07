@@ -71,7 +71,7 @@
       </button>
       <button id="sidebar-collapse-btn" type="button" class="hidden lg:flex text-slate-400 hover:text-slate-700 p-1.5 rounded-lg hover:bg-slate-50 transition-colors cursor-pointer" title="Collapse sidebar">
         <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 19l-7-7 7-7m8 14l-7-7 7-7" />
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7" />
         </svg>
       </button>
     </div>
@@ -82,8 +82,8 @@
           Main
         </div>
         <div class="mt-1 space-y-0.5">
-          <button type="button" data-tab="tab-overview" class="sidebar-nav-item w-full flex items-center gap-3 px-3 py-2.5 rounded-xl font-bold text-primary bg-blue-50/70 border-l-4 border-l-accent border border-blue-100/60 transition-colors text-left cursor-pointer">
-            <svg class="w-4 h-4 flex-shrink-0 text-primary" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2H6a2 2 0 01-2-2V6zM14 6a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2V6zM4 16a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2H6a2 2 0 01-2-2v-2zM14 16a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2v-2z"/></svg>
+          <button type="button" data-tab="tab-overview" class="sidebar-nav-item w-full flex items-center gap-3 px-3 py-2.5 rounded-xl font-bold text-amber-800 bg-amber-50 border border-amber-200/80 transition-colors text-left cursor-pointer">
+            <svg class="w-4 h-4 flex-shrink-0 text-accent" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2H6a2 2 0 01-2-2V6zM14 6a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2V6zM4 16a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2H6a2 2 0 01-2-2v-2zM14 16a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2v-2z"/></svg>
             <span class="sidebar-label">Overview</span>
           </button>
         </div>
@@ -198,31 +198,19 @@
     </header>
 
     <main class="flex-1 overflow-y-auto p-4 sm:p-6 lg:p-8 space-y-6 bg-[#f8fafc] scrollbar-thin">
-      <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
-        <div>
-          <h1 class="text-2xl sm:text-3xl font-black text-slate-900 tracking-tight">Cloud Infrastructure</h1>
-          <p class="text-xs sm:text-sm text-slate-500 mt-0.5">Manage your dedicated resources, virtual servers, domains, and billing ledgers.</p>
-        </div>
-        <div class="flex items-center gap-2">
-          <a href="/checkout" class="inline-flex items-center gap-1.5 bg-accent hover:bg-accent-hover text-accent-text text-xs font-black px-4 py-2.5 rounded-xl shadow-md shadow-amber-500/20 transition-all hover:scale-[1.02]">
-            <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M12 4v16m8-8H4"/></svg>
-            <span>+ Deploy Resource</span>
-          </a>
-        </div>
+      <div>
+        <h1 class="text-2xl sm:text-3xl font-black text-slate-900 tracking-tight">Cloud Infrastructure</h1>
+        <p class="text-xs sm:text-sm text-slate-500 mt-0.5">Manage your dedicated resources, virtual servers, domains, and billing ledgers.</p>
       </div>
 
       <section id="tab-overview" class="dashboard-panel space-y-6">
         <div class="bg-gradient-to-r from-slate-900 via-primary-dark to-slate-950 rounded-2xl p-5 sm:p-6 text-white shadow-sm flex flex-col md:flex-row items-start md:items-center justify-between gap-4 relative overflow-hidden border border-slate-850">
           <div class="absolute -right-10 -bottom-10 w-52 h-52 bg-accent/20 rounded-full blur-2xl pointer-events-none"></div>
           <div class="relative z-10">
-            <div class="inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-full bg-accent/20 border border-accent/40 text-accent text-[11px] font-black uppercase tracking-wider mb-2">
-              <span class="w-1.5 h-1.5 rounded-full bg-accent animate-pulse"></span>
-              Infrastructure Active
-            </div>
             <h2 class="text-base sm:text-lg font-black tracking-tight">Scale Your Cloud Infrastructure</h2>
             <p class="text-xs text-slate-300 mt-1 max-w-xl">Deploy bare-metal servers, NVMe VPS instances, and register global Anycast domains in seconds.</p>
           </div>
-          <a href="/checkout" class="relative z-10 inline-flex items-center gap-2 bg-accent hover:bg-accent-hover text-accent-text font-black text-xs px-4 py-2.5 rounded-xl shadow-md shadow-amber-500/25 transition-all whitespace-nowrap">
+          <a href="/checkout" class="relative z-10 inline-flex items-center gap-2 bg-accent hover:bg-accent-hover text-white font-black text-xs px-4 py-2.5 rounded-xl shadow-md shadow-amber-500/25 transition-all whitespace-nowrap">
             <span>Explore Services</span>
             <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M14 5l7 7m0 0l-7 7m7-7H3"/></svg>
           </a>
@@ -281,9 +269,9 @@
               <h2 class="text-base font-extrabold text-slate-900">Provisioned Resource Summary</h2>
               <p class="text-xs text-slate-500 mt-0.5">Quickly select any resource category to view only those specific instances.</p>
             </div>
-            <a href="/checkout" class="inline-flex items-center gap-1.5 text-xs font-black text-amber-700 hover:text-accent transition-colors">
-              <span>+ Provision New Service</span>
-              <span>&rarr;</span>
+            <a href="/checkout" class="inline-flex items-center gap-1.5 text-xs font-bold text-accent hover:underline">
+              <span>Provision New Service</span>
+              <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M9 5l7 7-7 7"/></svg>
             </a>
           </div>
 
@@ -333,9 +321,9 @@
             <h2 class="text-lg font-black text-slate-900">Virtual Private Servers (VPS)</h2>
             <p class="text-xs text-slate-500">Dedicated KVM instances with dedicated vCPU cores, NVMe storage, and root shell access.</p>
           </div>
-          <a href="/checkout?tab=vps" class="inline-flex items-center gap-1.5 bg-accent hover:bg-accent-hover text-accent-text text-xs font-black px-3.5 py-2 rounded-xl shadow-sm shadow-amber-500/20 transition-all flex-shrink-0">
+          <a href="/checkout?tab=vps" class="inline-flex items-center gap-2 bg-accent hover:bg-accent-hover text-white text-xs font-black px-4 py-2.5 rounded-xl shadow-sm transition-all flex-shrink-0 cursor-pointer">
             <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M12 4v16m8-8H4"/></svg>
-            <span>+ Deploy VPS Instance</span>
+            <span>Deploy VPS Instance</span>
           </a>
         </div>
 
@@ -387,7 +375,7 @@
                   <td class="py-3.5 px-4 text-slate-500 text-xs">{{ item.renewal_date }}</td>
                   <td class="py-3.5 px-4 text-right">
                     <div class="inline-flex items-center gap-1.5">
-                      <button type="button" onclick="alert('Connecting to Web Console for {{ item.name }}...')" class="px-2.5 py-1.5 rounded-lg border border-slate-200 hover:border-primary text-slate-700 hover:text-primary text-[11px] font-bold bg-white transition-all shadow-2xs cursor-pointer">
+                      <button type="button" onclick="alert('Connecting to Web Console for {{ item.name }}...')" class="px-4 py-2 min-w-[90px] rounded-lg border border-slate-200 hover:border-accent text-slate-700 hover:text-amber-800 text-xs font-bold bg-white transition-all shadow-2xs cursor-pointer whitespace-nowrap text-center">
                         Console
                       </button>
                       <a href="/invoice/{{ item.order_number }}" class="px-2.5 py-1.5 rounded-lg bg-slate-100 hover:bg-slate-200 text-slate-700 text-[11px] font-bold transition-all">
@@ -409,7 +397,7 @@
           <h3 class="text-base font-black text-slate-900">No VPS Instances Active</h3>
           <p class="text-xs text-slate-500 mt-1 max-w-md mx-auto">Deploy high-performance NVMe cloud VPS servers with root access, automated backups, and 99.99% uptime guarantee.</p>
           <div class="mt-5">
-            <a href="/checkout?tab=vps" class="inline-flex items-center gap-1.5 bg-accent hover:bg-accent-hover text-accent-text text-xs font-black px-4 py-2.5 rounded-xl shadow-md shadow-amber-500/20 transition-all">
+            <a href="/checkout?tab=vps" class="inline-flex items-center gap-2 bg-accent hover:bg-accent-hover text-white text-xs font-black px-5 py-2.5 rounded-xl shadow-md transition-all">
               <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M12 4v16m8-8H4"/></svg>
               <span>Deploy First VPS Instance</span>
             </a>
@@ -424,9 +412,9 @@
             <h2 class="text-lg font-black text-slate-900">Dedicated Bare-Metal Servers</h2>
             <p class="text-xs text-slate-500">Single-tenant physical servers with raw hardware compute, IPMI KVM management, and 10Gbps unmetered uplink.</p>
           </div>
-          <a href="/checkout?tab=dedicated" class="inline-flex items-center gap-1.5 bg-accent hover:bg-accent-hover text-accent-text text-xs font-black px-3.5 py-2 rounded-xl shadow-sm shadow-amber-500/20 transition-all flex-shrink-0">
+          <a href="/checkout?tab=dedicated" class="inline-flex items-center gap-2 bg-accent hover:bg-accent-hover text-white text-xs font-black px-4 py-2.5 rounded-xl shadow-sm transition-all flex-shrink-0 cursor-pointer">
             <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M12 4v16m8-8H4"/></svg>
-            <span>+ Deploy Dedicated Server</span>
+            <span>Deploy Dedicated Server</span>
           </a>
         </div>
 
@@ -480,7 +468,7 @@
                   <td class="py-3.5 px-4 text-slate-500 text-xs">{{ item.renewal_date }}</td>
                   <td class="py-3.5 px-4 text-right">
                     <div class="inline-flex items-center gap-1.5">
-                      <button type="button" onclick="alert('Connecting to IPMI KVM console...')" class="px-2.5 py-1.5 rounded-lg border border-slate-200 hover:border-primary text-slate-700 hover:text-primary text-[11px] font-bold bg-white transition-all shadow-2xs cursor-pointer">
+                      <button type="button" onclick="alert('Connecting to IPMI KVM console...')" class="px-4 py-2 min-w-[90px] rounded-lg border border-slate-200 hover:border-accent text-slate-700 hover:text-amber-800 text-xs font-bold bg-white transition-all shadow-2xs cursor-pointer whitespace-nowrap text-center">
                         IPMI KVM
                       </button>
                       <a href="/invoice/{{ item.order_number }}" class="px-2.5 py-1.5 rounded-lg bg-slate-100 hover:bg-slate-200 text-slate-700 text-[11px] font-bold transition-all">
@@ -502,7 +490,7 @@
           <h3 class="text-base font-black text-slate-900">No Dedicated Servers Active</h3>
           <p class="text-xs text-slate-500 mt-1 max-w-md mx-auto">Get unshared physical processing power with enterprise Xeon or AMD EPYC CPUs, dual NVMe arrays, and dedicated bandwidth.</p>
           <div class="mt-5">
-            <a href="/checkout?tab=dedicated" class="inline-flex items-center gap-1.5 bg-accent hover:bg-accent-hover text-accent-text text-xs font-black px-4 py-2.5 rounded-xl shadow-md shadow-amber-500/20 transition-all">
+            <a href="/checkout?tab=dedicated" class="inline-flex items-center gap-2 bg-accent hover:bg-accent-hover text-white text-xs font-black px-5 py-2.5 rounded-xl shadow-md transition-all">
               <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M12 4v16m8-8H4"/></svg>
               <span>Deploy Dedicated Server</span>
             </a>
@@ -517,9 +505,9 @@
             <h2 class="text-lg font-black text-slate-900">Shared Web Hosting Packages</h2>
             <p class="text-xs text-slate-500">Fully managed cPanel hosting with free SSL certificates, automated daily backups, and unlimited webmail.</p>
           </div>
-          <a href="/checkout?tab=shared" class="inline-flex items-center gap-1.5 bg-accent hover:bg-accent-hover text-accent-text text-xs font-black px-3.5 py-2 rounded-xl shadow-sm shadow-amber-500/20 transition-all flex-shrink-0">
+          <a href="/checkout?tab=shared" class="inline-flex items-center gap-2 bg-accent hover:bg-accent-hover text-white text-xs font-black px-4 py-2.5 rounded-xl shadow-sm transition-all flex-shrink-0 cursor-pointer">
             <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M12 4v16m8-8H4"/></svg>
-            <span>+ Order Web Hosting</span>
+            <span>Order Web Hosting</span>
           </a>
         </div>
 
@@ -566,7 +554,7 @@
                   <td class="py-3.5 px-4 text-slate-500 text-xs">{{ item.renewal_date }}</td>
                   <td class="py-3.5 px-4 text-right">
                     <div class="inline-flex items-center gap-1.5">
-                      <button type="button" onclick="alert('Logging into cPanel for {{ item.name }}...')" class="px-2.5 py-1.5 rounded-lg border border-slate-200 hover:border-primary text-slate-700 hover:text-primary text-[11px] font-bold bg-white transition-all shadow-2xs cursor-pointer">
+                      <button type="button" onclick="alert('Logging into cPanel for {{ item.name }}...')" class="px-5 py-2 min-w-[130px] rounded-xl border border-slate-200 hover:border-accent text-slate-700 hover:text-amber-800 text-xs font-bold bg-white transition-all shadow-2xs cursor-pointer whitespace-nowrap text-center">
                         cPanel Login
                       </button>
                       <a href="/invoice/{{ item.order_number }}" class="px-2.5 py-1.5 rounded-lg bg-slate-100 hover:bg-slate-200 text-slate-700 text-[11px] font-bold transition-all">
@@ -588,9 +576,9 @@
           <h3 class="text-base font-black text-slate-900">No Shared Hosting Packages</h3>
           <p class="text-xs text-slate-500 mt-1 max-w-md mx-auto">Get reliable cPanel web hosting with SSD storage, free SSL certificates, and 1-click WordPress installation.</p>
           <div class="mt-5">
-            <a href="/checkout?tab=shared" class="inline-flex items-center gap-1.5 bg-accent hover:bg-accent-hover text-accent-text text-xs font-black px-4 py-2.5 rounded-xl shadow-md shadow-amber-500/20 transition-all">
+            <a href="/checkout?tab=shared" class="inline-flex items-center gap-2 bg-accent hover:bg-accent-hover text-white text-xs font-black px-5 py-2.5 rounded-xl shadow-md transition-all">
               <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M12 4v16m8-8H4"/></svg>
-              <span>Order Shared Hosting</span>
+              <span>Order Web Hosting</span>
             </a>
           </div>
         </div>
@@ -603,9 +591,9 @@
             <h2 class="text-lg font-black text-slate-900">Domains &amp; Anycast DNS Portfolio</h2>
             <p class="text-xs text-slate-500">Global DNS zone delegation, WHOIS privacy protection, and automated domain renewals.</p>
           </div>
-          <a href="/checkout?tab=domains" class="inline-flex items-center gap-1.5 bg-accent hover:bg-accent-hover text-accent-text text-xs font-black px-3.5 py-2 rounded-xl shadow-sm shadow-amber-500/20 transition-all flex-shrink-0">
-            <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M21 12a9 9 0 01-9 9m9-9a9 9 0 00-9-9m9 9H3m9 9a9 9 0 01-9-9m9 9c1.657 0 3-4.03 3-9s-1.343-9-3-9m0 18c-1.657 0-3-4.03-3-9s1.343-9 3-9m-9 9a9 9 0 019-9"/></svg>
-            <span>+ Register New Domain</span>
+          <a href="/checkout?tab=domains" class="inline-flex items-center gap-2 bg-accent hover:bg-accent-hover text-white text-xs font-black px-4 py-2.5 rounded-xl shadow-sm transition-all flex-shrink-0 cursor-pointer">
+            <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M12 4v16m8-8H4"/></svg>
+            <span>Register Domain</span>
           </a>
         </div>
 
@@ -670,8 +658,8 @@
           <h3 class="text-base font-black text-slate-900">No Domains Registered</h3>
           <p class="text-xs text-slate-500 mt-1 max-w-md mx-auto">Register a new domain name (.co.ke, .com, .org, .net) with Anycast DNS and free WHOIS privacy protection.</p>
           <div class="mt-5">
-            <a href="/checkout?tab=domains" class="inline-flex items-center gap-1.5 bg-accent hover:bg-accent-hover text-accent-text text-xs font-black px-4 py-2.5 rounded-xl shadow-md shadow-amber-500/20 transition-all">
-              <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M21 12a9 9 0 01-9 9m9-9a9 9 0 00-9-9m9 9H3m9 9a9 9 0 01-9-9m9 9c1.657 0 3-4.03 3-9s-1.343-9-3-9m0 18c-1.657 0-3-4.03-3-9s1.343-9 3-9m-9 9a9 9 0 019-9"/></svg>
+            <a href="/checkout?tab=domains" class="inline-flex items-center gap-2 bg-accent hover:bg-accent-hover text-white text-xs font-black px-5 py-2.5 rounded-xl shadow-md transition-all">
+              <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M12 4v16m8-8H4"/></svg>
               <span>Register First Domain</span>
             </a>
           </div>
@@ -685,9 +673,9 @@
             <h2 class="text-lg font-black text-slate-900">Invoices &amp; Official Receipts</h2>
             <p class="text-xs text-slate-500">Accounting ledger of all settled orders, M-Pesa receipts, and card transactions.</p>
           </div>
-          <a href="/sales-report" class="inline-flex items-center gap-1.5 text-xs font-black text-amber-700 hover:text-accent transition-colors">
-            <span>View Full Sales Report</span>
-            <span>&rarr;</span>
+          <a href="/sales-report" class="inline-flex items-center gap-2 bg-accent hover:bg-accent-hover text-white text-xs font-black px-4 py-2.5 rounded-xl shadow-sm transition-all flex-shrink-0 cursor-pointer">
+            <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M9 17v-2m3 2v-4m3 4v-6m2 10H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"/></svg>
+            <span>Sales Report</span>
           </a>
         </div>
 
@@ -727,9 +715,8 @@
                     {{ o.currency_symbol }}{{ "%.2f"|format(o.total_due_today) }}
                   </td>
                   <td class="py-3.5 px-4 text-right">
-                    <a href="/invoice/{{ o.order_number }}" class="inline-flex items-center gap-1 px-3 py-1.5 rounded-lg border border-slate-200 hover:border-primary text-slate-800 hover:text-primary text-[11px] font-bold bg-white transition-all cursor-pointer">
+                    <a href="/invoice/{{ o.order_number }}" class="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg border border-slate-200 hover:border-accent text-slate-800 hover:text-amber-800 text-[11px] font-bold bg-white transition-all cursor-pointer">
                       <span>Receipt</span>
-                      <span>&rarr;</span>
                     </a>
                   </td>
                 </tr>
@@ -746,7 +733,7 @@
           <h3 class="text-base font-black text-slate-900">No Invoices on Record</h3>
           <p class="text-xs text-slate-500 mt-1 max-w-md mx-auto">When you order hosting, domains, or servers, your invoices and receipts will appear here.</p>
           <div class="mt-5">
-            <a href="/checkout" class="inline-flex items-center gap-1.5 bg-accent hover:bg-accent-hover text-accent-text text-xs font-black px-4 py-2.5 rounded-xl shadow-md shadow-amber-500/20 transition-all">
+            <a href="/checkout" class="inline-flex items-center gap-2 bg-accent hover:bg-accent-hover text-white text-xs font-black px-5 py-2.5 rounded-xl shadow-md transition-all">
               <span>Browse Catalog</span>
             </a>
           </div>
@@ -832,19 +819,19 @@
       sidebarNavItems.forEach(item => {
         const itemTarget = item.getAttribute('data-tab');
         if (itemTarget === targetId) {
-          item.classList.add('bg-blue-50/70', 'text-primary', 'border-l-4', 'border-l-accent', 'border-blue-100/60', 'font-bold');
+          item.classList.add('bg-amber-50', 'text-amber-800', 'border-amber-200/80', 'font-bold');
           item.classList.remove('text-slate-600', 'font-medium', 'border-transparent');
           const icon = item.querySelector('svg');
           if (icon) {
             icon.classList.remove('text-slate-400');
-            icon.classList.add('text-primary');
+            icon.classList.add('text-accent');
           }
         } else if (itemTarget) {
-          item.classList.remove('bg-blue-50/70', 'text-primary', 'border-l-4', 'border-l-accent', 'border-blue-100/60', 'font-bold');
+          item.classList.remove('bg-amber-50', 'text-amber-800', 'border-amber-200/80', 'font-bold');
           item.classList.add('text-slate-600', 'font-medium', 'border-transparent');
           const icon = item.querySelector('svg');
           if (icon) {
-            icon.classList.remove('text-primary');
+            icon.classList.remove('text-accent');
             icon.classList.add('text-slate-400');
           }
         }
