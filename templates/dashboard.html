@@ -206,11 +206,6 @@
     </header>
 
     <main class="flex-1 overflow-y-auto p-4 sm:p-6 lg:p-8 space-y-6 bg-[#f8fafc] scrollbar-thin">
-      <div>
-        <h1 class="text-2xl sm:text-3xl font-black text-slate-900 tracking-tight">Cloud Infrastructure</h1>
-        <p class="text-xs sm:text-sm text-slate-500 mt-0.5">Manage your dedicated resources, virtual servers, domains, and billing ledgers.</p>
-      </div>
-
       <section id="tab-overview" class="dashboard-panel space-y-6">
         <div class="bg-gradient-to-r from-slate-900 via-primary-dark to-slate-950 rounded-2xl p-5 sm:p-6 text-white shadow-sm flex flex-col md:flex-row items-start md:items-center justify-between gap-4 relative overflow-hidden border border-slate-850">
           <div class="absolute -right-10 -bottom-10 w-52 h-52 bg-accent/20 rounded-full blur-2xl pointer-events-none"></div>
@@ -802,10 +797,10 @@
                   <td class="py-3.5 px-4 text-slate-500 font-mono">{{ r.priority if r.record_type in ('MX', 'SRV') else '-' }}</td>
                   <td class="py-3.5 px-4 text-right">
                     <div class="inline-flex items-center gap-1.5">
-                      <button type="button" onclick="editDnsRecord({{ r.id }}, '{{ r.record_type }}', '{{ r.name }}', '{{ r.value }}', {{ r.ttl }}, {{ r.priority or 10 }})" class="px-2.5 py-1.5 rounded-lg border border-slate-200 hover:border-accent text-slate-700 hover:text-amber-800 text-[11px] font-bold bg-white transition-all cursor-pointer">
+                      <button type="button" onclick="handleEditDnsBtn(this)" data-id="{{ r.id }}" data-type="{{ r.record_type }}" data-name="{{ r.name }}" data-value="{{ r.value }}" data-ttl="{{ r.ttl }}" data-priority="{{ r.priority if r.priority else 10 }}" class="px-2.5 py-1.5 rounded-lg border border-slate-200 hover:border-accent text-slate-700 hover:text-amber-800 text-[11px] font-bold bg-white transition-all cursor-pointer">
                         Edit
                       </button>
-                      <button type="button" onclick="deleteDnsRecord({{ r.id }})" class="px-2.5 py-1.5 rounded-lg bg-rose-50 hover:bg-rose-100 text-rose-600 text-[11px] font-bold transition-all cursor-pointer">
+                      <button type="button" onclick="handleDeleteDnsBtn(this)" data-id="{{ r.id }}" class="px-2.5 py-1.5 rounded-lg bg-rose-50 hover:bg-rose-100 text-rose-600 text-[11px] font-bold transition-all cursor-pointer">
                         Delete
                       </button>
                     </div>
@@ -1067,6 +1062,10 @@
       return 'bg-slate-100 text-slate-700 border border-slate-200';
     }
 
+    function escapeDnsAttr(str) {
+      return String(str || '').replace(/&/g, '&amp;').replace(/"/g, '&quot;').replace(/'/g, '&#39;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
+    }
+
     function renderDnsRows(records) {
       const tbody = document.getElementById('dns-records-tbody');
       if (!tbody) return;
@@ -1076,20 +1075,41 @@
       }
       tbody.innerHTML = records.map(r => {
         const prio = (r.record_type === 'MX' || r.record_type === 'SRV') ? (r.priority || 10) : '-';
-        return '<tr class="hover:bg-slate-50/80 transition-colors dns-row" data-type="' + r.record_type + '">' +
-          '<td class="py-3.5 px-4"><span class="inline-flex items-center px-2.5 py-0.5 rounded-md text-[10px] font-black ' + getBadgeClass(r.record_type) + '">' + r.record_type + '</span></td>' +
-          '<td class="py-3.5 px-4 font-mono font-bold text-slate-900">' + r.name + '</td>' +
-          '<td class="py-3.5 px-4 font-mono text-slate-700 max-w-[280px] truncate" title="' + r.value + '">' + r.value + '</td>' +
-          '<td class="py-3.5 px-4 text-slate-500 font-mono">' + r.ttl + 's</td>' +
+        return '<tr class="hover:bg-slate-50/80 transition-colors dns-row" data-type="' + escapeDnsAttr(r.record_type) + '">' +
+          '<td class="py-3.5 px-4"><span class="inline-flex items-center px-2.5 py-0.5 rounded-md text-[10px] font-black ' + getBadgeClass(r.record_type) + '">' + escapeDnsAttr(r.record_type) + '</span></td>' +
+          '<td class="py-3.5 px-4 font-mono font-bold text-slate-900">' + escapeDnsAttr(r.name) + '</td>' +
+          '<td class="py-3.5 px-4 font-mono text-slate-700 max-w-[280px] truncate" title="' + escapeDnsAttr(r.value) + '">' + escapeDnsAttr(r.value) + '</td>' +
+          '<td class="py-3.5 px-4 text-slate-500 font-mono">' + escapeDnsAttr(r.ttl) + 's</td>' +
           '<td class="py-3.5 px-4 text-slate-500 font-mono">' + prio + '</td>' +
           '<td class="py-3.5 px-4 text-right"><div class="inline-flex items-center gap-1.5">' +
-          '<button type="button" onclick="editDnsRecord(' + r.id + ', \'' + r.record_type + '\', \'' + r.name + '\', \'' + r.value.replace(/'/g, "\\'") + '\', ' + r.ttl + ', ' + (r.priority || 10) + ')" class="px-2.5 py-1.5 rounded-lg border border-slate-200 hover:border-accent text-slate-700 hover:text-amber-800 text-[11px] font-bold bg-white transition-all cursor-pointer">Edit</button>' +
-          '<button type="button" onclick="deleteDnsRecord(' + r.id + ')" class="px-2.5 py-1.5 rounded-lg bg-rose-50 hover:bg-rose-100 text-rose-600 text-[11px] font-bold transition-all cursor-pointer">Delete</button>' +
+          '<button type="button" onclick="handleEditDnsBtn(this)" data-id="' + r.id + '" data-type="' + escapeDnsAttr(r.record_type) + '" data-name="' + escapeDnsAttr(r.name) + '" data-value="' + escapeDnsAttr(r.value) + '" data-ttl="' + r.ttl + '" data-priority="' + (r.priority || 10) + '" class="px-2.5 py-1.5 rounded-lg border border-slate-200 hover:border-accent text-slate-700 hover:text-amber-800 text-[11px] font-bold bg-white transition-all cursor-pointer">Edit</button>' +
+          '<button type="button" onclick="handleDeleteDnsBtn(this)" data-id="' + r.id + '" class="px-2.5 py-1.5 rounded-lg bg-rose-50 hover:bg-rose-100 text-rose-600 text-[11px] font-bold transition-all cursor-pointer">Delete</button>' +
           '</div></td>' +
           '</tr>';
       }).join('');
     }
     window.renderDnsRows = renderDnsRows;
+
+    function handleEditDnsBtn(btn) {
+      if (!btn) return;
+      const id = btn.getAttribute('data-id');
+      const type = btn.getAttribute('data-type');
+      const name = btn.getAttribute('data-name');
+      const value = btn.getAttribute('data-value') || '';
+      const ttl = btn.getAttribute('data-ttl');
+      const priority = btn.getAttribute('data-priority');
+      editDnsRecord(id, type, name, value, ttl, priority);
+    }
+    window.handleEditDnsBtn = handleEditDnsBtn;
+
+    function handleDeleteDnsBtn(btn) {
+      if (!btn) return;
+      const id = btn.getAttribute('data-id');
+      if (id) {
+        deleteDnsRecord(id);
+      }
+    }
+    window.handleDeleteDnsBtn = handleDeleteDnsBtn;
 
     function toggleDnsRecordForm(show) {
       const card = document.getElementById('dns-record-form-card');
