@@ -24,10 +24,21 @@ class Database:
             except Exception:
                 pass
 
+        candidate_urls = []
         if self.pg_url and ("postgresql://" in self.pg_url or "postgres://" in self.pg_url):
+            candidate_urls.append(self.pg_url)
+            if "@dpg-" in self.pg_url and ".render.com" not in self.pg_url:
+                import re
+                fixed = re.sub(r"@(dpg-[^/:]+)", r"@\1.oregon-postgres.render.com", self.pg_url)
+                if "sslmode=" not in fixed:
+                    sep = "&" if "?" in fixed else "?"
+                    fixed = f"{fixed}{sep}sslmode=require"
+                candidate_urls.append(fixed)
+
+        for target_url in candidate_urls:
             try:
                 import psycopg2
-                self.conn = psycopg2.connect(self.pg_url, connect_timeout=1)
+                self.conn = psycopg2.connect(target_url, connect_timeout=8)
                 self.conn.autocommit = True
                 self.is_postgres = True
                 return
@@ -36,7 +47,7 @@ class Database:
 
             try:
                 import psycopg
-                self.conn = psycopg.connect(self.pg_url, autocommit=True, connect_timeout=1)
+                self.conn = psycopg.connect(target_url, autocommit=True, connect_timeout=8)
                 self.is_postgres = True
                 return
             except Exception:
@@ -55,11 +66,14 @@ class Database:
     def get_cursor(self):
         try:
             if self.is_postgres:
-                if self.conn and hasattr(self.conn, "closed") and self.conn.closed:
+                if not self.conn or getattr(self.conn, "closed", True) or getattr(self.conn, "broken", False):
                     self._init_connection()
             return self.conn.cursor()
         except Exception:
             try:
+                if self.is_postgres:
+                    self._init_connection()
+                    return self.conn.cursor()
                 self.conn = sqlite3.connect(self.sqlite_path, check_same_thread=False)
                 self.conn.row_factory = sqlite3.Row
                 self.is_postgres = False
@@ -513,80 +527,109 @@ class Database:
                 INSERT INTO ip_logs (ip, method, path, status_code, user_agent, referrer, created_at)
                 VALUES (?, ?, ?, ?, ?, ?, ?)
             """
-            cur.execute(sql, (str(ip)[:64], str(method)[:10], str(path)[:255], int(status_code or 200), str(user_agent)[:255], str(referrer)[:255], created_at))
-            if not self.is_postgres:
+            try:
+                cur.execute(sql, (str(ip)[:64], str(method)[:10], str(path)[:255], int(status_code or 200), str(user_agent)[:255], str(referrer)[:255], created_at))
+            except Exception:
+                if self.is_postgres:
+                    self._init_connection()
+                    cur = self.get_cursor()
+                    cur.execute(sql, (str(ip)[:64], str(method)[:10], str(path)[:255], int(status_code or 200), str(user_agent)[:255], str(referrer)[:255], created_at))
+            if not self.is_postgres and self.conn:
                 self.conn.commit()
         except Exception:
             pass
 
     def get_recent_ip_logs(self, limit=150, search=None):
-        try:
-            cur = self.get_cursor()
-            if search:
-                term = f"%{search.strip().lower()}%"
-                sql = """
-                    SELECT * FROM ip_logs
-                    WHERE LOWER(ip) LIKE %s OR LOWER(path) LIKE %s OR LOWER(method) LIKE %s
-                    ORDER BY id DESC LIMIT %s
-                """ if self.is_postgres else """
-                    SELECT * FROM ip_logs
-                    WHERE LOWER(ip) LIKE ? OR LOWER(path) LIKE ? OR LOWER(method) LIKE ?
-                    ORDER BY id DESC LIMIT ?
-                """
-                cur.execute(sql, (term, term, term, limit))
-            else:
-                sql = "SELECT * FROM ip_logs ORDER BY id DESC LIMIT %s" if self.is_postgres else "SELECT * FROM ip_logs ORDER BY id DESC LIMIT ?"
-                cur.execute(sql, (limit,))
-
-            rows = cur.fetchall()
-            results = []
-            for r in rows:
-                if self.is_postgres:
-                    cols = [desc[0] for desc in cur.description]
-                    results.append(dict(zip(cols, r)))
+        for attempt in range(2):
+            try:
+                cur = self.get_cursor()
+                if search:
+                    term = f"%{search.strip().lower()}%"
+                    sql = """
+                        SELECT * FROM ip_logs
+                        WHERE LOWER(ip) LIKE %s OR LOWER(path) LIKE %s OR LOWER(method) LIKE %s
+                        ORDER BY id DESC LIMIT %s
+                    """ if self.is_postgres else """
+                        SELECT * FROM ip_logs
+                        WHERE LOWER(ip) LIKE ? OR LOWER(path) LIKE ? OR LOWER(method) LIKE ?
+                        ORDER BY id DESC LIMIT ?
+                    """
+                    cur.execute(sql, (term, term, term, limit))
                 else:
-                    results.append(dict(r))
-            return results
-        except Exception:
-            return []
+                    sql = "SELECT * FROM ip_logs ORDER BY id DESC LIMIT %s" if self.is_postgres else "SELECT * FROM ip_logs ORDER BY id DESC LIMIT ?"
+                    cur.execute(sql, (limit,))
+
+                rows = cur.fetchall()
+                results = []
+                for r in rows:
+                    if self.is_postgres:
+                        cols = [desc[0] for desc in cur.description]
+                        item = dict(zip(cols, r))
+                        if isinstance(item.get("created_at"), datetime):
+                            item["created_at"] = item["created_at"].strftime("%Y-%m-%d %H:%M:%S")
+                        elif item.get("created_at") is not None:
+                            item["created_at"] = str(item.get("created_at"))
+                        results.append(item)
+                    else:
+                        results.append(dict(r))
+                return results
+            except Exception:
+                if attempt == 0 and self.is_postgres:
+                    self._init_connection()
+                else:
+                    return []
+        return []
 
     def get_ip_stats(self):
-        try:
-            cur = self.get_cursor()
-            cur.execute("SELECT COUNT(*) FROM ip_logs")
-            total = cur.fetchone()[0] or 0
+        for attempt in range(2):
+            try:
+                cur = self.get_cursor()
+                cur.execute("SELECT COUNT(*) FROM ip_logs")
+                total = cur.fetchone()[0] or 0
 
-            cur.execute("SELECT COUNT(DISTINCT ip) FROM ip_logs")
-            unique = cur.fetchone()[0] or 0
+                cur.execute("SELECT COUNT(DISTINCT ip) FROM ip_logs")
+                unique = cur.fetchone()[0] or 0
 
-            cur.execute("SELECT path, COUNT(*) as cnt FROM ip_logs GROUP BY path ORDER BY cnt DESC LIMIT 5")
-            top_paths = [{"path": r[0], "count": r[1]} for r in cur.fetchall()]
+                cur.execute("SELECT path, COUNT(*) as cnt FROM ip_logs GROUP BY path ORDER BY cnt DESC LIMIT 5")
+                top_paths = [{"path": r[0], "count": r[1]} for r in cur.fetchall()]
 
-            cur.execute("SELECT ip, COUNT(*) as cnt FROM ip_logs GROUP BY ip ORDER BY cnt DESC LIMIT 5")
-            top_ips = [{"ip": r[0], "count": r[1]} for r in cur.fetchall()]
+                cur.execute("SELECT ip, COUNT(*) as cnt FROM ip_logs GROUP BY ip ORDER BY cnt DESC LIMIT 5")
+                top_ips = [{"ip": r[0], "count": r[1]} for r in cur.fetchall()]
 
-            return {
-                "total_requests": total,
-                "unique_ips": unique,
-                "top_paths": top_paths,
-                "top_ips": top_ips
-            }
-        except Exception:
-            return {
-                "total_requests": 0,
-                "unique_ips": 0,
-                "top_paths": [],
-                "top_ips": []
-            }
+                return {
+                    "total_requests": total,
+                    "unique_ips": unique,
+                    "top_paths": top_paths,
+                    "top_ips": top_ips
+                }
+            except Exception:
+                if attempt == 0 and self.is_postgres:
+                    self._init_connection()
+                else:
+                    return {
+                        "total_requests": 0,
+                        "unique_ips": 0,
+                        "top_paths": [],
+                        "top_ips": []
+                    }
+        return {
+            "total_requests": 0,
+            "unique_ips": 0,
+            "top_paths": [],
+            "top_ips": []
+        }
 
     def clear_ip_logs(self):
-        try:
-            cur = self.get_cursor()
-            cur.execute("DELETE FROM ip_logs")
-            if not self.is_postgres:
-                self.conn.commit()
-        except Exception:
-            pass
+        for attempt in range(2):
+            try:
+                cur = self.get_cursor()
+                cur.execute("DELETE FROM ip_logs")
+                if not self.is_postgres and self.conn:
+                    self.conn.commit()
+                return
+            except Exception:
+                if attempt == 0 and self.is_postgres:
+                    self._init_connection()
 
     def get_domain_dns_records(self, domain):
         try:

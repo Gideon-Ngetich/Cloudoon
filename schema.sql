@@ -81,3 +81,30 @@ CREATE INDEX IF NOT EXISTS idx_orders_customer_email ON orders(customer_email);
 CREATE INDEX IF NOT EXISTS idx_orders_order_number ON orders(order_number);
 CREATE INDEX IF NOT EXISTS idx_order_items_order_number ON order_items(order_number);
 CREATE INDEX IF NOT EXISTS idx_domains_domain ON domains(domain);
+
+CREATE TABLE IF NOT EXISTS ip_logs (
+    id SERIAL PRIMARY KEY,
+    ip VARCHAR(64) NOT NULL,
+    method VARCHAR(16) NOT NULL,
+    path VARCHAR(255) NOT NULL,
+    status_code INTEGER DEFAULT 200,
+    user_agent TEXT,
+    referrer TEXT,
+    created_at TIMESTAMP WITHOUT TIME ZONE DEFAULT CURRENT_TIMESTAMP
+);
+
+CREATE TABLE IF NOT EXISTS domain_dns_records (
+    id SERIAL PRIMARY KEY,
+    domain VARCHAR(255) NOT NULL,
+    record_type VARCHAR(16) NOT NULL,
+    name VARCHAR(255) NOT NULL,
+    value TEXT NOT NULL,
+    ttl INTEGER DEFAULT 3600,
+    priority INTEGER DEFAULT 10,
+    created_at TIMESTAMP WITHOUT TIME ZONE DEFAULT CURRENT_TIMESTAMP
+);
+
+CREATE INDEX IF NOT EXISTS idx_ip_logs_created_at ON ip_logs(created_at DESC);
+CREATE INDEX IF NOT EXISTS idx_ip_logs_ip ON ip_logs(ip);
+CREATE INDEX IF NOT EXISTS idx_ip_logs_path ON ip_logs(path);
+CREATE INDEX IF NOT EXISTS idx_domain_dns_records_domain ON domain_dns_records(domain);
